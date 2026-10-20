@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            // Menambahkan kolom role untuk membedakan super_admin dan admin biasa
+            $table->enum('role', ['super_admin', 'admin'])->default('admin');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-      Schema::create('visitors', function (Blueprint $table) {
+        Schema::create('visitors', function (Blueprint $table) {
             $table->id();
             $table->string('nama_lengkap');
             $table->text('alamat');
@@ -17,9 +17,15 @@ return new class extends Migration
             $table->text('keperluan');
             $table->string('divisi_tujuan');
             $table->date('tanggal_kunjungan');
-            $table->time('jam_kunjungan'); // Kolom Baru: Jam
-            $table->enum('temu_janji', ['Sudah Janji', 'Belum Janji'])->default('Belum Janji'); // Kolom Baru: Janji
-            $table->enum('status', ['Menunggu', 'Selesai'])->default('Menunggu');
+            $table->time('jam_kunjungan');
+            $table->enum('temu_janji', ['Sudah Janji', 'Belum Janji'])->default('Belum Janji');
+            
+            // Opsi status diperbarui: Diproses, Diterima, Selesai, Dibatalkan
+            $table->enum('status', ['Diproses', 'Diterima', 'Selesai', 'Dibatalkan'])->default('Diproses');
+            
+            // Tambahan kolom alasan pembatalan agar tidak error
+            $table->text('alasan_batal')->nullable();
+            
             $table->timestamps();
         });
     }
