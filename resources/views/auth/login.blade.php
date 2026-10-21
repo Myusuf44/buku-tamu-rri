@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
+    
+    <!-- CSS untuk memperhalus sudut tampilan ikon -->
+    <style>
+        link[rel*="icon"] {
+            border-radius: 10px !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">

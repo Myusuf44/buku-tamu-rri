@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
+    
+    <!-- CSS untuk memperhalus sudut tampilan ikon -->
+    <style>
+        link[rel*="icon"] {
+            border-radius: 10px !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <title>Laporan Rekapitulasi Kunjungan Tamu - RRI Bukittinggi</title>
     <style>

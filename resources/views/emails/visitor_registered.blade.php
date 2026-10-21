@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+     <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
     <meta charset="UTF-8">
     <title>Registrasi Kunjungan Diproses - RRI Bukittinggi</title>
 </head>
@@ -9,7 +12,7 @@
         
         <!-- Header Instansi & Logo -->
         <div style="background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); padding: 24px; text-align: center; color: #ffffff;">
-            <img src="http://127.0.0.1:8000/images/logoo_rri.png" alt="Logo RRI Bukittinggi" style="width: 65px; height: auto; margin-bottom: 8px; display: inline-block;" crossorigin="anonymous">
+            <img src="{{ url('images/logoo_rri.png') }}" alt="Logo RRI Bukittinggi" style="width: 65px; height: auto; margin-bottom: 8px; display: inline-block;">
             <h2 style="margin: 0; font-size: 16px; font-weight: 900; letter-spacing: 0.5px;">LPP RRI BUKITTINGGI</h2>
             <p style="margin: 4px 0 0 0; font-size: 10px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px;">Layanan Registrasi Buku Tamu Digital TMB</p>
         </div>

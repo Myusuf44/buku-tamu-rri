@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
+    
+    <!-- CSS untuk memperhalus sudut tampilan ikon -->
+    <style>
+        link[rel*="icon"] {
+            border-radius: 10px !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulir Buku Tamu - RRI Bukittinggi</title>
@@ -34,6 +44,13 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .animate-modal-pop { animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+        .animate-shake { animation: shakeError 0.35s ease-in-out; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen antialiased overflow-x-hidden selection:bg-blue-600 selection:text-white">
@@ -140,7 +157,7 @@
             <p class="text-xs sm:text-base text-slate-500 mt-1">Silakan lengkapi data kunjungan Anda dengan informasi yang valid.</p>
         </div>
 
-        <!-- ALERT ERROR VALIDASI -->
+        <!-- ALERT ERROR VALIDASI LARAVEL BACKEND -->
         @if ($errors->any())
             <div class="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 shadow-sm animate-fade-in-up">
                 <div class="flex items-center gap-2 mb-1">
@@ -160,11 +177,12 @@
             
             <!-- FORM INPUT TAMU (8 COLUMNS) -->
             <div class="lg:col-span-8 bg-white p-6 sm:p-8 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80">
-                <form id="visitorForm" action="{{ route('visitor.store') }}" method="POST" class="space-y-5">
+                <form id="visitorForm" action="{{ route('visitor.store') }}" method="POST" class="space-y-5" novalidate>
                     @csrf
 
                     <!-- Baris 1: Nama Lengkap & No WhatsApp -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        <!-- Nama Lengkap -->
                         <div>
                             <label for="nama_lengkap" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 Nama Lengkap <span class="text-rose-500">*</span>
@@ -176,8 +194,14 @@
                                 <input type="text" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required placeholder="Contoh: Budi Santoso"
                                        class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
                             </div>
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Mohon isi nama lengkap Anda sesuai kartu identitas.</span>
+                            </p>
                         </div>
 
+                        <!-- No HP / WA -->
                         <div>
                             <label for="no_hp" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 No. HP / WhatsApp <span class="text-rose-500">*</span>
@@ -189,11 +213,17 @@
                                 <input type="text" id="no_hp" name="no_hp" value="{{ old('no_hp') }}" required placeholder="0812-XXXX-XXXX"
                                        class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
                             </div>
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Masukkan nomor WhatsApp aktif agar petugas dapat memberikan konfirmasi.</span>
+                            </p>
                         </div>
                     </div>
 
                     <!-- Baris 2: Email & Status Kunjungan -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        <!-- Email -->
                         <div>
                             <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 Email <span class="text-slate-400 font-normal lowercase">(opsional)</span>
@@ -207,6 +237,7 @@
                             </div>
                         </div>
 
+                        <!-- Status Kunjungan -->
                         <div>
                             <label for="temu_janji" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 Status Kunjungan <span class="text-rose-500">*</span>
@@ -236,10 +267,16 @@
                             <input type="text" id="alamat" name="alamat" value="{{ old('alamat') }}" required placeholder="Tuliskan nama instansi atau alamat asal Anda..."
                                    class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
                         </div>
+                        <!-- Error Message UI Kustom -->
+                        <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                            <i class="fas fa-circle-exclamation text-rose-500"></i>
+                            <span>Mohon cantumkan instansi, organisasi, atau alamat asal Anda.</span>
+                        </p>
                     </div>
 
-                   <!-- Baris 3: Divisi Tujuan & Tanggal Kunjungan -->
+                    <!-- Baris 3: Divisi Tujuan & Tanggal Kunjungan -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        <!-- Divisi Tujuan -->
                         <div>
                             <label for="divisi_tujuan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 Divisi / Unit Tujuan <span class="text-rose-500">*</span>
@@ -255,33 +292,56 @@
                                 <option value="Layanan Pengembangan Usaha (LPU)" {{ old('divisi_tujuan') == 'Layanan Pengembangan Usaha (LPU)' ? 'selected' : '' }}>Layanan Pengembangan Usaha (LPU)</option>
                                 <option value="Lainnya" {{ old('divisi_tujuan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                             </select>
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Silakan pilih divisi atau unit kerja yang ingin Anda tuju.</span>
+                            </p>
                         </div>
 
+                        <!-- Tanggal Kunjungan -->
                         <div>
                             <label for="tanggal_kunjungan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 Tanggal Kunjungan <span class="text-rose-500">*</span>
                             </label>
                             <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan" value="{{ old('tanggal_kunjungan', date('Y-m-d')) }}" required
                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Mohon tentukan tanggal rencana kunjungan Anda.</span>
+                            </p>
                         </div>
                     </div>
 
                     <!-- Jam Kedatangan & Keperluan -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+                        <!-- Jam Datang -->
                         <div class="sm:col-span-1">
                             <label for="jam_kunjungan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 Jam Datang <span class="text-rose-500">*</span>
                             </label>
                             <input type="time" id="jam_kunjungan" name="jam_kunjungan" value="{{ old('jam_kunjungan', date('H:i')) }}" required
                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Tentukan jam kedatangan Anda.</span>
+                            </p>
                         </div>
 
+                        <!-- Keperluan Kunjungan -->
                         <div class="sm:col-span-2">
                             <label for="keperluan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                                 Keperluan Kunjungan <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" id="keperluan" name="keperluan" value="{{ old('keperluan') }}" required placeholder="Jelaskan maksud dan tujuan kunjungan..."
                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Mohon uraikan singkat maksud dan tujuan kedatangan Anda.</span>
+                            </p>
                         </div>
                     </div>
 
@@ -340,7 +400,7 @@
         </div>
     </footer>
 
-    <!-- MODAL KONfirmasi SEBELUM KIRIM (KREATIF & PROFESIONAL) -->
+    <!-- MODAL KONFIRMASI SEBELUM KIRIM -->
     <div id="confirmationModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative animate-modal-pop text-center">
             
@@ -365,7 +425,7 @@
         </div>
     </div>
 
-    <!-- MODAL POP-UP SUKSES REGISTRASI (DENGAN 2 PILIHAN TOMBOL AKSI) -->
+    <!-- MODAL POP-UP SUKSES REGISTRASI -->
     @if (session('success'))
     <div id="successModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fade-in">
         <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center relative animate-modal-pop">
@@ -376,7 +436,6 @@
 
             <h3 class="text-xl font-black text-slate-900 mb-2">Registrasi Berhasil Dikirim!</h3>
             
-            <!-- Ucapan Terima Kasih & Pemberitahuan Pelayanan Publik -->
             <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 mb-6 text-left">
                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-center">
                     Terima kasih telah mengisi buku tamu digital LPP RRI Bukittinggi. Data kunjungan Anda saat ini berstatus <span class="font-bold text-amber-600">Diproses</span>. 
@@ -384,7 +443,6 @@
                 </p>
             </div>
 
-            <!-- 2 Pilihan Tombol Aksi yang Relevan untuk Publik -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <a href="{{ route('home') }}" class="py-3 px-4 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs sm:text-sm shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2">
                     <i class="fas fa-home"></i>
@@ -400,7 +458,7 @@
     </div>
     @endif
 
-    <!-- MODAL KONFIRMASI LOGOUT ADMIN (KHUSUS ADMIN) -->
+    <!-- MODAL KONFIRMASI LOGOUT ADMIN -->
     @auth
     <div id="logoutModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative animate-modal-pop">
@@ -433,9 +491,8 @@
     </div>
     @endauth
 
-    <!-- SCRIPT INTERAKTIF MODAL VALIDASI & KIRIM -->
+    <!-- SCRIPT VALIDASI CUSTOM UI/UX TOOLTIP -->
     <script>
-        // Modal Logout Admin
         function openLogoutModal() {
             const modal = document.getElementById('logoutModal');
             if (modal) modal.classList.remove('hidden');
@@ -445,26 +502,89 @@
             if (modal) modal.classList.add('hidden');
         }
 
-        // Modal Konfirmasi Data Sebelum Kirim
+        // Fungsi Validasi UI/UX Modern
+        function validateFormUI() {
+            const form = document.getElementById('visitorForm');
+            const inputs = form.querySelectorAll('input[required], select[required]');
+            let isValid = true;
+            let firstInvalidInput = null;
+
+            inputs.forEach(input => {
+                const parent = input.closest('div');
+                const errorMsg = parent.parentElement.querySelector('.error-msg') || parent.querySelector('.error-msg');
+
+                if (!input.value.trim()) {
+                    isValid = false;
+                    
+                    // Efek visual border merah & animasi getar (shake)
+                    input.classList.add('border-rose-500', 'bg-rose-50/30', 'animate-shake');
+                    input.classList.remove('border-slate-200', 'bg-slate-50');
+
+                    if (errorMsg) {
+                        errorMsg.classList.remove('hidden');
+                    }
+
+                    if (!firstInvalidInput) {
+                        firstInvalidInput = input;
+                    }
+                } else {
+                    // Reset ke tampilan normal jika terisi
+                    input.classList.remove('border-rose-500', 'bg-rose-50/30', 'animate-shake');
+                    input.classList.add('border-slate-200', 'bg-slate-50');
+
+                    if (errorMsg) {
+                        errorMsg.classList.add('hidden');
+                    }
+                }
+            });
+
+            if (!isValid && firstInvalidInput) {
+                firstInvalidInput.focus();
+            }
+
+            return isValid;
+        }
+
         function openConfirmationModal() {
-            const form = document.querySelector('form');
-            if (form.checkValidity()) {
+            if (validateFormUI()) {
                 const modal = document.getElementById('confirmationModal');
                 if (modal) modal.classList.remove('hidden');
-            } else {
-                form.reportValidity();
             }
         }
+
         function closeConfirmationModal() {
             const modal = document.getElementById('confirmationModal');
             if (modal) modal.classList.add('hidden');
         }
+
         function submitVisitorForm() {
             document.getElementById('visitorForm').submit();
         }
 
-        // Toggle Hamburger Menu Mobile
+        // Live Real-Time Validation saat mengetik/memilih
         document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('visitorForm');
+            if (form) {
+                const inputs = form.querySelectorAll('input[required], select[required]');
+                
+                inputs.forEach(input => {
+                    const checkInput = () => {
+                        const parent = input.closest('div');
+                        const errorMsg = parent.parentElement.querySelector('.error-msg') || parent.querySelector('.error-msg');
+
+                        if (input.value.trim()) {
+                            input.classList.remove('border-rose-500', 'bg-rose-50/30', 'animate-shake');
+                            input.classList.add('border-slate-200', 'bg-slate-50');
+                            if (errorMsg) errorMsg.classList.add('hidden');
+                        }
+                    };
+
+                    input.addEventListener('input', checkInput);
+                    input.addEventListener('change', checkInput);
+                });
+            }
+
+            // Toggle Hamburger Menu Mobile
             const btn = document.getElementById('mobileMenuBtn');
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('mobileMenuIcon');

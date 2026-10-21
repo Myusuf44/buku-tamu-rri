@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
+   <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
+    
+    <!-- CSS untuk memperhalus sudut tampilan ikon -->
+    <style>
+        link[rel*="icon"] {
+            border-radius: 10px !important;
+        }
+    </style>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buku Tamu - RRI Bukittinggi</title>
@@ -519,7 +530,7 @@
         </div>
     </footer>
 
-    <!-- MODAL FORM INPUT PENILAIAN PELAYANAN PUBLIK (DINAMIS SUMBERNYA) -->
+    <!-- MODAL FORM INPUT PENILAIAN PELAYANAN PUBLIK (DENGAN UI/UX KUSTOM) -->
     <div id="feedbackModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
         <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative animate-modal-pop">
             
@@ -535,15 +546,17 @@
                 <p class="text-xs text-slate-500 mt-1">Berikan masukan dan rating kepuasan atas pelayanan RRI Bukittinggi</p>
             </div>
 
-            <form id="feedbackForm" action="{{ route('feedback.store') }}" method="POST" class="space-y-4" onsubmit="return handleFeedbackSubmit(event)">
+            <!-- Atribut novalidate ditambahkan agar validasi kustom JavaScript yang aktif -->
+            <form id="feedbackForm" action="{{ route('feedback.store') }}" method="POST" class="space-y-4" novalidate onsubmit="return handleFeedbackSubmit(event)">
                 @csrf
                 
-                <!-- INPUT HIDDEN SUMBER (Dinamis diatur via JavaScript) -->
+                <!-- INPUT HIDDEN SUMBER -->
                 <input type="hidden" name="sumber" id="inputSumberFeedback" value="Beranda">
 
-                <!-- BANNER INDIKATOR SUMBER (Dinamis diatur via JavaScript) -->
+                <!-- BANNER INDIKATOR SUMBER -->
                 <div id="bannerSumberFeedback" class="hidden items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold border"></div>
 
+                <!-- BAGIAN BINTANG RATING -->
                 <div id="starContainer" class="p-3 rounded-2xl transition-all">
                     <label class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-2 text-center">Tingkat Kepuasan Anda <span class="text-rose-500">*</span></label>
                     <div class="flex items-center justify-center gap-2 flex-row-reverse star-rating text-3xl text-slate-300">
@@ -565,31 +578,46 @@
 
                     <p id="starErrorText" class="hidden text-[11px] text-rose-500 font-bold text-center mt-2 flex items-center justify-center gap-1">
                         <i class="fas fa-exclamation-circle"></i>
-                        <span>Silakan klik salah satu bintang di atas terlebih dahulu!</span>
+                        <span>Silakan klik salah satu bintang rating di atas terlebih dahulu!</span>
                     </p>
                 </div>
 
+                <!-- NAMA LENGKAP -->
                 <div>
                     <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Nama Lengkap Anda <span class="text-rose-500">*</span></label>
-                    <input type="text" name="nama_lengkap" placeholder="Masukkan nama Anda..." required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                    <input type="text" id="feedback_nama" name="nama_lengkap" placeholder="Masukkan nama Anda..." required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                    <p class="error-msg-feedback hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                        <i class="fas fa-circle-exclamation text-rose-500"></i>
+                        <span>Mohon isi nama lengkap Anda terlebih dahulu.</span>
+                    </p>
                 </div>
 
+                <!-- TELEPON & EMAIL -->
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
                             Telepon/WhatsApp (Aktif) <span class="text-rose-500">*</span>
                         </label>
-                        <input type="text" name="no_hp" placeholder="08xxxxxxxxxx" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                        <input type="text" id="feedback_hp" name="no_hp" placeholder="08xxxxxxxxxx" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                        <p class="error-msg-feedback hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                            <i class="fas fa-circle-exclamation text-rose-500"></i>
+                            <span>Nomor WhatsApp wajib diisi.</span>
+                        </p>
                     </div>
                     <div>
                         <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Email (Opsional)</label>
-                        <input type="email" name="email" placeholder="email@contoh.com" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                        <input type="email" id="feedback_email" name="email" placeholder="email@contoh.com" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
                     </div>
                 </div>
 
+                <!-- ULASAN -->
                 <div>
                     <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Ulasan & Kesan Pelayanan <span class="text-rose-500">*</span></label>
-                    <textarea name="ulasan" rows="3" required placeholder="Tuliskan masukan atau pengalaman pelayanan Anda..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all"></textarea>
+                    <textarea id="feedback_ulasan" name="ulasan" rows="3" required placeholder="Tuliskan masukan atau pengalaman pelayanan Anda..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all"></textarea>
+                    <p class="error-msg-feedback hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                        <i class="fas fa-circle-exclamation text-rose-500"></i>
+                        <span>Mohon tuliskan ulasan atau kesan pelayanan Anda.</span>
+                    </p>
                 </div>
 
                 <div class="pt-2">
@@ -631,7 +659,7 @@
     </div>
     @endauth
 
-    <!-- SCRIPT INTERAKTIF & LOGIK DINAMIS SUMBER ULASAN -->
+    <!-- SCRIPT INTERAKTIF & LOGIK VALIDASI KUSTOM UI/UX -->
     <script>
         function updateRealtimeClock() {
             const hariEl = document.getElementById('clock-hari-tanggal');
@@ -660,7 +688,6 @@
             if (modal) modal.classList.add('hidden');
         }
 
-        /* FUNGSI DINAMIS MEMBUKA MODAL ULASAN BESERTA DETEKSI SUMBERNYA */
         function openFeedbackModal() {
             const modal = document.getElementById('feedbackModal');
             const inputSumber = document.getElementById('inputSumberFeedback');
@@ -669,7 +696,6 @@
             if (modal) {
                 modal.classList.remove('hidden');
 
-                // Deteksi parameter URL secara akurat setiap kali modal dibuka
                 const urlParams = new URLSearchParams(window.location.search);
                 const sumberParam = urlParams.get('sumber');
 
@@ -690,7 +716,6 @@
                         bannerSumber.classList.add('flex');
                     }
                 } else {
-                    // Jika dari Beranda / tombol biasa
                     if (inputSumber) inputSumber.value = 'Beranda';
                     if (bannerSumber) {
                         bannerSumber.classList.add('hidden');
@@ -705,7 +730,6 @@
             if (modal) {
                 modal.classList.add('hidden');
                 
-                // Bersihkan URL dari parameter ?sumber=... agar saat dibuka lagi otomatis kembali ke mode Beranda
                 if (window.location.search.includes('sumber=')) {
                     const cleanUrl = window.location.pathname + window.location.hash;
                     window.history.replaceState({}, document.title, cleanUrl);
@@ -713,7 +737,6 @@
             }
         }
 
-        /* FUNGSI UTAMA: SCROLL KE IKM DAN MEMBUKA POPUP MODAL */
         function scrollToFeedbackAndOpenModal() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('mobileMenuIcon');
@@ -736,23 +759,60 @@
             }
         }
 
+        // FUNGSI VALIDASI KUSTOM UI/UX MODAL FEEDBACK
         function handleFeedbackSubmit(event) {
+            let isValid = true;
+            let firstInvalid = null;
+
+            // 1. Validasi Bintang Rating
             const starSelected = document.querySelector('input[name="rating"]:checked');
             const starContainer = document.getElementById('starContainer');
             const starErrorText = document.getElementById('starErrorText');
 
             if (!starSelected) {
-                event.preventDefault();
+                isValid = false;
                 starContainer.classList.add('bg-rose-50', 'border', 'border-rose-200', 'animate-shake');
                 starErrorText.classList.remove('hidden');
-
                 setTimeout(() => {
                     starContainer.classList.remove('animate-shake');
                 }, 400);
+            } else {
+                starContainer.classList.remove('bg-rose-50', 'border', 'border-rose-200');
+                starErrorText.classList.add('hidden');
+            }
 
+            // 2. Validasi Input Text/Textarea Wajib
+            const requiredFields = ['feedback_nama', 'feedback_hp', 'feedback_ulasan'];
+            requiredFields.forEach(fieldId => {
+                const input = document.getElementById(fieldId);
+                const parent = input.closest('div');
+                const errorMsg = parent.querySelector('.error-msg-feedback');
+
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('border-rose-500', 'bg-rose-50/30', 'animate-shake');
+                    input.classList.remove('border-slate-200', 'bg-slate-50');
+                    if (errorMsg) errorMsg.classList.remove('hidden');
+                    
+                    if (!firstInvalid) firstInvalid = input;
+
+                    setTimeout(() => {
+                        input.classList.remove('animate-shake');
+                    }, 400);
+                } else {
+                    input.classList.remove('border-rose-500', 'bg-rose-50/30');
+                    input.classList.add('border-slate-200', 'bg-slate-50');
+                    if (errorMsg) errorMsg.classList.add('hidden');
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+                if (firstInvalid) firstInvalid.focus();
                 return false;
             }
 
+            // Jika valid, tampilkan status loading pada tombol
             const btn = document.getElementById('btnSubmitFeedback');
             const icon = document.getElementById('iconSubmitFeedback');
             const text = document.getElementById('textSubmitFeedback');
@@ -769,7 +829,6 @@
             updateRealtimeClock();
             setInterval(updateRealtimeClock, 1000);
 
-            // Cek otomatis jika halaman dimuat dengan parameter URL tertentu
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('sumber') || window.location.hash === '#penilaian-publik') {
                 const section = document.getElementById('penilaian-publik');
@@ -778,6 +837,7 @@
                 }
             }
 
+            // Reset error bintang saat diklik
             document.querySelectorAll('input[name="rating"]').forEach(radio => {
                 radio.addEventListener('change', function() {
                     const starContainer = document.getElementById('starContainer');
@@ -788,6 +848,22 @@
                         starErrorText.classList.add('hidden');
                     }
                 });
+            });
+
+            // Live-feedback pembersihan error saat mengetik
+            ['feedback_nama', 'feedback_hp', 'feedback_ulasan'].forEach(fieldId => {
+                const input = document.getElementById(fieldId);
+                if (input) {
+                    input.addEventListener('input', function() {
+                        const parent = input.closest('div');
+                        const errorMsg = parent.querySelector('.error-msg-feedback');
+                        if (input.value.trim()) {
+                            input.classList.remove('border-rose-500', 'bg-rose-50/30');
+                            input.classList.add('border-slate-200', 'bg-slate-50');
+                            if (errorMsg) errorMsg.classList.add('hidden');
+                        }
+                    });
+                }
             });
 
             const btn = document.getElementById('mobileMenuBtn');

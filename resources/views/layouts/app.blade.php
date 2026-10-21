@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Buku Tamu - RRI Bukittinggi' }}</title>
     
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
+    
+    <!-- CSS untuk memperhalus sudut tampilan ikon -->
+    <style>
+        link[rel*="icon"] {
+            border-radius: 10px !important;
+        }
+    </style>
+
     <!-- Preload Logo RRI -->
     <link rel="preload" href="{{ asset('images/logo_rri.svg') }}" as="image" type="image/svg+xml">
 
@@ -137,7 +148,7 @@
                         <span>Dashboard</span>
                     </a>
 
-                    <!-- Tombol Kelola Rating & Ulasan (Dapat diakses Admin & Super Admin) -->
+                    <!-- Tombol Kelola Rating & Ulasan -->
                     <a href="{{ route('admin.feedbacks') }}" 
                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 border border-amber-300 shrink-0
                             {{ Request::routeIs('admin.feedbacks*') ? 'bg-amber-600 text-white shadow-md' : 'bg-amber-500 text-white hover:bg-amber-600' }}">
@@ -145,7 +156,7 @@
                         <span>Ulasan & Rating</span>
                     </a>
 
-                    <!-- Tombol Kelola Admin (EKSKLUSIF KHUSUS SUPER ADMIN) -->
+                    <!-- Tombol Kelola Admin (EKSKLUSIF SUPER ADMIN) -->
                     @if(auth()->user()->isSuperAdmin())
                     <a href="{{ route('admin.users.index') }}" 
                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 border border-purple-300 shrink-0
@@ -168,7 +179,7 @@
                     @endauth
                 </nav>
 
-                <!-- TOMBOL HAMBURGER MOBILE & BADGE ROLE (LAYAR HP) -->
+                <!-- TOMBOL HAMBURGER MOBILE & BADGE ROLE -->
                 <div class="flex items-center md:hidden gap-2">
                     @auth
                         <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold border shadow-2xs
