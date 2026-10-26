@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-     <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
-    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
+    
     <meta charset="UTF-8">
     <title>Registrasi Kunjungan Diproses - RRI Bukittinggi</title>
 </head>

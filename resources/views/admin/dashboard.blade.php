@@ -702,82 +702,90 @@
     </div>
 </div>
 
-<!-- 6. MODAL DETAIL LENGKAP KUNJUNGAN -->
-<div id="visitorDetailModal" class="hidden fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-all duration-300">
-    <div class="bg-white rounded-[2.5rem] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-fade-in-up max-h-[90vh] overflow-y-auto">
+<!-- 6. MODAL DETAIL LENGKAP KUNJUNGAN (DIOPTIMALKAN AGAR TIDAK TERPOTONG & TANPA LINK ATAS) -->
+<div id="visitorDetailModal" class="hidden fixed inset-0 z-[999999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-sm transition-all duration-300">
+    <div class="bg-white rounded-[2rem] max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-fade-in-up max-h-[88vh] overflow-y-auto">
         
-        <button type="button" onclick="closeDetailModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 font-bold w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-all">
+        <button type="button" onclick="closeDetailModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-all">
             &times;
         </button>
 
-        <div class="flex items-center gap-3 mb-5 pb-3 border-b border-slate-100">
-            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                <i class="fas fa-id-card text-lg"></i>
+        <div class="flex items-center gap-2.5 mb-3.5 pb-2.5 border-b border-slate-100">
+            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                <i class="fas fa-id-card text-base"></i>
             </div>
             <div>
-                <h3 class="text-base sm:text-lg font-black text-slate-900">Detail Lengkap Kunjungan</h3>
-                <p class="text-xs text-slate-400 font-medium">Informasi Rincian Agenda Tamu</p>
+                <h3 class="text-sm sm:text-base font-black text-slate-900 leading-tight">Detail Lengkap Kunjungan</h3>
+                <p class="text-[11px] text-slate-400 font-medium">Informasi Rincian Agenda Tamu</p>
             </div>
         </div>
 
-        <div class="space-y-4 text-xs sm:text-sm">
-            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
-                <span class="text-slate-400 font-bold text-[10px] uppercase block">Nama Lengkap</span>
-                <span id="detNama" class="font-black text-slate-900 text-sm"></span>
+        <div class="space-y-2.5 text-xs">
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                <span class="text-slate-400 font-bold text-[9px] uppercase block">Nama Lengkap</span>
+                <span id="detNama" class="font-black text-slate-900 text-xs sm:text-sm"></span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
                 <div>
-                    <span class="text-slate-400 font-bold text-[10px] uppercase block mb-0.5">Kontak WhatsApp</span>
-                    <a id="detHpLink" href="#" target="_blank" title="Klik untuk kirim pesan WhatsApp" class="inline-flex items-center gap-1.5 font-bold text-emerald-600 hover:text-emerald-700 hover:underline font-mono text-xs transition-colors">
-                        <i class="fab fa-whatsapp text-sm"></i>
-                        <span id="detHp"></span>
-                    </a>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block mb-0.5">Kontak WhatsApp</span>
+                    <span id="detHp" class="font-bold text-slate-700 font-mono text-xs"></span>
                 </div>
                 <div>
-                    <span class="text-slate-400 font-bold text-[10px] uppercase block mb-0.5">Alamat Email</span>
-                    <a id="detEmailLink" href="#" title="Klik untuk kirim email" class="inline-flex items-center gap-1.5 font-semibold text-blue-600 hover:text-blue-800 hover:underline font-mono text-xs transition-colors">
-                        <i id="detEmailIcon" class="far fa-envelope text-xs"></i>
-                        <span id="detEmail"></span>
-                    </a>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block mb-0.5">Alamat Email</span>
+                    <span id="detEmail" class="font-semibold text-slate-700 font-mono text-xs"></span>
                 </div>
             </div>
 
-            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
-                <span class="text-slate-400 font-bold text-[10px] uppercase block">Alamat / Instansi</span>
-                <span id="detAlamat" class="font-semibold text-slate-800"></span>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                <span class="text-slate-400 font-bold text-[9px] uppercase block">Alamat / Instansi</span>
+                <span id="detAlamat" class="font-semibold text-slate-800 text-xs"></span>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+            <div class="grid grid-cols-2 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
                 <div>
-                    <span class="text-slate-400 font-bold text-[10px] uppercase block">Divisi Tujuan</span>
-                    <span id="detDivisi" class="font-bold text-blue-700"></span>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block">Divisi Tujuan</span>
+                    <span id="detDivisi" class="font-bold text-blue-700 text-xs"></span>
                 </div>
                 <div>
-                    <span class="text-slate-400 font-bold text-[10px] uppercase block">Status Janji Temu</span>
-                    <span id="detJanji" class="font-bold text-indigo-600"></span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
-                <div>
-                    <span class="text-slate-400 font-bold text-[10px] uppercase block">Jadwal Tanggal</span>
-                    <span id="detTanggal" class="font-bold text-slate-800"></span>
-                </div>
-                <div>
-                    <span class="text-slate-400 font-bold text-[10px] uppercase block">Waktu Kunjungan</span>
-                    <span id="detJam" class="font-bold text-slate-800 font-mono"></span>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block">Status Janji Temu</span>
+                    <span id="detJanji" class="font-bold text-indigo-600 text-xs"></span>
                 </div>
             </div>
 
-            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
-                <span class="text-blue-600 font-extrabold text-[10px] uppercase block mb-1">Keperluan / Agenda Kunjungan Secara Utuh:</span>
-                <p id="detKeperluan" class="font-medium text-slate-800 italic leading-relaxed text-xs sm:text-sm break-words break-all"></p>
+            <div class="grid grid-cols-2 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                <div>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block">Jadwal Tanggal</span>
+                    <span id="detTanggal" class="font-bold text-slate-800 text-xs"></span>
+                </div>
+                <div>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block">Waktu Kunjungan</span>
+                    <span id="detJam" class="font-bold text-slate-800 font-mono text-xs"></span>
+                </div>
+            </div>
+
+            <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100">
+                <span class="text-blue-600 font-extrabold text-[9px] uppercase block mb-0.5">Keperluan / Agenda Kunjungan:</span>
+                <p id="detKeperluan" class="font-medium text-slate-800 italic leading-relaxed text-xs break-words break-all"></p>
             </div>
         </div>
 
-        <div class="mt-6 pt-3 border-t border-slate-100 flex items-center justify-end">
-            <button type="button" onclick="closeDetailModal()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-all shadow-md">
+        <!-- TOMBOL AKSI DIRECT & TUTUP DI MODAL DASHBOARD -->
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+            <!-- Tombol Direct WhatsApp Tamu -->
+            <a id="modalDashboardBtnWa" href="#" target="_blank" class="hidden flex-1 py-2.5 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-xs tracking-wide transition-all shadow-md shadow-emerald-600/20 items-center justify-center gap-1.5">
+                <i class="fab fa-whatsapp text-sm"></i>
+                <span>Hubungi WA</span>
+            </a>
+
+            <!-- Tombol Direct Email Tamu -->
+            <a id="modalDashboardBtnEmail" href="#" target="_blank" class="hidden flex-1 py-2.5 px-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-extrabold text-xs tracking-wide transition-all shadow-md shadow-blue-600/20 items-center justify-center gap-1.5">
+                <i class="far fa-envelope text-sm"></i>
+                <span>Kirim Email</span>
+            </a>
+
+            <!-- Tombol Tutup Detail -->
+            <button type="button" onclick="closeDetailModal()" class="flex-1 py-2.5 px-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs tracking-wide transition-all shadow-md">
                 Tutup Detail
             </button>
         </div>
@@ -899,7 +907,6 @@
         setInterval(updateRealtimeClock, 1000);
     });
 
-    // PERBAIKAN: Refresh biasa tanpa memainkan opacity body agar tidak FOUC (berantakan)
     function smoothRefreshDashboard(url) {
         window.location.href = url || window.location.href;
     }
@@ -934,39 +941,42 @@
         document.getElementById('detNama').innerText = nama;
         document.getElementById('detAlamat').innerText = alamat;
         
-        document.getElementById('detHp').innerText = hp;
-        let cleanPhone = hp.replace(/[^0-9]/g, '');
-        if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.substring(1);
-        const hpLink = document.getElementById('detHpLink');
-        if (hpLink) hpLink.href = `https://wa.me/${cleanPhone}`;
-
-        const emailElement = document.getElementById('detEmail');
-        const emailLink = document.getElementById('detEmailLink');
-        const emailIcon = document.getElementById('detEmailIcon');
-
-        if (email && email.trim() !== '' && email !== 'null' && email !== '-') {
-            emailElement.innerText = email;
-            if (emailLink) {
-                emailLink.href = `mailto:${email}`;
-                emailLink.classList.remove('pointer-events-none', 'text-slate-400');
-                emailLink.classList.add('text-blue-600', 'hover:underline');
-            }
-            if (emailIcon) emailIcon.classList.remove('hidden');
-        } else {
-            emailElement.innerText = 'Tidak menyertakan email';
-            if (emailLink) {
-                emailLink.removeAttribute('href');
-                emailLink.classList.remove('text-blue-600', 'hover:underline');
-                emailLink.classList.add('pointer-events-none', 'text-slate-400', 'italic');
-            }
-            if (emailIcon) emailIcon.classList.add('hidden');
-        }
+        // Menampilkan teks nomor HP dan Email biasa tanpa link di atas
+        document.getElementById('detHp').innerText = hp && hp.trim() !== '' ? hp : '-';
+        document.getElementById('detEmail').innerText = (email && email.trim() !== '' && email !== 'null' && email !== '-') ? email : 'Tidak menyertakan email';
 
         document.getElementById('detDivisi').innerText = divisi;
         document.getElementById('detJanji').innerText = janji;
         document.getElementById('detTanggal').innerText = tanggal;
         document.getElementById('detJam').innerText = jam + ' WIB';
         document.getElementById('detKeperluan').innerText = keperluan;
+
+        let cleanPhone = hp ? hp.replace(/[^0-9]/g, '') : '';
+        if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.substring(1);
+
+        // Pengaturan Tombol Direct WhatsApp di Bawah Modal
+        const btnWa = document.getElementById('modalDashboardBtnWa');
+        if (hp && hp !== '-' && hp.trim() !== '') {
+            const textWa = encodeURIComponent(`Halo Bpk/Ibu ${nama}, terkait rencana kunjungan Anda ke LPP RRI Bukittinggi pada tanggal ${tanggal}...`);
+            btnWa.href = `https://wa.me/${cleanPhone}?text=${textWa}`;
+            btnWa.classList.remove('hidden');
+            btnWa.classList.add('flex');
+        } else {
+            btnWa.classList.add('hidden');
+            btnWa.classList.remove('flex');
+        }
+
+        // Pengaturan Tombol Direct Email di Bawah Modal
+        const btnEmail = document.getElementById('modalDashboardBtnEmail');
+        if (email && email !== '-' && email.trim() !== '' && email !== 'null') {
+            const subject = encodeURIComponent(`Konfirmasi Jadwal Kunjungan - LPP RRI Bukittinggi`);
+            btnEmail.href = `mailto:${email}?subject=${subject}`;
+            btnEmail.classList.remove('hidden');
+            btnEmail.classList.add('flex');
+        } else {
+            btnEmail.classList.add('hidden');
+            btnEmail.classList.remove('flex');
+        }
 
         const modal = document.getElementById('visitorDetailModal');
         if (modal) {
@@ -997,7 +1007,7 @@
 
         let cleanPhone = rawPhone.replace(/[^0-9]/g, '');
         if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.substring(1);
-        
+
         const message = encodeURIComponent(
 `*LPP RRI BUKITTINGGI*
 *PEMBERITAHUAN KONFIRMASI KUNJUNGAN TAMU*
@@ -1022,7 +1032,7 @@ ${keperluan}
 - *Status Kunjungan:* Diterima / Terjadwal
 
 [2] PETUNJUK & SOP KUNJUNGAN:
-1. Harap hadir tepat waktu sesuai dengan jadwal yang telah ditetapkan.
+1. Harap hadir tepat waktu 10 menit sebelum jadwal yang telah ditentukan.
 2. Saat tiba di kantor LPP RRI Bukittinggi, silakan melapor ke Petugas Layanan / Pos Keamanan.
 3. Apabila terdapat perubahan jadwal atau kendala mendadak, mohon konfirmasi kembali melalui balasan pesan ini.
 

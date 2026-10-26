@@ -344,8 +344,12 @@
                 Bukittinggi, {{ \Carbon\Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('D MMMM YYYY') }}<br>
                 <strong>Petugas / Admin Penanggung Jawab</strong>
                 <br><br><br><br><br>
-                <strong>{{ $adminPencetak->name ?? auth()->user()->name ?? 'Administrator RRI' }}</strong><br>
-                <span style="color: #475569; font-size: 8px;">LPP RRI Bukittinggi</span>
+                <strong>{{ $adminPencetak->name ?? 'Administrator RRI' }}</strong><br>
+                @if(!empty($adminPencetak->nip))
+                    <span style="color: #475569; font-size: 8px;">NIP / NIK. {{ $adminPencetak->nip }}</span>
+                @else
+                    <span style="color: #475569; font-size: 8px;">NIP / NIK. -</span>
+                @endif
             </td>
         </tr>
     </table>

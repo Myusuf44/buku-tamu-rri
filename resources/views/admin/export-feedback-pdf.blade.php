@@ -309,7 +309,7 @@
                 <strong>Petugas / Admin Penanggung Jawab</strong>
                 <br><br><br><br><br>
                 <strong>{{ $adminPencetak->name ?? 'Administrator RRI' }}</strong><br>
-                <span style="color: #475569; font-size: 8px;">NIP / NIK. 19900101 202203 1 001</span>
+                    <span style="color: #475569; font-size: 8px;">NIP / NIK. {{ $adminPencetak->nip ?? '-' }}</span>
             </td>
         </tr>
     </table>

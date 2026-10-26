@@ -480,7 +480,10 @@ class VisitorController extends Controller
         $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $row += 4;
-        $adminName = auth()->user()->name ?? 'Administrator RRI';
+        $adminUser = auth()->user();
+        $adminName = $adminUser->name ?? 'Administrator RRI';
+        $adminNip  = !empty($adminUser->nip) ? 'NIP / NIK. ' . $adminUser->nip : 'NIP / NIK. -';
+
         $sheet->mergeCells('F' . $row . ':G' . $row);
         $sheet->setCellValue('F' . $row, $adminName);
         $sheet->getStyle('F' . $row)->getFont()->setBold(true);
@@ -488,8 +491,8 @@ class VisitorController extends Controller
 
         $row++;
         $sheet->mergeCells('F' . $row . ':G' . $row);
-        $sheet->setCellValue('F' . $row, 'LPP RRI Bukittinggi');
-        $sheet->getStyle('F' . $row)->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('64748B'));
+        $sheet->setCellValue('F' . $row, $adminNip);
+        $sheet->getStyle('F' . $row)->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('475569'));
         $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $sheet->getStyle('A1:G' . $row)->applyFromArray([

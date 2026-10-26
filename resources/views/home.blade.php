@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-   <!-- FAVICON -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
     <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
     
@@ -392,10 +392,10 @@
                         }
                     @endphp
 
-                    <!-- KARTU RINGKASAN STATISTIK -->
+                    <!-- KARTU RINGKASAN STATISTIK (DIPERBAIKI & DIRAPIHKAN AGAR ESTETIK DI HP) -->
                     <div class="mt-6 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-7 shadow-md grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-left">
                         
-                        <!-- Kolom 1 -->
+                        <!-- Kolom 1: Skor Utama & Total Ulasan -->
                         <div class="flex flex-col items-center md:items-start text-center md:text-left border-b md:border-b-0 md:border-r border-slate-100 pb-5 md:pb-0 md:pr-6">
                             <div class="text-4xl sm:text-5xl font-black text-slate-900 leading-none">
                                 {{ number_format($avgRating ?? 5.0, 1) }}
@@ -411,32 +411,72 @@
                             </p>
                         </div>
 
-                        <!-- Kolom 2 -->
-                        <div class="space-y-1.5 text-xs font-medium text-slate-600 border-b md:border-b-0 md:border-r border-slate-100 pb-5 md:pb-0 md:pr-6">
-                            <div class="flex items-center gap-2">
-                                <span class="w-12 text-slate-500 font-bold">5 Bintang</span>
-                                <div class="flex-grow h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: {{ $percent5 ?? 0 }}%;"></div>
+                        <!-- Kolom 2: Breakdown Rating 1 - 5 Bintang yang Lebih Rapi & Kreatif -->
+                        <div class="space-y-2.5 text-xs font-medium text-slate-600 border-b md:border-b-0 md:border-r border-slate-100 pb-5 md:pb-0 md:pr-6 w-full">
+                            
+                            <!-- 5 Bintang -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-20 shrink-0 flex items-center justify-between px-2 py-0.5 bg-amber-50/80 border border-amber-200/60 rounded-lg text-amber-900 font-bold">
+                                    <span>5</span>
+                                    <i class="fas fa-star text-amber-400 text-[10px]"></i>
                                 </div>
-                                <span class="w-8 text-right text-slate-400 font-bold">{{ $percent5 ?? 0 }}%</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-12 text-slate-500 font-bold">4 Bintang</span>
-                                <div class="flex-grow h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: {{ $percent4 ?? 0 }}%;"></div>
+                                <div class="flex-grow h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50 shadow-inner">
+                                    <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500" style="width: {{ $percent5 ?? 0 }}%;"></div>
                                 </div>
-                                <span class="w-8 text-right text-slate-400 font-bold">{{ $percent4 ?? 0 }}%</span>
+                                <span class="w-10 shrink-0 text-right text-slate-600 font-bold">{{ $percent5 ?? 0 }}%</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-12 text-slate-500 font-bold">3 Bintang</span>
-                                <div class="flex-grow h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: {{ $percent3 ?? 0 }}%;"></div>
+
+                            <!-- 4 Bintang -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-20 shrink-0 flex items-center justify-between px-2 py-0.5 bg-slate-50 border border-slate-200/80 rounded-lg text-slate-700 font-bold">
+                                    <span>4</span>
+                                    <i class="fas fa-star text-amber-400 text-[10px]"></i>
                                 </div>
-                                <span class="w-8 text-right text-slate-400 font-bold">{{ $percent3 ?? 0 }}%</span>
+                                <div class="flex-grow h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50 shadow-inner">
+                                    <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500" style="width: {{ $percent4 ?? 0 }}%;"></div>
+                                </div>
+                                <span class="w-10 shrink-0 text-right text-slate-600 font-bold">{{ $percent4 ?? 0 }}%</span>
                             </div>
+
+                            <!-- 3 Bintang -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-20 shrink-0 flex items-center justify-between px-2 py-0.5 bg-slate-50 border border-slate-200/80 rounded-lg text-slate-700 font-bold">
+                                    <span>3</span>
+                                    <i class="fas fa-star text-amber-400 text-[10px]"></i>
+                                </div>
+                                <div class="flex-grow h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50 shadow-inner">
+                                    <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500" style="width: {{ $percent3 ?? 0 }}%;"></div>
+                                </div>
+                                <span class="w-10 shrink-0 text-right text-slate-600 font-bold">{{ $percent3 ?? 0 }}%</span>
+                            </div>
+
+                            <!-- 2 Bintang -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-20 shrink-0 flex items-center justify-between px-2 py-0.5 bg-slate-50 border border-slate-200/80 rounded-lg text-slate-700 font-bold">
+                                    <span>2</span>
+                                    <i class="fas fa-star text-amber-400 text-[10px]"></i>
+                                </div>
+                                <div class="flex-grow h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50 shadow-inner">
+                                    <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500" style="width: {{ $percent2 ?? 0 }}%;"></div>
+                                </div>
+                                <span class="w-10 shrink-0 text-right text-slate-600 font-bold">{{ $percent2 ?? 0 }}%</span>
+                            </div>
+
+                            <!-- 1 Bintang -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-20 shrink-0 flex items-center justify-between px-2 py-0.5 bg-slate-50 border border-slate-200/80 rounded-lg text-slate-700 font-bold">
+                                    <span>1</span>
+                                    <i class="fas fa-star text-amber-400 text-[10px]"></i>
+                                </div>
+                                <div class="flex-grow h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50 shadow-inner">
+                                    <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500" style="width: {{ $percent1 ?? 0 }}%;"></div>
+                                </div>
+                                <span class="w-10 shrink-0 text-right text-slate-600 font-bold">{{ $percent1 ?? 0 }}%</span>
+                            </div>
+
                         </div>
 
-                        <!-- Kolom 3 -->
+                        <!-- Kolom 3: Mutu Pelayanan & Tombol Tulis Ulasan -->
                         <div class="flex flex-col items-center justify-center text-center">
                             <div class="w-11 h-11 rounded-2xl {{ $mutuBg }} border flex items-center justify-center mb-1.5 shadow-sm transition-all duration-300">
                                 <i class="fas {{ $mutuIcon }} text-lg"></i>
@@ -549,7 +589,7 @@
             <!-- Atribut novalidate ditambahkan agar validasi kustom JavaScript yang aktif -->
             <form id="feedbackForm" action="{{ route('feedback.store') }}" method="POST" class="space-y-4" novalidate onsubmit="return handleFeedbackSubmit(event)">
                 @csrf
-                
+
                 <!-- INPUT HIDDEN SUMBER -->
                 <input type="hidden" name="sumber" id="inputSumberFeedback" value="Beranda">
 

@@ -9,7 +9,7 @@
         
         <!-- Header Instansi & Logo -->
         <div style="background: linear-gradient(135deg, #047857 0%, #065f46 100%); padding: 24px; text-align: center; color: #ffffff;">
-            <img src="http://127.0.0.1:8000/images/logoo_rri.png" alt="Logo RRI Bukittinggi" style="width: 65px; height: auto; margin-bottom: 8px; display: inline-block;" crossorigin="anonymous">
+            <img src="{{ url('images/logoo_rri.png') }}" alt="Logo RRI Bukittinggi" style="width: 65px; height: auto; margin-bottom: 8px; display: inline-block;">
             <p style="margin: 4px 0 0 0; font-size: 10px; color: #d1fae5; text-transform: uppercase; letter-spacing: 1px;">Konfirmasi Persetujuan Kunjungan Resmi</p>
         </div>
 
@@ -49,8 +49,8 @@
                 <strong style="color: #065f46; display: block; margin-bottom: 4px;">Ketentuan & Protokol Kunjungan:</strong>
                 <ul style="margin: 0; padding-left: 16px; line-height: 1.5; color: #475569;">
                     <li>Hadir tepat waktu atau 10 menit sebelum jadwal yang telah ditentukan.</li>
-                    <li>Menunjukkan bukti email konfirmasi ini kepada petugas resepsionis / keamanan di lobi utama gedung.</li>
-                    <li>Mengenakan pakaian yang rapi, sopan, serta mematuhi tata tertib di lingkungan LPP RRI Bukittinggi.</li>
+                    <li>Saat tiba di kantor LPP RRI Bukittinggi, silakan melapor ke Petugas Layanan / Pos Keamanan.</li>
+                    <li>Apabila terdapat perubahan jadwal atau kendala mendadak, mohon konfirmasi kembali melalui balasan email ini.</li>
                 </ul>
             </div>
         </div>

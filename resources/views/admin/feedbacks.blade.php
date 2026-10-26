@@ -188,11 +188,11 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 text-xs sm:text-sm text-slate-700 font-medium">
-                    @forelse($feedbacks as $fIndex =>$fb)
+                    @forelse($feedbacks as $fIndex => $fb)
                         @php
-                            $fbHpClean = preg_replace('/[^0-9]/', '',$fb->no_hp);
+                            $fbHpClean = preg_replace('/[^0-9]/', '', $fb->no_hp);
                             if (str_starts_with($fbHpClean, '0')) $fbHpClean = '62' . substr($fbHpClean, 1);
-                            $noUrut = ($feedbacks->currentPage() - 1) * $feedbacks->perPage() +$fIndex + 1;
+                            $noUrut = ($feedbacks->currentPage() - 1) * $feedbacks->perPage() + $fIndex + 1;
                             
                             $sumberLower = strtolower($fb->sumber);
                         @endphp
@@ -211,16 +211,24 @@
                             <td class="py-3.5 px-3 sm:px-4 text-center whitespace-nowrap border-r border-slate-100">
                                 <div class="flex items-center justify-center text-amber-400 text-xs gap-0.5">
                                     @for($s = 1; $s <= 5; $s++)
-                                        <i class="fas fa-star {{ $s <=$fb->rating ? 'text-amber-400' : 'text-slate-200' }}"></i>
+                                        <i class="fas fa-star {{ $s <= $fb->rating ? 'text-amber-400' : 'text-slate-200' }}"></i>
                                     @endfor
                                 </div>
                                 <span class="font-bold text-slate-800 text-xs block mt-0.5">{{ $fb->rating }}.0 / 5</span>
                             </td>
                             <td class="py-3.5 px-3 sm:px-4 min-w-[220px] max-w-[320px] border-r border-slate-100">
-                                <p class="text-xs text-slate-800 font-semibold italic leading-relaxed">"{{ $fb->ulasan }}"</p>
+                                <p class="text-xs text-slate-800 font-semibold italic leading-relaxed line-clamp-2 mb-1.5">
+                                    "{{ $fb->ulasan }}"
+                                </p>
+                                <button type="button" 
+                                        onclick="openFeedbackDetailModal('{{ addslashes($fb->nama_pengunjung) }}', '{{ $fb->rating }}.0 / 5.0', '{{ addslashes($fb->ulasan) }}', '{{ strtoupper($fb->sumber) }}', '{{ $fb->no_hp ?: '-' }}', '{{ $fb->email ?: '-' }}', '{{ \Carbon\Carbon::parse($fb->created_at)->locale('id')->isoFormat('D MMMM YYYY, HH:mm') }} WIB')"
+                                        class="inline-flex items-center gap-1.5 text-xs font-extrabold text-blue-600 hover:text-blue-700 bg-blue-50/70 hover:bg-blue-100/70 px-2.5 py-1 rounded-xl transition-all">
+                                    <i class="fas fa-eye text-[11px]"></i>
+                                    <span>Tampilkan Rincian Lengkap</span>
+                                </button>
                             </td>
                             
-                            <!-- BADGE KONTRASTIF WARNA SUMBER (WHATSAPP = HIJAU, EMAIL = BIRU, BERANDA = KUNING/AMBER) -->
+                            <!-- BADGE KONTRASTIF WARNA SUMBER -->
                             <td class="py-3.5 px-3 sm:px-4 text-center whitespace-nowrap border-r border-slate-100">
                                 @if($sumberLower == 'whatsapp' || $sumberLower == 'wa')
                                     <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-xs">
@@ -239,7 +247,7 @@
 
                             <td class="py-3.5 px-3 sm:px-4 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    @if($fb->no_hp &&$fb->no_hp !== '-')
+                                    @if($fb->no_hp && $fb->no_hp !== '-')
                                         <a href="https://wa.me/{{ $fbHpClean }}" target="_blank" title="WhatsApp" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-lg border border-emerald-200 transition-all">
                                             <i class="fab fa-whatsapp text-sm"></i>
                                         </a>
@@ -358,6 +366,87 @@
     </div>
 </div>
 
+<!-- MODAL RINCIAN LENGKAP ULASAN -->
+<div id="feedbackDetailModal" class="hidden fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-all duration-300">
+    <div class="bg-white rounded-[2.5rem] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-fade-in-up max-h-[90vh] overflow-y-auto">
+        
+        <button type="button" onclick="closeFeedbackDetailModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 font-bold w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-all">
+            &times;
+        </button>
+
+        <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shrink-0">
+                <i class="fas fa-star text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-black text-slate-900">Rincian Lengkap Ulasan</h3>
+                <p class="text-xs text-slate-500">Detail penilaian dan kesan pelayanan responden</p>
+            </div>
+        </div>
+
+        <div class="space-y-4 text-left">
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
+                <div>
+                    <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">Nama Responden</span>
+                    <span id="modalRespondenNama" class="text-sm font-extrabold text-slate-900">-</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200/60">
+                    <div>
+                        <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">Nomor Kontak / HP</span>
+                        <span id="modalRespondenHp" class="text-xs font-bold text-slate-700">-</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">Alamat Email</span>
+                        <span id="modalRespondenEmail" class="text-xs font-bold text-slate-700">-</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200/60">
+                    <div>
+                        <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">Rating Kepuasan</span>
+                        <span id="modalRespondenRating" class="text-xs font-extrabold text-amber-600">-</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">Sumber Penilaian</span>
+                        <span id="modalRespondenSumber" class="text-xs font-bold text-slate-700">-</span>
+                    </div>
+                </div>
+                <div>
+                    <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">Waktu Pengiriman</span>
+                    <span id="modalRespondenWaktu" class="text-xs font-bold text-slate-700">-</span>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1.5">Ulasan / Kesan Pelayanan Lengkap</label>
+                <div class="p-4 rounded-2xl bg-amber-50/40 border border-amber-100 text-slate-800 text-xs sm:text-sm font-semibold italic leading-relaxed" id="modalRespondenUlasan">
+                    -
+                </div>
+            </div>
+        </div>
+
+        <!-- TOMBOL AKSI DIRECT & TUTUP -->
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center gap-2">
+            <!-- Tombol Direct WhatsApp -->
+            <a id="modalBtnWa" href="#" target="_blank" class="hidden flex-1 py-3 px-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-xs tracking-wide transition-all shadow-md shadow-emerald-600/20 items-center justify-center gap-2">
+                <i class="fab fa-whatsapp text-sm"></i>
+                <span>Hubungi WA</span>
+            </a>
+
+            <!-- Tombol Direct Email -->
+            <a id="modalBtnEmail" href="#" target="_blank" class="hidden flex-1 py-3 px-3 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-extrabold text-xs tracking-wide transition-all shadow-md shadow-blue-600/20 items-center justify-center gap-2">
+                <i class="far fa-envelope text-sm"></i>
+                <span>Kirim Email</span>
+            </a>
+
+            <!-- Tombol Tutup Rincian -->
+            <button type="button" onclick="closeFeedbackDetailModal()" class="flex-1 py-3 px-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs tracking-wide transition-all shadow-md">
+                Tutup Rincian
+            </button>
+        </div>
+
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function openExportFeedbackModal() {
@@ -370,6 +459,57 @@
 
     function closeExportFeedbackModal() {
         const modal = document.getElementById('exportFeedbackModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+
+    function openFeedbackDetailModal(nama, rating, ulasan, sumber, hp, email, waktu) {
+        document.getElementById('modalRespondenNama').innerText = nama;
+        document.getElementById('modalRespondenRating').innerText = rating;
+        document.getElementById('modalRespondenUlasan').innerText = '"' + ulasan + '"';
+        document.getElementById('modalRespondenSumber').innerText = sumber;
+        document.getElementById('modalRespondenHp').innerText = hp;
+        document.getElementById('modalRespondenEmail').innerText = email;
+        document.getElementById('modalRespondenWaktu').innerText = waktu;
+
+        // Pengaturan Tombol Direct WhatsApp
+        const btnWa = document.getElementById('modalBtnWa');
+        if (hp && hp !== '-' && hp.trim() !== '') {
+            let cleanHp = hp.replace(/[^0-9]/g, '');
+            if (cleanHp.startsWith('0')) cleanHp = '62' + cleanHp.slice(1);
+            
+            const textWa = encodeURIComponent(`Halo Bpk/Ibu ${nama}, terima kasih atas penilaian dan ulasan yang diberikan untuk pelayanan LPP RRI Bukittinggi.`);
+            btnWa.href = `https://wa.me/${cleanHp}?text=${textWa}`;
+            btnWa.classList.remove('hidden');
+            btnWa.classList.add('flex');
+        } else {
+            btnWa.classList.add('hidden');
+            btnWa.classList.remove('flex');
+        }
+
+        // Pengaturan Tombol Direct Email
+        const btnEmail = document.getElementById('modalBtnEmail');
+        if (email && email !== '-' && email.trim() !== '') {
+            const subject = encodeURIComponent(`Tanggapan Ulasan Pelayanan LPP RRI Bukittinggi`);
+            btnEmail.href = `mailto:${email}?subject=${subject}`;
+            btnEmail.classList.remove('hidden');
+            btnEmail.classList.add('flex');
+        } else {
+            btnEmail.classList.add('hidden');
+            btnEmail.classList.remove('flex');
+        }
+
+        const modal = document.getElementById('feedbackDetailModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    }
+
+    function closeFeedbackDetailModal() {
+        const modal = document.getElementById('feedbackDetailModal');
         if (modal) {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
