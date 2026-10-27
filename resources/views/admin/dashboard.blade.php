@@ -1019,16 +1019,11 @@ Terima kasih telah melakukan pendaftaran melalui *Sistem Buku Tamu Digital LPP R
 Melalui pesan ini, kami mengonfirmasi bahwa pengajuan agenda kunjungan Anda telah *DITERIMA* dan dijadwalkan dengan rincian sebagai berikut:
 
 [1] RINCIAN AGENDA KUNJUNGAN:
-- *Nama Tamu:* 
-${guestName}
-- *Divisi Tujuan:* 
-${divisiName}
-- *Tanggal Kunjungan:* 
-${tanggal}
-- *Waktu:* 
-${jam} WIB
-- *Keperluan / Agenda:* 
-${keperluan}
+- *Nama Tamu:* ${guestName}
+- *Divisi Tujuan:* ${divisiName}
+- *Tanggal Kunjungan:* ${tanggal}
+- *Waktu:* ${jam} WIB
+- *Keperluan / Agenda:* ${keperluan}
 - *Status Kunjungan:* Diterima / Terjadwal
 
 [2] PETUNJUK & SOP KUNJUNGAN:
@@ -1154,14 +1149,10 @@ Terima kasih telah melakukan pendaftaran melalui *Sistem Buku Tamu Digital LPP R
 Mohon maaf, kami menginformasikan bahwa pengajuan agenda kunjungan Anda untuk jadwal: *${currentCancelData.tanggal} (${currentCancelData.jam} WIB)* untuk sementara waktu *DIBATALKAN* / *BELUM DAPAT DIPROSES*.
 
 [1] RINCIAN KUNJUNGAN:
-- *Nama Tamu:* 
-${currentCancelData.guestName}
-- *Divisi Tujuan:* 
-${currentCancelData.divisiName}
-- *Jadwal:* 
-${currentCancelData.tanggal} (${currentCancelData.jam} WIB)
-- *Catatan / Alasan Pembatalan:* 
-${alasanFormatted}
+- *Nama Tamu:* ${currentCancelData.guestName}
+- *Divisi Tujuan:* ${currentCancelData.divisiName}
+- *Jadwal:* ${currentCancelData.tanggal} (${currentCancelData.jam} WIB)
+- *Catatan / Alasan Pembatalan:* ${alasanFormatted}
 - *Status:* Dibatalkan
 
 [2] INFORMASI LANJUTAN:

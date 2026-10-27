@@ -618,4 +618,4 @@
         });
     }
 </script>
-@endsection
+@endsection 

@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="icon" type="image/png" href="{{ asset('images/iconapk.png') }}?v=999">
     <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
     
     <!-- CSS untuk memperhalus sudut tampilan ikon -->

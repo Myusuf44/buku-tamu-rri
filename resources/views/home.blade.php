@@ -2,7 +2,7 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="{{ asset('images/icontab.png') }}?v=999">
+    <link rel="icon" type="image/png" href="{{ asset('images/iconapk.png') }}?v=999">
     <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/iconapk.png') }}?v=999">
     
     <!-- CSS untuk memperhalus sudut tampilan ikon -->
@@ -392,7 +392,7 @@
                         }
                     @endphp
 
-                    <!-- KARTU RINGKASAN STATISTIK (DIPERBAIKI & DIRAPIHKAN AGAR ESTETIK DI HP) -->
+                    <!-- KARTU RINGKASAN STATISTIK -->
                     <div class="mt-6 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-7 shadow-md grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-left">
                         
                         <!-- Kolom 1: Skor Utama & Total Ulasan -->
@@ -411,7 +411,7 @@
                             </p>
                         </div>
 
-                        <!-- Kolom 2: Breakdown Rating 1 - 5 Bintang yang Lebih Rapi & Kreatif -->
+                        <!-- Kolom 2: Breakdown Rating 1 - 5 Bintang -->
                         <div class="space-y-2.5 text-xs font-medium text-slate-600 border-b md:border-b-0 md:border-r border-slate-100 pb-5 md:pb-0 md:pr-6 w-full">
                             
                             <!-- 5 Bintang -->
@@ -570,7 +570,7 @@
         </div>
     </footer>
 
-    <!-- MODAL FORM INPUT PENILAIAN PELAYANAN PUBLIK (DENGAN UI/UX KUSTOM) -->
+    <!-- MODAL FORM INPUT PENILAIAN PELAYANAN PUBLIK -->
     <div id="feedbackModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
         <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative animate-modal-pop">
             
@@ -586,7 +586,6 @@
                 <p class="text-xs text-slate-500 mt-1">Berikan masukan dan rating kepuasan atas pelayanan RRI Bukittinggi</p>
             </div>
 
-            <!-- Atribut novalidate ditambahkan agar validasi kustom JavaScript yang aktif -->
             <form id="feedbackForm" action="{{ route('feedback.store') }}" method="POST" class="space-y-4" novalidate onsubmit="return handleFeedbackSubmit(event)">
                 @csrf
 
@@ -625,7 +624,7 @@
                 <!-- NAMA LENGKAP -->
                 <div>
                     <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Nama Lengkap Anda <span class="text-rose-500">*</span></label>
-                    <input type="text" id="feedback_nama" name="nama_lengkap" placeholder="Masukkan nama Anda..." required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                    <input type="text" id="feedback_nama" name="nama_lengkap" placeholder="Masukkan nama Anda..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
                     <p class="error-msg-feedback hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
                         <i class="fas fa-circle-exclamation text-rose-500"></i>
                         <span>Mohon isi nama lengkap Anda terlebih dahulu.</span>
@@ -638,7 +637,7 @@
                         <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
                             Telepon/WhatsApp (Aktif) <span class="text-rose-500">*</span>
                         </label>
-                        <input type="text" id="feedback_hp" name="no_hp" placeholder="08xxxxxxxxxx" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                        <input type="text" id="feedback_hp" name="no_hp" placeholder="08xxxxxxxxxx" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
                         <p class="error-msg-feedback hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
                             <i class="fas fa-circle-exclamation text-rose-500"></i>
                             <span>Nomor WhatsApp wajib diisi.</span>
@@ -647,13 +646,17 @@
                     <div>
                         <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Email (Opsional)</label>
                         <input type="email" id="feedback_email" name="email" placeholder="email@contoh.com" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                        <p class="error-msg-feedback hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                            <i class="fas fa-circle-exclamation text-rose-500"></i>
+                            <span>Format email tidak valid.</span>
+                        </p>
                     </div>
                 </div>
 
                 <!-- ULASAN -->
                 <div>
                     <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Ulasan & Kesan Pelayanan <span class="text-rose-500">*</span></label>
-                    <textarea id="feedback_ulasan" name="ulasan" rows="3" required placeholder="Tuliskan masukan atau pengalaman pelayanan Anda..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all"></textarea>
+                    <textarea id="feedback_ulasan" name="ulasan" rows="3" placeholder="Tuliskan masukan atau pengalaman pelayanan Anda..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all"></textarea>
                     <p class="error-msg-feedback hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
                         <i class="fas fa-circle-exclamation text-rose-500"></i>
                         <span>Mohon tuliskan ulasan atau kesan pelayanan Anda.</span>
@@ -799,10 +802,12 @@
             }
         }
 
-        // FUNGSI VALIDASI KUSTOM UI/UX MODAL FEEDBACK
+        // FUNGSI VALIDASI KUSTOM UI/UX MODAL FEEDBACK DENGAN CEK FORMAT NO HP & EMAIL
         function handleFeedbackSubmit(event) {
+            event.preventDefault(); // Mencegah submit default
             let isValid = true;
             let firstInvalid = null;
+            let errorMessage = "";
 
             // 1. Validasi Bintang Rating
             const starSelected = document.querySelector('input[name="rating"]:checked');
@@ -813,6 +818,7 @@
                 isValid = false;
                 starContainer.classList.add('bg-rose-50', 'border', 'border-rose-200', 'animate-shake');
                 starErrorText.classList.remove('hidden');
+                errorMessage = "Silakan klik salah satu bintang tingkat kepuasan terlebih dahulu!";
                 setTimeout(() => {
                     starContainer.classList.remove('animate-shake');
                 }, 400);
@@ -821,7 +827,7 @@
                 starErrorText.classList.add('hidden');
             }
 
-            // 2. Validasi Input Text/Textarea Wajib
+            // 2. Validasi Input Wajib (Nama, No HP, Ulasan)
             const requiredFields = ['feedback_nama', 'feedback_hp', 'feedback_ulasan'];
             requiredFields.forEach(fieldId => {
                 const input = document.getElementById(fieldId);
@@ -835,6 +841,7 @@
                     if (errorMsg) errorMsg.classList.remove('hidden');
                     
                     if (!firstInvalid) firstInvalid = input;
+                    if (!errorMessage) errorMessage = "Mohon lengkapi semua kolom bertanda bintang merah (*).";
 
                     setTimeout(() => {
                         input.classList.remove('animate-shake');
@@ -846,13 +853,55 @@
                 }
             });
 
+            // 3. Validasi Format Nomor Telepon / WhatsApp (Harus angka & minimal 10 digit)
+            const hpInput = document.getElementById('feedback_hp');
+            const phoneRegex = /^[0-9+\-\s]{10,15}$/;
+            if (hpInput.value.trim() && !phoneRegex.test(hpInput.value.trim())) {
+                isValid = false;
+                hpInput.classList.add('border-rose-500', 'bg-rose-50/30', 'animate-shake');
+                const hpError = hpInput.closest('div').querySelector('.error-msg-feedback');
+                if (hpError) {
+                    hpError.querySelector('span').textContent = "Format nomor WhatsApp tidak valid (minimal 10 digit angka).";
+                    hpError.classList.remove('hidden');
+                }
+                if (!firstInvalid) firstInvalid = hpInput;
+                errorMessage = "Format nomor WhatsApp yang Anda masukkan salah atau belum lengkap (minimal 10 digit angka).";
+            }
+
+            // 4. Validasi Format Email (Opsional, tapi jika diisi harus benar)
+            const emailInput = document.getElementById('feedback_email');
+            const emailVal = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailVal !== "" && !emailRegex.test(emailVal)) {
+                isValid = false;
+                emailInput.classList.add('border-rose-500', 'bg-rose-50/30', 'animate-shake');
+                const emailError = emailInput.closest('div').querySelector('.error-msg-feedback');
+                if (emailError) {
+                    emailError.classList.remove('hidden');
+                }
+                if (!firstInvalid) firstInvalid = emailInput;
+                errorMessage = "Format alamat email yang Anda masukkan salah (contoh: email@gmail.com).";
+            }
+
+            // Jika ada data yang tidak valid, tampilkan popup SweetAlert peringatan
             if (!isValid) {
-                event.preventDefault();
-                if (firstInvalid) firstInvalid.focus();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: errorMessage,
+                    confirmButtonText: 'Periksa Kembali',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                        title: 'custom-swal-title',
+                        htmlContainer: 'custom-swal-content',
+                        confirmButton: 'custom-swal-button'
+                    },
+                    buttonsStyling: false
+                });
                 return false;
             }
 
-            // Jika valid, tampilkan status loading pada tombol
+            // Jika valid, ubah tombol ke mode loading lalu submit form ke database
             const btn = document.getElementById('btnSubmitFeedback');
             const icon = document.getElementById('iconSubmitFeedback');
             const text = document.getElementById('textSubmitFeedback');
@@ -860,8 +909,9 @@
             btn.disabled = true;
             btn.classList.add('opacity-80', 'cursor-not-allowed');
             icon.className = 'fas fa-spinner fa-spin';
-            text.textContent = 'Mengirimkan...';
+            text.textContent = 'Menyimpan Penilaian...';
 
+            document.getElementById('feedbackForm').submit();
             return true;
         }
 
@@ -891,7 +941,7 @@
             });
 
             // Live-feedback pembersihan error saat mengetik
-            ['feedback_nama', 'feedback_hp', 'feedback_ulasan'].forEach(fieldId => {
+            ['feedback_nama', 'feedback_hp', 'feedback_email', 'feedback_ulasan'].forEach(fieldId => {
                 const input = document.getElementById(fieldId);
                 if (input) {
                     input.addEventListener('input', function() {
@@ -961,7 +1011,7 @@
         });
     </script>
 
-    <!-- NOTIFIKASI POP-UP CONFETTI -->
+    <!-- NOTIFIKASI POP-UP CONFETTI KETIKA BERHASIL -->
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
