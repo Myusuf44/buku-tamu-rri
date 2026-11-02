@@ -34,6 +34,14 @@
                         <td style="padding: 4px 0; font-weight: bold;">: {{ $visit->divisi_tujuan }}</td>
                     </tr>
                     <tr>
+                        <td style="padding: 4px 0; color: #64748b;">Asal Instansi</td>
+                        <td style="padding: 4px 0; font-weight: bold;">: {{ $visit->asal_instansi ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px 0; color: #64748b;">Jumlah Pengunjung</td>
+                        <td style="padding: 4px 0; font-weight: bold;">: {{ $visit->jumlah_pengunjung ?? 1 }} orang</td>
+                    </tr>
+                    <tr>
                         <td style="padding: 4px 0; color: #64748b;">Hari / Tanggal</td>
                         <td style="padding: 4px 0; font-weight: bold;">: {{ \Carbon\Carbon::parse($visit->tanggal_kunjungan)->locale('id')->isoFormat('D MMMM YYYY') }}</td>
                     </tr>

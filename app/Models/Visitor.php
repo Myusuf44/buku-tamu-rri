@@ -17,6 +17,8 @@ class Visitor extends Model
         'kode_registrasi',
         'nama_lengkap',
         'alamat',
+        'asal_instansi',
+        'jumlah_pengunjung',
         'no_hp',
         'email',
         'keperluan',

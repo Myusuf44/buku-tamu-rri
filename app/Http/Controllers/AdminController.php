@@ -32,7 +32,17 @@ class AdminController extends Controller
         $thisMonth = Carbon::now()->month;
         $thisYear = Carbon::now()->year;
 
-        $totalKunjungan = Visitor::count();
+        $totalKunjungan = (int) Visitor::sum('jumlah_pengunjung');
+
+        $rekapPerInstansi = collect(['Instansi Pemerintah', 'Swasta', 'Masyarakat Umum'])
+            ->mapWithKeys(fn (string $kategori): array => [$kategori => 0])
+            ->merge(
+                Visitor::selectRaw('asal_instansi, SUM(jumlah_pengunjung) as total')
+                    ->whereNotNull('asal_instansi')
+                    ->groupBy('asal_instansi')
+                    ->pluck('total', 'asal_instansi')
+                    ->map(fn ($total): int => (int) $total)
+            );
         $totalDiterima = Visitor::whereIn('status', ['Diterima', 'Selesai'])->count();
         $bulanIni = Visitor::whereMonth('tanggal_kunjungan', $thisMonth)
                             ->whereYear('tanggal_kunjungan', $thisYear)
@@ -108,7 +118,7 @@ class AdminController extends Controller
         $isSuperAdmin = $user ? $user->isSuperAdmin() : false;
 
         return view('admin.dashboard', compact(
-            'visitors', 'totalKunjungan', 'totalDiterima', 'bulanIni', 'menunggu',
+            'visitors', 'totalKunjungan', 'rekapPerInstansi', 'totalDiterima', 'bulanIni', 'menunggu',
             'tamuHariIni', 'selesaiHariIni', 'jadwalMendatang', 'dibatalkanHariIni',
             'rataRating', 'totalResponden', 'feedbacks', 'isSuperAdmin'
         ));

@@ -274,6 +274,52 @@
                         </p>
                     </div>
 
+                    <!-- Baris: Kategori Asal Instansi & Jumlah Pengunjung -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        <!-- Kategori Asal Instansi -->
+                        <div>
+                            <label for="asal_instansi" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                                Kategori Asal Instansi <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fas fa-sitemap text-xs"></i>
+                                </div>
+                                <select id="asal_instansi" name="asal_instansi" required
+                                        class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                    <option value="">-- Pilih Kategori --</option>
+                                    @foreach (['Instansi Pemerintah', 'Swasta', 'Masyarakat Umum'] as $kategori)
+                                        <option value="{{ $kategori }}" {{ old('asal_instansi') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Silakan pilih kategori asal instansi Anda.</span>
+                            </p>
+                        </div>
+
+                        <!-- Jumlah Pengunjung -->
+                        <div>
+                            <label for="jumlah_pengunjung" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                                Jumlah Pengunjung <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fas fa-users text-xs"></i>
+                                </div>
+                                <input type="number" id="jumlah_pengunjung" name="jumlah_pengunjung" value="{{ old('jumlah_pengunjung', 1) }}" min="1" max="500" step="1" required
+                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                            </div>
+                            <!-- Error Message UI Kustom -->
+                            <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
+                                <i class="fas fa-circle-exclamation text-rose-500"></i>
+                                <span>Masukkan jumlah pengunjung (minimal 1 orang).</span>
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Baris 3: Divisi Tujuan & Tanggal Kunjungan -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                         <!-- Divisi Tujuan -->

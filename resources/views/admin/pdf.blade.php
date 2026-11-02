@@ -268,12 +268,14 @@
         <thead>
             <tr>
                 <th style="width: 4%;">NO</th>
-                <th style="width: 12%;">TANGGAL & WAKTU</th>
-                <th style="width: 18%;">NAMA, KONTAK & EMAIL</th>
-                <th style="width: 12%;">INSTANSI / ALAMAT</th>
-                <th style="width: 14%;">DIVISI TUJUAN</th>
-                <th style="width: 25%;">MAKSUD & KEPERLUAN</th>
-                <th style="width: 8%;">STATUS</th>
+                <th style="width: 11%;">TANGGAL &amp; WAKTU</th>
+                <th style="width: 16%;">NAMA, KONTAK &amp; EMAIL</th>
+                <th style="width: 11%;">INSTANSI / ALAMAT</th>
+                <th style="width: 10%;">ASAL INSTANSI</th>
+                <th style="width: 6%;">JML. PENGUNJUNG</th>
+                <th style="width: 13%;">DIVISI TUJUAN</th>
+                <th style="width: 22%;">MAKSUD &amp; KEPERLUAN</th>
+                <th style="width: 7%;">STATUS</th>
             </tr>
         </thead>
         <tbody>
@@ -290,6 +292,8 @@
                     <div class="visitor-email">{{ $v->email ? $v->email : '-' }}</div>
                 </td>
                 <td>{{ $v->alamat }}</td>
+                <td style="text-align: center;">{{ $v->asal_instansi ?? '-' }}</td>
+                <td style="text-align: center; font-weight: bold;">{{ $v->jumlah_pengunjung ?? 1 }}</td>
                 <td>
                     <strong style="color: #1e3a8a;">{{ $v->divisi_tujuan }}</strong><br>
                     @if(stripos($v->temu_janji, 'Sudah') !== false || stripos($v->temu_janji, 'Ada') !== false)
@@ -313,7 +317,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7" style="text-align: center; padding: 20px; color: #64748b; font-style: italic;">Tidak ada data kunjungan tamu pada periode atau filter yang dipilih.</td>
+                <td colspan="9" style="text-align: center; padding: 20px; color: #64748b; font-style: italic;">Tidak ada data kunjungan tamu pada periode atau filter yang dipilih.</td>
             </tr>
             @endforelse
         </tbody>
@@ -334,6 +338,22 @@
             <td style="color: #1d4ed8;">{{ $summary['diterima'] ?? $visitors->where('status', 'Diterima')->count() }}</td>
             <td style="color: #047857;">{{ $summary['selesai'] ?? $visitors->where('status', 'Selesai')->count() }}</td>
             <td style="color: #b91c1c;">{{ $summary['dibatalkan'] ?? $visitors->where('status', 'Dibatalkan')->count() }}</td>
+        </tr>
+    </table>
+
+    <div class="summary-title">REKAPITULASI PENGUNJUNG BERDASARKAN ASAL INSTANSI:</div>
+    <table class="summary-table">
+        <tr>
+            <th>TOTAL PENGUNJUNG (ORANG)</th>
+            <th>INSTANSI PEMERINTAH</th>
+            <th>SWASTA</th>
+            <th>MASYARAKAT UMUM</th>
+        </tr>
+        <tr>
+            <td style="color: #1e3a8a;">{{ (int) $visitors->sum('jumlah_pengunjung') }}</td>
+            <td>{{ (int) $visitors->where('asal_instansi', 'Instansi Pemerintah')->sum('jumlah_pengunjung') }}</td>
+            <td>{{ (int) $visitors->where('asal_instansi', 'Swasta')->sum('jumlah_pengunjung') }}</td>
+            <td>{{ (int) $visitors->where('asal_instansi', 'Masyarakat Umum')->sum('jumlah_pengunjung') }}</td>
         </tr>
     </table>
 

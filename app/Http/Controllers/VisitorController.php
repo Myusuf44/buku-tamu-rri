@@ -58,6 +58,8 @@ class VisitorController extends Controller
             'no_hp'             => 'required|string|max:20',
             'email'             => 'nullable|email|max:255',
             'alamat'            => 'required|string',
+            'asal_instansi'     => 'required|in:Instansi Pemerintah,Swasta,Masyarakat Umum',
+            'jumlah_pengunjung' => 'required|integer|min:1|max:500',
             'divisi_tujuan'     => 'required|string',
             'tanggal_kunjungan' => 'required|date',
             'jam_kunjungan'     => 'required',
@@ -316,22 +318,22 @@ class VisitorController extends Controller
             $drawing->setWorksheet($sheet);
         }
 
-        $sheet->mergeCells('A1:G1');
+        $sheet->mergeCells('A1:I1');
         $sheet->setCellValue('A1', 'LEMBAGA PENYIARAN PUBLIK RADIO REPUBLIK INDONESIA');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(12.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E3A8A'));
         $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
 
-        $sheet->mergeCells('A2:G2');
+        $sheet->mergeCells('A2:I2');
         $sheet->setCellValue('A2', 'RRI BUKITTINGGI');
         $sheet->getStyle('A2')->getFont()->setBold(true)->setSize(11)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('2563EB'));
         $sheet->getStyle('A2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
 
-        $sheet->mergeCells('A3:G3');
+        $sheet->mergeCells('A3:I3');
         $sheet->setCellValue('A3', 'Jl. M. Yamin No.199, Aur Kuning, Kec. Aur Birugo Tigo Baleh, Kota Bukittinggi, Sumatera Barat 26131');
         $sheet->getStyle('A3')->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('475569'));
         $sheet->getStyle('A3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
 
-        $sheet->mergeCells('A4:G4');
+        $sheet->mergeCells('A4:I4');
         $sheet->setCellValue('A4', 'Telepon: (0752) 22583 | Unit Teknologi dan Media Baru (TMB)');
         $sheet->getStyle('A4')->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('475569'));
         $sheet->getStyle('A4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
@@ -341,24 +343,24 @@ class VisitorController extends Controller
         $sheet->getRowDimension(3)->setRowHeight(15);
         $sheet->getRowDimension(4)->setRowHeight(15);
 
-        $sheet->getStyle('A5:G5')->getBorders()->getBottom()->setBorderStyle(Border::BORDER_MEDIUM)->getColor()->setARGB('1E3A8A');
+        $sheet->getStyle('A5:I5')->getBorders()->getBottom()->setBorderStyle(Border::BORDER_MEDIUM)->getColor()->setARGB('1E3A8A');
 
-        $sheet->mergeCells('A7:G7');
+        $sheet->mergeCells('A7:I7');
         $sheet->setCellValue('A7', 'LAPORAN REKAPITULASI KUNJUNGAN TAMU');
         $sheet->getStyle('A7')->getFont()->setBold(true)->setSize(11.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('0F172A'));
         $sheet->getStyle('A7')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        $sheet->mergeCells('A8:D8');
+        $sheet->mergeCells('A8:F8');
         $sheet->setCellValue('A8', 'Periode Laporan : ' . $judulPeriode);
         $sheet->getStyle('A8')->getFont()->setBold(true)->setSize(9)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E3A8A'));
 
-        $sheet->mergeCells('E8:G8');
-        $sheet->setCellValue('E8', 'Dicetak Pada : ' . $waktuCetak);
-        $sheet->getStyle('E8')->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('475569'));
-        $sheet->getStyle('E8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+        $sheet->mergeCells('G8:I8');
+        $sheet->setCellValue('G8', 'Dicetak Pada : ' . $waktuCetak);
+        $sheet->getStyle('G8')->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('475569'));
+        $sheet->getStyle('G8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
-        $headers = ['NO', 'TANGGAL & WAKTU', 'NAMA, KONTAK & EMAIL', 'ALAMAT / INSTANSI', 'DIVISI TUJUAN', 'MAKSUD & KEPERLUAN', 'STATUS'];
-        $cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+        $headers = ['NO', 'TANGGAL & WAKTU', 'NAMA, KONTAK & EMAIL', 'ALAMAT / INSTANSI', 'ASAL INSTANSI', 'JUMLAH PENGUNJUNG', 'DIVISI TUJUAN', 'MAKSUD & KEPERLUAN', 'STATUS'];
+        $cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
         foreach ($headers as $index => $header) {
             $col = $cols[$index];
@@ -379,9 +381,11 @@ class VisitorController extends Controller
             $sheet->setCellValue('B' . $row, $tgl);
             $sheet->setCellValue('C' . $row, $kontak);
             $sheet->setCellValue('D' . $row, $v->alamat);
-            $sheet->setCellValue('E' . $row, $divisi);
-            $sheet->setCellValue('F' . $row, $v->keperluan);
-            $sheet->setCellValue('G' . $row, strtoupper($v->status));
+            $sheet->setCellValue('E' . $row, $v->asal_instansi ?? '-');
+            $sheet->setCellValue('F' . $row, (int) ($v->jumlah_pengunjung ?? 1));
+            $sheet->setCellValue('G' . $row, $divisi);
+            $sheet->setCellValue('H' . $row, $v->keperluan);
+            $sheet->setCellValue('I' . $row, strtoupper($v->status));
 
             $sheet->getRowDimension($row)->setRowHeight(42);
 
@@ -390,23 +394,25 @@ class VisitorController extends Controller
             $sheet->getStyle('C' . $row)->getAlignment()->setWrapText(true)->setVertical(Alignment::VERTICAL_CENTER);
             $sheet->getStyle('D' . $row)->getAlignment()->setWrapText(true)->setVertical(Alignment::VERTICAL_CENTER);
             $sheet->getStyle('E' . $row)->getAlignment()->setWrapText(true)->setVertical(Alignment::VERTICAL_CENTER);
-            $sheet->getStyle('F' . $row)->getAlignment()->setWrapText(true)->setVertical(Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('G' . $row)->getAlignment()->setWrapText(true)->setVertical(Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('H' . $row)->getAlignment()->setWrapText(true)->setVertical(Alignment::VERTICAL_CENTER);
             
-            $sheet->getStyle('G' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
-            $sheet->getStyle('G' . $row)->getFont()->setBold(true);
+            $sheet->getStyle('I' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('I' . $row)->getFont()->setBold(true);
 
             if ($v->status == 'Selesai') {
-                $sheet->getStyle('G' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('047857'));
+                $sheet->getStyle('I' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('047857'));
             } elseif ($v->status == 'Diterima') {
-                $sheet->getStyle('G' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1D4ED8'));
+                $sheet->getStyle('I' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1D4ED8'));
             } elseif ($v->status == 'Diproses') {
-                $sheet->getStyle('G' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('B45309'));
+                $sheet->getStyle('I' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('B45309'));
             } else {
-                $sheet->getStyle('G' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('B91C1C'));
+                $sheet->getStyle('I' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('B91C1C'));
             }
 
             if ($idx % 2 == 1) {
-                $sheet->getStyle('A' . $row . ':G' . $row)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('F8FAFC');
+                $sheet->getStyle('A' . $row . ':I' . $row)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('F8FAFC');
             }
 
             $row++;
@@ -421,17 +427,17 @@ class VisitorController extends Controller
                 ],
             ],
         ];
-        $sheet->getStyle('A10:G' . $lastDataRow)->applyFromArray($styleBorderArray);
+        $sheet->getStyle('A10:I' . $lastDataRow)->applyFromArray($styleBorderArray);
 
         $row += 2;
-        $sheet->mergeCells('A' . $row . ':G' . $row);
+        $sheet->mergeCells('A' . $row . ':I' . $row);
         $sheet->setCellValue('A' . $row, 'RINGKASAN REKAPITULASI STATISTIK:');
         $sheet->getStyle('A' . $row)->getFont()->setBold(true)->setSize(9.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E3A8A'));
         $sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
         $row++;
         $sheet->mergeCells('A' . $row . ':B' . $row);
-        $sheet->setCellValue('A' . $row, 'TOTAL KUNJUNGAN');
+        $sheet->setCellValue('A' . $row, 'TOTAL KUNJUNGAN (REGISTRASI)');
         $sheet->setCellValue('C' . $row, 'DIPROSES (PENDING)');
         $sheet->setCellValue('D' . $row, 'DITERIMA (BERLANGSUNG)');
         $sheet->setCellValue('E' . $row, 'SELESAI');
@@ -469,33 +475,65 @@ class VisitorController extends Controller
         $sheet->getStyle('A' . ($row - 1) . ':F' . $row)->applyFromArray($styleBorderArray);
 
         $row += 2;
-        $sheet->mergeCells('F' . $row . ':G' . $row);
-        $sheet->setCellValue('F' . $row, 'Bukittinggi, ' . Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('D MMMM YYYY'));
-        $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->mergeCells('A' . $row . ':I' . $row);
+        $sheet->setCellValue('A' . $row, 'REKAPITULASI PENGUNJUNG BERDASARKAN ASAL INSTANSI:');
+        $sheet->getStyle('A' . $row)->getFont()->setBold(true)->setSize(9.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E3A8A'));
+        $sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
         $row++;
-        $sheet->mergeCells('F' . $row . ':G' . $row);
-        $sheet->setCellValue('F' . $row, 'Petugas / Admin Penanggung Jawab');
-        $sheet->getStyle('F' . $row)->getFont()->setBold(true);
-        $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->mergeCells('A' . $row . ':B' . $row);
+        $sheet->setCellValue('A' . $row, 'TOTAL PENGUNJUNG (ORANG)');
+        $sheet->setCellValue('C' . $row, 'INSTANSI PEMERINTAH');
+        $sheet->setCellValue('D' . $row, 'SWASTA');
+        $sheet->setCellValue('E' . $row, 'MASYARAKAT UMUM');
+        foreach (['A', 'B', 'C', 'D', 'E'] as $rc) {
+            $sheet->getStyle($rc . $row)->getFont()->setBold(true)->setSize(8)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E293B'));
+            $sheet->getStyle($rc . $row)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('E2E8F0');
+            $sheet->getStyle($rc . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+        }
+        $sheet->getRowDimension($row)->setRowHeight(22);
+
+        $row++;
+        $sheet->mergeCells('A' . $row . ':B' . $row);
+        $sheet->setCellValue('A' . $row, (int) $visitors->sum('jumlah_pengunjung'));
+        $sheet->setCellValue('C' . $row, (int) $visitors->where('asal_instansi', 'Instansi Pemerintah')->sum('jumlah_pengunjung'));
+        $sheet->setCellValue('D' . $row, (int) $visitors->where('asal_instansi', 'Swasta')->sum('jumlah_pengunjung'));
+        $sheet->setCellValue('E' . $row, (int) $visitors->where('asal_instansi', 'Masyarakat Umum')->sum('jumlah_pengunjung'));
+        foreach (['A', 'B', 'C', 'D', 'E'] as $rc) {
+            $sheet->getStyle($rc . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+            $sheet->getStyle($rc . $row)->getFont()->setBold(true)->setSize(10.5);
+        }
+        $sheet->getRowDimension($row)->setRowHeight(24);
+        $sheet->getStyle('A' . ($row - 1) . ':E' . $row)->applyFromArray($styleBorderArray);
+
+        $row += 2;
+        $sheet->mergeCells('H' . $row . ':I' . $row);
+        $sheet->setCellValue('H' . $row, 'Bukittinggi, ' . Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('D MMMM YYYY'));
+        $sheet->getStyle('H' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        $row++;
+        $sheet->mergeCells('H' . $row . ':I' . $row);
+        $sheet->setCellValue('H' . $row, 'Petugas / Admin Penanggung Jawab');
+        $sheet->getStyle('H' . $row)->getFont()->setBold(true);
+        $sheet->getStyle('H' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $row += 4;
         $adminUser = auth()->user();
         $adminName = $adminUser->name ?? 'Administrator RRI';
         $adminNip  = !empty($adminUser->nip) ? 'NIP / NIK. ' . $adminUser->nip : 'NIP / NIK. -';
 
-        $sheet->mergeCells('F' . $row . ':G' . $row);
-        $sheet->setCellValue('F' . $row, $adminName);
-        $sheet->getStyle('F' . $row)->getFont()->setBold(true);
-        $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->mergeCells('H' . $row . ':I' . $row);
+        $sheet->setCellValue('H' . $row, $adminName);
+        $sheet->getStyle('H' . $row)->getFont()->setBold(true);
+        $sheet->getStyle('H' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $row++;
-        $sheet->mergeCells('F' . $row . ':G' . $row);
-        $sheet->setCellValue('F' . $row, $adminNip);
-        $sheet->getStyle('F' . $row)->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('475569'));
-        $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->mergeCells('H' . $row . ':I' . $row);
+        $sheet->setCellValue('H' . $row, $adminNip);
+        $sheet->getStyle('H' . $row)->getFont()->setSize(8.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('475569'));
+        $sheet->getStyle('H' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        $sheet->getStyle('A1:G' . $row)->applyFromArray([
+        $sheet->getStyle('A1:I' . $row)->applyFromArray([
             'outline' => [
                 'borderStyle' => Border::BORDER_MEDIUM,
                 'color' => ['argb' => '1E3A8A'], 
@@ -506,9 +544,11 @@ class VisitorController extends Controller
         $sheet->getColumnDimension('B')->setWidth(21);
         $sheet->getColumnDimension('C')->setWidth(32);
         $sheet->getColumnDimension('D')->setWidth(28);
-        $sheet->getColumnDimension('E')->setWidth(28);
-        $sheet->getColumnDimension('F')->setWidth(38);
-        $sheet->getColumnDimension('G')->setWidth(16);
+        $sheet->getColumnDimension('E')->setWidth(22);
+        $sheet->getColumnDimension('F')->setWidth(14);
+        $sheet->getColumnDimension('G')->setWidth(28);
+        $sheet->getColumnDimension('H')->setWidth(38);
+        $sheet->getColumnDimension('I')->setWidth(16);
 
         $fileName = 'laporan-buku-tamu-rri.xlsx';
         $writer = new Xlsx($spreadsheet);

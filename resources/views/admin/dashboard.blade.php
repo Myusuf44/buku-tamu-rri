@@ -133,6 +133,33 @@
 
     </div>
 
+    <!-- REKAPITULASI TOTAL PENGUNJUNG BERDASARKAN ASAL INSTANSI -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-6 sm:mb-8 animate-fade-in-up delay-100">
+        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl shadow-md text-white flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
+                <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight text-blue-100">Total Pengunjung</span>
+                <i class="fas fa-users text-xs sm:text-sm text-blue-100"></i>
+            </div>
+            <div>
+                <div class="text-xl sm:text-2xl font-black leading-none">{{ number_format($totalKunjungan ?? 0) }}</div>
+                <p class="text-[9px] sm:text-[10px] text-blue-100/80 mt-1 leading-tight">Akumulasi seluruh orang</p>
+            </div>
+        </div>
+
+        @foreach (($rekapPerInstansi ?? collect()) as $kategoriInstansi => $jumlahPerInstansi)
+            <div class="bg-white p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-1.5 sm:mb-2">
+                    <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 uppercase tracking-tight truncate pr-1">{{ $kategoriInstansi }}</span>
+                    <i class="fas fa-sitemap text-xs sm:text-sm text-slate-400"></i>
+                </div>
+                <div>
+                    <div class="text-xl sm:text-2xl font-black text-slate-900 leading-none">{{ number_format($jumlahPerInstansi) }}</div>
+                    <p class="text-[9px] sm:text-[10px] text-slate-400 mt-1 leading-tight">Orang</p>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
     <!-- FILTER & PENCARIAN DATA KUNJUNGAN TAMU -->
     <div class="bg-white rounded-2xl sm:rounded-[2rem] shadow-lg shadow-slate-200/50 border border-slate-100 p-4 sm:p-6 mb-6 animate-fade-in-up delay-200">
         <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-slate-100">
@@ -229,7 +256,9 @@
                     <tr class="bg-slate-100/90 border-b-2 border-slate-200 text-[10px] sm:text-[11px] uppercase font-black text-slate-700 tracking-wider">
                         <th class="py-3 px-3 text-center w-12 border-r border-slate-200/80">No.</th>
                         <th class="py-3 px-3 sm:px-4">Jadwal & Waktu</th>
-                        <th class="py-3 px-3 sm:px-4">Identitas & Kontak</th>
+                        <th class="py-3 px-3 sm:px-4">Identitas &amp; Kontak</th>
+                        <th class="py-3 px-3 sm:px-4">Asal Instansi</th>
+                        <th class="py-3 px-3 sm:px-4 text-center">Jml. Pengunjung</th>
                         <th class="py-3 px-3 sm:px-4">Tujuan & Janji</th>
                         <th class="py-3 px-3 sm:px-4">Keperluan / Agenda</th>
                         <th class="py-3 px-3 sm:px-4 text-center">Status</th>
@@ -326,6 +355,25 @@
                                 </a>
                             </td>
 
+                            <td class="py-3.5 px-3 sm:px-4 border-r border-slate-100 whitespace-nowrap">
+                                @php
+                                    $kategoriBadge = match ($visitor->asal_instansi) {
+                                        'Instansi Pemerintah' => 'bg-blue-50 text-blue-700 border-blue-200',
+                                        'Swasta'              => 'bg-amber-50 text-amber-700 border-amber-200',
+                                        default               => 'bg-slate-100 text-slate-700 border-slate-200',
+                                    };
+                                @endphp
+                                <span class="px-2 py-0.5 rounded-lg border text-xs font-bold inline-block {{ $kategoriBadge }}">
+                                    {{ $visitor->asal_instansi ?? '-' }}
+                                </span>
+                            </td>
+
+                            <td class="py-3.5 px-3 sm:px-4 border-r border-slate-100 text-center">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-black text-slate-800">
+                                    <i class="fas fa-users text-[9px] text-slate-400"></i> {{ $visitor->jumlah_pengunjung ?? 1 }}
+                                </span>
+                            </td>
+
                             <td class="py-3.5 px-3 sm:px-4 border-r border-slate-100">
                                 <div class="mb-1">
                                     <span class="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-800 font-bold text-xs border border-slate-200 inline-block">
@@ -343,7 +391,7 @@
                                     {{ $visitor->keperluan }}
                                 </p>
                                 <button type="button" 
-                                        onclick="openDetailModal('{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->alamat) }}', '{{ $visitor->no_hp }}', '{{ addslashes($visitor->email ?? '') }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->temu_janji) }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->status }}')"
+                                        onclick="openDetailModal('{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->alamat) }}', '{{ $visitor->no_hp }}', '{{ addslashes($visitor->email ?? '') }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->temu_janji) }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->status }}', '{{ addslashes($visitor->asal_instansi ?? '') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')"
                                         class="inline-flex items-center gap-1 text-[11px] font-extrabold text-blue-600 hover:text-blue-800 hover:underline">
                                     <i class="fas fa-eye text-[10px]"></i> Tampilkan Rincian Lengkap
                                 </button>
@@ -378,7 +426,7 @@
                                     @else
                                         @if($visitor->status == 'Diproses')
                                             <button type="button" 
-                                                    onclick="openConfirmModal('{{ route('admin.visitors.approve', $visitor->id) }}', 'Diterima', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}')" 
+                                                    onclick="openConfirmModal('{{ route('admin.visitors.approve', $visitor->id) }}', 'Diterima', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')" 
                                                     title="Terima Kunjungan" 
                                                     class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-2xs rounded-lg text-xs font-bold transition-all flex items-center gap-1">
                                                 <i class="fas fa-user-check"></i> Terima
@@ -388,7 +436,7 @@
                                         @if($visitor->status != 'Selesai' && $visitor->status != 'Dibatalkan')
                                             @if($canComplete)
                                                 <button type="button" 
-                                                        onclick="openCompleteModal('{{ route('admin.visitors.complete', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}')" 
+                                                        onclick="openCompleteModal('{{ route('admin.visitors.complete', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')" 
                                                         title="Tandai Kunjungan Selesai" 
                                                         class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white shadow-2xs rounded-lg text-xs font-bold transition-all flex items-center gap-1">
                                                     <i class="fas fa-check"></i> Selesai
@@ -405,7 +453,7 @@
 
                                         @if($visitor->status != 'Selesai' && $visitor->status != 'Dibatalkan')
                                             <button type="button" 
-                                                    onclick="openCancelModal('{{ route('admin.visitors.cancel', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}')" 
+                                                    onclick="openCancelModal('{{ route('admin.visitors.cancel', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')" 
                                                     title="Batalkan Kunjungan" 
                                                     class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white shadow-2xs rounded-lg text-xs font-bold transition-all flex items-center gap-1">
                                                 <i class="fas fa-times"></i> Batal
@@ -418,7 +466,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-10 text-center text-slate-400">
+                            <td colspan="9" class="py-10 text-center text-slate-400">
                                 <i class="fas fa-inbox text-3xl mb-2 block"></i>
                                 <p class="text-xs font-bold uppercase tracking-wider">Belum Ada Data Kunjungan Tamu</p>
                             </td>
@@ -557,6 +605,14 @@
                 <span id="acceptDivisiName" class="font-bold text-blue-700"></span>
             </div>
             <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                <span class="text-slate-500 font-medium">Asal Instansi:</span>
+                <span id="acceptAsalInstansi" class="font-bold text-slate-800"></span>
+            </div>
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                <span class="text-slate-500 font-medium">Jumlah Pengunjung:</span>
+                <span id="acceptJumlahPengunjung" class="font-bold text-slate-800"></span>
+            </div>
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
                 <span class="text-slate-500 font-medium">Jadwal Kunjungan:</span>
                 <span id="acceptJadwal" class="font-bold text-slate-800 font-mono"></span>
             </div>
@@ -611,6 +667,14 @@
             <div class="flex justify-between items-center pb-1.5 border-b border-slate-200/60">
                 <span class="text-slate-500 font-medium">Divisi Tujuan:</span>
                 <span id="completeDivisiName" class="font-bold text-slate-700"></span>
+            </div>
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                <span class="text-slate-500 font-medium">Asal Instansi:</span>
+                <span id="completeAsalInstansi" class="font-bold text-slate-800"></span>
+            </div>
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                <span class="text-slate-500 font-medium">Jumlah Pengunjung:</span>
+                <span id="completeJumlahPengunjung" class="font-bold text-slate-800"></span>
             </div>
             <div class="flex justify-between items-center pb-1.5 border-b border-slate-200/60">
                 <span class="text-slate-500 font-medium">Jadwal Kunjungan:</span>
@@ -667,6 +731,14 @@
             <div class="flex justify-between items-center pb-1.5 border-b border-slate-200/60">
                 <span class="text-slate-500 font-medium">Divisi Tujuan:</span>
                 <span id="cancelDivisiName" class="font-bold text-slate-700"></span>
+            </div>
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                <span class="text-slate-500 font-medium">Asal Instansi:</span>
+                <span id="cancelAsalInstansi" class="font-bold text-slate-800"></span>
+            </div>
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
+                <span class="text-slate-500 font-medium">Jumlah Pengunjung:</span>
+                <span id="cancelJumlahPengunjung" class="font-bold text-slate-800"></span>
             </div>
             <div class="flex justify-between items-center pb-1.5 border-b border-slate-200/60">
                 <span class="text-slate-500 font-medium">Jadwal Kunjungan:</span>
@@ -737,8 +809,19 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-2 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                <div>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block">Kategori Asal Instansi</span>
+                    <span id="detAsalInstansi" class="font-bold text-slate-800 text-xs"></span>
+                </div>
+                <div>
+                    <span class="text-slate-400 font-bold text-[9px] uppercase block">Jumlah Pengunjung</span>
+                    <span class="font-black text-slate-800 text-xs"><i class="fas fa-users text-[10px] text-slate-400 mr-1"></i><span id="detJumlahPengunjung"></span> Orang</span>
+                </div>
+            </div>
+
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
-                <span class="text-slate-400 font-bold text-[9px] uppercase block">Alamat / Instansi</span>
+                <span class="text-slate-400 font-bold text-[9px] uppercase block">Alamat / Nama Instansi</span>
                 <span id="detAlamat" class="font-semibold text-slate-800 text-xs"></span>
             </div>
 
@@ -937,9 +1020,11 @@
         }
     }
 
-    function openDetailModal(nama, alamat, hp, email, divisi, janji, tanggal, jam, keperluan, status) {
+    function openDetailModal(nama, alamat, hp, email, divisi, janji, tanggal, jam, keperluan, status, asalInstansi, jumlahPengunjung) {
         document.getElementById('detNama').innerText = nama;
         document.getElementById('detAlamat').innerText = alamat;
+        document.getElementById('detAsalInstansi').innerText = asalInstansi && asalInstansi.trim() !== '' ? asalInstansi : '-';
+        document.getElementById('detJumlahPengunjung').innerText = jumlahPengunjung && jumlahPengunjung.toString().trim() !== '' ? jumlahPengunjung : '1';
         
         // Menampilkan teks nomor HP dan Email biasa tanpa link di atas
         document.getElementById('detHp').innerText = hp && hp.trim() !== '' ? hp : '-';
@@ -993,7 +1078,7 @@
         }
     }
 
-    function openConfirmModal(actionUrl, status, guestName, divisiName, keperluan, rawPhone, tanggal, jam) {
+    function openConfirmModal(actionUrl, status, guestName, divisiName, keperluan, rawPhone, tanggal, jam, asalInstansi, jumlahPengunjung) {
         const form = document.getElementById('acceptForm');
         form.action = actionUrl;
         
@@ -1002,6 +1087,8 @@
 
         document.getElementById('acceptGuestName').innerText = guestName;
         document.getElementById('acceptDivisiName').innerText = divisiName;
+        document.getElementById('acceptAsalInstansi').innerText = asalInstansi || '-';
+        document.getElementById('acceptJumlahPengunjung').innerText = (jumlahPengunjung || '1') + ' orang';
         document.getElementById('acceptJadwal').innerText = `${tanggal}, ${jam} WIB`;
         document.getElementById('acceptKeperluan').innerText = keperluan;
 
@@ -1021,6 +1108,8 @@ Melalui pesan ini, kami mengonfirmasi bahwa pengajuan agenda kunjungan Anda tela
 [1] RINCIAN AGENDA KUNJUNGAN:
 - *Nama Tamu:* ${guestName}
 - *Divisi Tujuan:* ${divisiName}
+- *Asal Instansi:* ${asalInstansi}
+- *Jumlah Pengunjung:* ${jumlahPengunjung} orang
 - *Tanggal Kunjungan:* ${tanggal}
 - *Waktu:* ${jam} WIB
 - *Keperluan / Agenda:* ${keperluan}
@@ -1047,7 +1136,7 @@ _Sekali di Udara, Tetap di Udara_`
         document.getElementById('confirmAcceptModal').classList.add('hidden');
     }
 
-    function openCompleteModal(actionUrl, guestName, divisiName, keperluan, rawPhone, tanggal, jam) {
+    function openCompleteModal(actionUrl, guestName, divisiName, keperluan, rawPhone, tanggal, jam, asalInstansi, jumlahPengunjung) {
         const form = document.getElementById('completeForm');
         form.action = actionUrl;
         
@@ -1056,6 +1145,8 @@ _Sekali di Udara, Tetap di Udara_`
 
         document.getElementById('completeGuestName').innerText = guestName;
         document.getElementById('completeDivisiName').innerText = divisiName;
+        document.getElementById('completeAsalInstansi').innerText = asalInstansi || '-';
+        document.getElementById('completeJumlahPengunjung').innerText = (jumlahPengunjung || '1') + ' orang';
         document.getElementById('completeJadwal').innerText = `${tanggal}, ${jam} WIB`;
         document.getElementById('completeKeperluan').innerText = keperluan;
 
@@ -1105,7 +1196,7 @@ _Sekali di Udara, Tetap di Udara_`
         }
     }
 
-    function openCancelModal(actionUrl, guestName, divisiName, keperluan, rawPhone, tanggal, jam) {
+    function openCancelModal(actionUrl, guestName, divisiName, keperluan, rawPhone, tanggal, jam, asalInstansi, jumlahPengunjung) {
         const form = document.getElementById('cancelForm');
         form.action = actionUrl;
         
@@ -1114,6 +1205,8 @@ _Sekali di Udara, Tetap di Udara_`
 
         document.getElementById('cancelGuestName').innerText = guestName;
         document.getElementById('cancelDivisiName').innerText = divisiName;
+        document.getElementById('cancelAsalInstansi').innerText = asalInstansi || '-';
+        document.getElementById('cancelJumlahPengunjung').innerText = (jumlahPengunjung || '1') + ' orang';
         document.getElementById('cancelJadwal').innerText = `${tanggal}, ${jam} WIB`;
         document.getElementById('cancelKeperluan').innerText = keperluan;
         document.getElementById('alasanBatalInput').value = '';
@@ -1127,7 +1220,9 @@ _Sekali di Udara, Tetap di Udara_`
             keperluan: keperluan, 
             phone: cleanPhone,
             tanggal: tanggal,
-            jam: jam
+            jam: jam,
+            asalInstansi: asalInstansi,
+            jumlahPengunjung: jumlahPengunjung
         };
 
         updateCancelWaLink();
@@ -1151,6 +1246,8 @@ Mohon maaf, kami menginformasikan bahwa pengajuan agenda kunjungan Anda untuk ja
 [1] RINCIAN KUNJUNGAN:
 - *Nama Tamu:* ${currentCancelData.guestName}
 - *Divisi Tujuan:* ${currentCancelData.divisiName}
+- *Asal Instansi:* ${currentCancelData.asalInstansi}
+- *Jumlah Pengunjung:* ${currentCancelData.jumlahPengunjung} orang
 - *Jadwal:* ${currentCancelData.tanggal} (${currentCancelData.jam} WIB)
 - *Catatan / Alasan Pembatalan:* ${alasanFormatted}
 - *Status:* Dibatalkan
