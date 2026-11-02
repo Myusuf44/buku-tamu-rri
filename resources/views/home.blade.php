@@ -536,7 +536,7 @@
                                     <i class="fas fa-check-circle text-[9px]"></i> Terverifikasi
                                 </span>
                             </div>
-
+                        
                         </div>
                     @empty
                         <div class="col-span-full text-center py-12 bg-white rounded-3xl border border-dashed border-slate-300 shadow-sm">
