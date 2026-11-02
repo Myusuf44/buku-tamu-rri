@@ -12,21 +12,19 @@ use Illuminate\Support\Str;
 class AuthController extends Controller
 {
     /**
-     * Menampilkan halaman login dan otomatis membersihkan sesi jika ada yang "nyangkut".
+     * Menampilkan halaman login (atau mengarahkan ke dashboard jika sesi masih aktif).
      */
     public function showLoginForm()
     {
         if (Auth::check()) {
-            Auth::logout();
-            request()->session()->invalidate();
-            request()->session()->regenerateToken();
+            return redirect()->route('admin.dashboard');
         }
 
         return view('auth.login');
     }
 
     /**
-     * Memproses autentikasi / login pengguna dengan pembersihan sesi ganda.
+     * Memproses autentikasi / login pengguna dengan sesi persisten (Remember Me).
      */
     public function login(Request $request)
     {
@@ -35,15 +33,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // PENCEGAHAN MUTLAK: Jika ada sesi yang masih aktif dari riwayat browser, 
-        // putus dan hancurkan secara paksa sebelum memproses kredensial baru.
-        if (Auth::check()) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-        }
-
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($credentials, true)) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.dashboard'));

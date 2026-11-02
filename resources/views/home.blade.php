@@ -107,102 +107,7 @@
 <body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen antialiased overflow-x-hidden overflow-y-auto">
 
     <!-- HEADER NAVBAR -->
-    <header class="bg-slate-50/80 backdrop-blur-xl border-b border-blue-100/80 sticky top-0 z-50 shadow-sm w-full">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                
-                <!-- SISI KIRI: LOGO RRI & BADGE ADMIN -->
-                <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0 group">
-                    <img src="{{ asset('images/logo_rri.svg') }}" alt="Logo RRI Bukittinggi" class="h-8 sm:h-9 w-auto group-hover:scale-105 transition-transform duration-300">
-                    
-                    @auth
-                        <span class="hidden md:inline-block px-2.5 py-0.5 rounded-full bg-blue-100/80 border border-blue-200 text-[10px] font-extrabold uppercase tracking-wider text-blue-800">
-                            Admin Panel
-                        </span>
-                    @endauth
-                </a>
-
-                <!-- SISI KANAN: SEMUA NAVIGASI & TOMBOL AKSI -->
-                <div class="hidden md:flex items-center gap-2">
-                    
-                    <div class="p-1 bg-slate-200/60 rounded-full border border-slate-300/60 flex items-center gap-1">
-                        <a href="{{ route('home') }}" class="px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-all flex items-center gap-1.5">
-                            <i class="fas fa-home text-xs"></i>
-                            <span>Beranda</span>
-                        </a>
-
-                        <a href="{{ route('registrasi') }}" class="px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-700 hover:text-blue-700 hover:bg-white/50 transition-all flex items-center gap-1.5">
-                            <i class="fas fa-edit text-xs text-slate-500"></i>
-                            <span>Buku Tamu</span>
-                        </a>
-
-                        @auth
-                            <div class="h-4 w-[1px] bg-slate-300 mx-1"></div>
-                            <a href="{{ route('admin.dashboard') }}" class="px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-slate-900 text-white shadow-sm hover:bg-slate-800 transition-all flex items-center gap-1.5">
-                                <i class="fas fa-chart-pie text-xs text-sky-400"></i>
-                                <span>Dashboard</span>
-                            </a>
-                            <button type="button" onclick="openLogoutModal()" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-all flex items-center gap-1 cursor-pointer">
-                                <i class="fas fa-sign-out-alt text-xs"></i>
-                                <span>Keluar</span>
-                            </button>
-                        @endauth
-                    </div>
-
-                    <button type="button" onclick="scrollToFeedbackAndOpenModal()" class="px-3.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-300/80 rounded-full text-xs font-extrabold text-amber-800 transition-all shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95">
-                        <i class="fas fa-star text-amber-500"></i>
-                        <span>{{ $avgRatingFormat ?? '5.0' }}</span>
-                        <span class="text-amber-700/80 font-semibold text-[11px] hidden lg:inline">Beri Ulasan</span>
-                    </button>
-
-                </div>
-
-                <!-- TOMBOL HAMBURGER MOBILE -->
-                <div class="flex items-center md:hidden gap-2">
-                    @auth
-                        <span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold border border-blue-200">
-                            Admin
-                        </span>
-                    @endauth
-                    <button type="button" id="mobileMenuBtn" class="p-2 rounded-xl bg-slate-200/80 text-slate-700 hover:bg-slate-300 focus:outline-none">
-                        <i class="fas fa-bars text-lg" id="mobileMenuIcon"></i>
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- DROPDOWN MENU MOBILE -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4 pt-2 border-t border-slate-200/80 animate-fade-in-up">
-                <div class="flex flex-col gap-2">
-                    <a href="{{ route('home') }}" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-blue-600 text-white flex items-center gap-2">
-                        <i class="fas fa-home text-xs"></i>
-                        <span>Beranda Utama</span>
-                    </a>
-                    <a href="{{ route('registrasi') }}" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-200 flex items-center gap-2">
-                        <i class="fas fa-edit text-xs text-slate-500"></i>
-                        <span>Buku Tamu</span>
-                    </a>
-                    <button type="button" onclick="scrollToFeedbackAndOpenModal()" class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-amber-900 bg-amber-50 border border-amber-200 flex items-center gap-2">
-                        <i class="fas fa-star text-xs text-amber-500"></i>
-                        <span>Beri Ulasan & Nilai Pelayanan</span>
-                    </button>
-
-                    @auth
-                        <div class="my-1 border-t border-slate-200"></div>
-                        <a href="{{ route('admin.dashboard') }}" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-900 text-white flex items-center gap-2">
-                            <i class="fas fa-chart-pie text-xs text-sky-400"></i>
-                            <span>Dashboard Admin</span>
-                        </a>
-                        <button type="button" onclick="openLogoutModal()" class="w-full px-4 py-2.5 rounded-xl text-sm font-bold text-rose-600 bg-rose-50 border border-rose-100 flex items-center gap-2">
-                            <i class="fas fa-sign-out-alt text-xs"></i>
-                            <span>Keluar dari Akun</span>
-                        </button>
-                    @endauth
-                </div>
-            </div>
-
-        </div>
-    </header>
+    @include('partials.navbar')
 
     <!-- MAIN CONTENT AREA -->
     <main class="flex-grow">
@@ -253,14 +158,14 @@
                 <!-- Tombol CTA Utama & Tombol Beri Penilaian -->
                 <div class="animate-fade-in-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto px-4 sm:px-0">
                     <a href="{{ route('registrasi') }}" 
-                       class="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-sm sm:text-base shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:scale-105 active:scale-95 transition-all duration-300 border border-blue-400/30 w-full sm:w-auto group">
+                       class="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-sm sm:text-base shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-200 border border-blue-400/30 w-full sm:w-auto group">
                         <span>Isi Buku Tamu Sekarang</span>
-                        <i class="fas fa-arrow-right text-xs sm:text-sm group-hover:translate-x-1.5 transition-transform duration-300"></i>
+                        <i class="fas fa-arrow-right text-xs sm:text-sm group-hover:translate-x-1 transition-transform duration-200"></i>
                     </a>
 
                     <button type="button" onclick="scrollToFeedbackAndOpenModal()"
-                       class="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border-2 border-amber-400/60 hover:border-amber-300 backdrop-blur-md text-amber-300 font-extrabold text-sm sm:text-base shadow-lg shadow-amber-500/10 hover:scale-105 active:scale-95 transition-all duration-300 w-full sm:w-auto cursor-pointer group">
-                        <i class="fas fa-star text-amber-400 group-hover:scale-125 transition-transform"></i>
+                       class="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/60 hover:border-amber-300 backdrop-blur-md text-amber-300 font-semibold text-sm sm:text-base shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-200 w-full sm:w-auto cursor-pointer group">
+                        <i class="fas fa-star text-amber-400 group-hover:scale-110 transition-transform"></i>
                         <span>Beri Penilaian Pelayanan</span>
                     </button>
                 </div>
@@ -274,7 +179,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-14 relative z-20">
                 
                 <div class="text-center mb-7 sm:mb-9 animate-fade-in-up">
-                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-slate-200/90 shadow-md text-blue-800 text-xs font-extrabold uppercase tracking-wider backdrop-blur-md">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-slate-200/90 shadow-sm text-blue-800 text-xs font-extrabold uppercase tracking-wider backdrop-blur-md">
                         <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
                         Panduan Pengisian Buku Tamu
                     </span>
@@ -285,10 +190,10 @@
                     <div class="hidden md:block absolute top-[4.2rem] left-16 right-16 h-1 border-t-2 border-dashed border-blue-300/60 z-0"></div>
 
                     <!-- STEP 01 -->
-                    <div class="relative group bg-white p-6 sm:p-8 rounded-3xl shadow-xl shadow-slate-300/50 border border-slate-200/90 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1.5 transition-all duration-300 z-10 flex flex-col justify-between">
+                    <div class="relative group bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/90 hover:border-blue-500/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200 z-10 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-5 sm:mb-6">
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-700 to-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-600/30 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-700 to-blue-500 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-200">
                                     <i class="fas fa-mouse-pointer text-base sm:text-xl text-white"></i>
                                 </div>
                                 <span class="px-3 py-1 rounded-full text-xs font-black tracking-widest bg-blue-50 text-blue-700 border border-blue-100/80 shrink-0 shadow-xs">01</span>
@@ -304,10 +209,10 @@
                     </div>
 
                     <!-- STEP 02 -->
-                    <div class="relative group bg-white p-6 sm:p-8 rounded-3xl shadow-xl shadow-slate-300/50 border border-slate-200/90 hover:border-sky-500/50 hover:shadow-2xl hover:shadow-sky-500/10 hover:-translate-y-1.5 transition-all duration-300 z-10 flex flex-col justify-between">
+                    <div class="relative group bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/90 hover:border-sky-500/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200 z-10 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-5 sm:mb-6">
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-sky-600 to-sky-400 text-white flex items-center justify-center shadow-lg shadow-sky-500/30 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-sky-600 to-sky-400 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-200">
                                     <i class="fas fa-calendar-alt text-base sm:text-xl text-white"></i>
                                 </div>
                                 <span class="px-3 py-1 rounded-full text-xs font-black tracking-widest bg-sky-50 text-sky-700 border border-sky-100/80 shrink-0 shadow-xs">02</span>
@@ -323,10 +228,10 @@
                     </div>
 
                     <!-- STEP 03 -->
-                    <div class="relative group bg-white p-6 sm:p-8 rounded-3xl shadow-xl shadow-slate-300/50 border border-slate-200/90 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1.5 transition-all duration-300 z-10 flex flex-col justify-between">
+                    <div class="relative group bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/90 hover:border-cyan-500/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200 z-10 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-5 sm:mb-6">
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white flex items-center justify-center shadow-lg shadow-cyan-500/30 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-200">
                                     <i class="fas fa-paper-plane text-base sm:text-xl text-white"></i>
                                 </div>
                                 <span class="px-3 py-1 rounded-full text-xs font-black tracking-widest bg-cyan-50 text-cyan-700 border border-cyan-100/80 shrink-0 shadow-xs">03</span>
@@ -393,7 +298,7 @@
                     @endphp
 
                     <!-- KARTU RINGKASAN STATISTIK -->
-                    <div class="mt-6 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-7 shadow-md grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-left">
+                    <div class="mt-6 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-7 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-left">
                         
                         <!-- Kolom 1: Skor Utama & Total Ulasan -->
                         <div class="flex flex-col items-center md:items-start text-center md:text-left border-b md:border-b-0 md:border-r border-slate-100 pb-5 md:pb-0 md:pr-6">
@@ -485,7 +390,7 @@
                             <span class="text-base font-black {{ $mutuColor }} transition-colors duration-300">{{ $mutuLabel }}</span>
                             <span class="text-[10px] font-semibold text-slate-400 mt-0.5 mb-2.5">{{ $mutuSub }} RRI Bukittinggi</span>
                             
-                            <button type="button" onclick="openFeedbackModal()" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <button type="button" onclick="openFeedbackModal()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
                                 <i class="fas fa-pen-to-square text-amber-300"></i>
                                 <span>Tulis Ulasan Anda</span>
                             </button>
@@ -497,7 +402,7 @@
                 <!-- CONTAINER GRID ULASAN -->
                 <div id="reviewCarousel" class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 transition-opacity duration-700 opacity-100">
                     @forelse($publicFeedbacks ?? [] as $index =>$fb)
-                        <div class="feedback-slide {{ $index >= 3 ? 'hidden' : '' }} feedback-card p-5 sm:p-6 rounded-3xl border border-slate-200/80 bg-white flex flex-col justify-between relative group shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1" data-index="{{ $index }}">
+                        <div class="feedback-slide {{ $index >= 3 ? 'hidden' : '' }} feedback-card p-5 sm:p-6 rounded-3xl border border-slate-200/80 bg-white flex flex-col justify-between relative group shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-1" data-index="{{ $index }}">
                             <div class="absolute top-4 right-5 text-slate-200/60 text-4xl font-serif select-none group-hover:text-blue-100 transition-colors">
                                 &ldquo;
                             </div>
@@ -522,7 +427,7 @@
 
                             <div class="pt-3.5 border-t border-slate-100 flex items-center justify-between relative z-10">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-400 text-white font-extrabold text-xs flex items-center justify-center shadow-md shadow-blue-500/20">
+                                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-400 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                                         {{ $fb->inisial }}
                                     </div>
                                     <div>
@@ -532,7 +437,7 @@
                                         <span class="text-[10px] font-medium text-slate-400 block">Tamu LPP RRI</span>
                                     </div>
                                 </div>
-                                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 shadow-sm">
+                                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 shadow-xs">
                                     <i class="fas fa-check-circle text-[9px]"></i> Terverifikasi
                                 </span>
                             </div>
@@ -545,7 +450,7 @@
                             </div>
                             <h3 class="text-sm font-bold text-slate-800">Belum Ada Ulasan Publik</h3>
                             <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Jadilah pengunjung pertama yang memberikan penilaian pelayanan!</p>
-                            <button type="button" onclick="openFeedbackModal()" class="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition cursor-pointer">
+                            <button type="button" onclick="openFeedbackModal()" class="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer">
                                 <i class="fas fa-star text-amber-300"></i>
                                 <span>Beri Ulasan Pertama</span>
                             </button>
@@ -664,7 +569,7 @@
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" id="btnSubmitFeedback" class="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <button type="submit" id="btnSubmitFeedback" class="w-full py-3 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-[0.98] text-white font-semibold text-xs shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
                         <i id="iconSubmitFeedback" class="fas fa-paper-plane"></i>
                         <span id="textSubmitFeedback">Kirim Penilaian Pelayanan</span>
                     </button>
@@ -673,34 +578,6 @@
             </form>
         </div>
     </div>
-
-    <!-- MODAL KONFIRMASI LOGOUT ADMIN -->
-    @auth
-    <div id="logoutModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative animate-modal-pop">
-            <div class="w-14 h-14 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <i class="fas fa-sign-out-alt text-2xl"></i>
-            </div>
-            <div class="text-center mb-6">
-                <h3 class="text-xl font-extrabold text-slate-900">Konfirmasi Keluar Akun</h3>
-                <p class="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
-                    Apakah Anda yakin ingin keluar dari <span class="font-bold text-slate-800">Sistem Admin Buku Tamu</span>?
-                </p>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <button type="button" onclick="closeLogoutModal()" class="w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-100 active:scale-95 transition-all cursor-pointer">
-                    Batal
-                </button>
-                <form action="{{ route('logout') }}" method="POST" class="w-full">
-                    @csrf
-                    <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-600/30 active:scale-95 transition-all cursor-pointer">
-                        Ya, Keluar
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-    @endauth
 
     <!-- SCRIPT INTERAKTIF & LOGIK VALIDASI KUSTOM UI/UX -->
     <script>
@@ -955,23 +832,6 @@
                     });
                 }
             });
-
-            const btn = document.getElementById('mobileMenuBtn');
-            const menu = document.getElementById('mobileMenu');
-            const icon = document.getElementById('mobileMenuIcon');
-
-            if (btn && menu && icon) {
-                btn.addEventListener('click', function() {
-                    menu.classList.toggle('hidden');
-                    if (menu.classList.contains('hidden')) {
-                        icon.classList.remove('fa-xmark');
-                        icon.classList.add('fa-bars');
-                    } else {
-                        icon.classList.remove('fa-bars');
-                        icon.classList.add('fa-xmark');
-                    }
-                });
-            }
 
             const slides = document.querySelectorAll('.feedback-slide');
             if (slides.length > 3) {

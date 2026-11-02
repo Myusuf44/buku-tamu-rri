@@ -5,159 +5,141 @@
 <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 animate-fade-in-up">
     
     <!-- HEADER HERO DASHBOARD -->
-    <div class="relative overflow-hidden bg-gradient-to-r from-white via-slate-50/60 to-blue-50/40 rounded-2xl sm:rounded-[2.5rem] shadow-sm border border-slate-200/80 p-6 sm:p-8 mb-6 transition-all duration-300 hover:shadow-md">
-        
-        <div class="absolute -right-12 -top-12 w-56 h-56 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-6">
-            
-            <div class="space-y-2 max-w-xl text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100/70 border border-blue-200/80 text-blue-800 text-[11px] font-extrabold tracking-wide">
-                    <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                    <span>LPP RRI Bukittinggi</span>
-                </div>
-                
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight">
-                    Pusat Kendali Buku Tamu
-                </h1>
-                
-                <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed pr-2">
-                    Pantau rekapitulasi kunjungan, kelola permohonan verifikasi tamu, dan unduh laporan berkala secara realtime.
-                </p>
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1 text-left">
+            <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-blue-600">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>LPP RRI Bukittinggi</span>
             </div>
 
-            <div class="flex flex-col sm:flex-row items-center gap-3.5 shrink-0 w-full xl:w-auto pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-200/60">
-                
-                <!-- Widget Jam Realtime -->
-                <div class="w-full sm:w-auto inline-flex flex-col items-center justify-center px-5 py-3 rounded-2xl bg-slate-950 text-white shadow-lg shadow-slate-950/10 border border-slate-800/80 transition-transform hover:scale-[1.01]">
-                    <div class="flex items-center gap-2 font-mono font-black text-cyan-300 text-lg sm:text-xl tracking-wider">
-                        <i class="far fa-clock text-sky-400 text-sm mr-0.5"></i>
-                        <span id="clock-jam-menit">00:00</span>
-                        <span class="text-cyan-500 font-bold">:</span>
-                        <span id="clock-detik" class="text-xs text-cyan-400">00</span>
-                        <span class="text-[10px] font-sans font-extrabold text-sky-300 bg-blue-900/80 px-2 py-0.5 rounded-md border border-blue-400/30 ml-1">WIB</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 text-slate-400 text-[11px] font-semibold mt-1">
-                        <i class="far fa-calendar-alt text-sky-400 text-[10px]"></i>
-                        <span id="clock-hari-tanggal">-- --- ----</span>
-                    </div>
-                </div>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Pusat Kendali Buku Tamu
+            </h1>
 
-                <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                    <button type="button" 
-                            onclick="openExportModal()" 
-                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-extrabold rounded-2xl shadow-md shadow-blue-600/25 transition-all duration-200 text-xs sm:text-sm cursor-pointer border border-blue-500/30">
-                        <i class="fas fa-file-export text-xs text-blue-100"></i>
-                        <span>Cetak / Ekspor Laporan</span>
-                    </button>
-                </div>
+            <p id="header-realtime-clock" class="text-xs text-slate-500 font-medium">
+                {{ \Carbon\Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('dddd, DD MMMM YYYY • HH:mm') }} WIB
+            </p>
+        </div>
 
-            </div>
-
+        <div class="shrink-0">
+            <button type="button" 
+                    onclick="openExportModal()" 
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold rounded-xl shadow-sm transition-all duration-200 text-xs cursor-pointer">
+                <i class="fas fa-file-export text-xs"></i>
+                <span>Cetak / Ekspor Laporan</span>
+            </button>
         </div>
     </div>
 
-    <!-- METRIC CARDS STATISTIK -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4 mb-6 sm:mb-8 animate-fade-in-up delay-100">
-        
-        <div class="bg-white p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl border border-amber-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+    <!-- 4 KARTU METRIK UTAMA -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 animate-fade-in-up delay-100">
+        <!-- 1. Total Pengunjung -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-slate-500">Total Pengunjung</span>
+                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <i class="fas fa-users text-xs"></i>
+                </div>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-slate-900 tracking-tight">{{ number_format($totalKunjungan ?? 0) }}</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Akumulasi seluruh tamu</p>
+            </div>
+        </div>
+
+        <!-- 2. Perlu Diproses -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between relative overflow-hidden">
             @if(($menunggu ?? 0) > 0)
-                <div class="absolute top-0 right-0 w-1.5 sm:w-2 h-full bg-amber-500 animate-pulse"></div>
+                <span class="absolute top-0 left-0 w-1 h-full bg-amber-400"></span>
             @endif
-            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                <span class="text-[9px] sm:text-[10px] font-extrabold text-amber-700 uppercase tracking-tight truncate pr-1">Perlu Diproses</span>
-                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shrink-0 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-clock text-xs sm:text-sm"></i>
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-slate-500">Perlu Diproses</span>
+                <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                    <i class="fas fa-clock text-xs"></i>
                 </div>
             </div>
             <div>
-                <div class="text-xl sm:text-2xl font-black text-amber-600 leading-none">{{ number_format($menunggu ?? 0) }}</div>
-                <p class="text-[9px] sm:text-[10px] text-slate-400 mt-1 leading-tight truncate">Seluruh permohonan pending</p>
+                <div class="text-2xl font-bold text-amber-600 tracking-tight">{{ number_format($menunggu ?? 0) }}</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Permohonan menunggu verifikasi</p>
             </div>
         </div>
 
-        <div class="bg-white p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 uppercase tracking-tight truncate pr-1">Aktivitas Hari Ini</span>
-                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold shrink-0 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-calendar-day text-xs sm:text-sm"></i>
+        <!-- 3. Hari Ini -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-slate-500">Hari Ini</span>
+                <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                    <i class="fas fa-calendar-day text-xs"></i>
                 </div>
             </div>
             <div>
-                <div class="text-xl sm:text-2xl font-black text-slate-900 leading-none">{{ number_format($tamuHariIni ?? 0) }}</div>
-                <div class="text-[9px] sm:text-[10px] text-slate-400 mt-1 leading-tight">
-                    <div>Pengajuan Masuk</div>
-                    <div>Diproses, Diterima & Dibatalkan Hari Ini</div>
-                </div>  
+                <div class="text-2xl font-bold text-slate-900 tracking-tight">{{ number_format($tamuHariIni ?? 0) }}</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Jadwal kunjungan hari ini</p>
             </div>
         </div>
 
-        <div class="bg-white p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 uppercase tracking-tight truncate pr-1">Selesai Hari Ini</span>
-                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-check-circle text-xs sm:text-sm"></i>
+        <!-- 4. Selesai -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-slate-500">Selesai</span>
+                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <i class="fas fa-check-circle text-xs"></i>
                 </div>
             </div>
             <div>
-                <div class="text-xl sm:text-2xl font-black text-emerald-600 leading-none">{{ number_format($selesaiHariIni ?? 0) }}</div>
-                <p class="text-[9px] sm:text-[10px] text-slate-400 mt-1 leading-tight truncate">Kunjungan tuntas hari ini</p>
+                <div class="text-2xl font-bold text-emerald-600 tracking-tight">{{ number_format($selesaiHariIni ?? 0) }}</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Kunjungan tuntas hari ini</p>
             </div>
         </div>
-
-        <div class="bg-white p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 uppercase tracking-tight truncate pr-1">Mendatang</span>
-                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold shrink-0 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-calendar-plus text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div>
-                <div class="text-xl sm:text-2xl font-black text-indigo-600 leading-none">{{ number_format($jadwalMendatang ?? 0) }}</div>
-                <p class="text-[9px] sm:text-[10px] text-slate-400 mt-1 leading-tight truncate">Diterima (Besok/Bln Dpn)</p>
-            </div>
-        </div>
-
-        <div class="col-span-2 sm:col-span-1 bg-white p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
-            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 uppercase tracking-tight truncate pr-1">Rekam Bulan Ini</span>
-                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold shrink-0 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-calendar-alt text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div>
-                <div class="text-xl sm:text-2xl font-black text-sky-600 leading-none">{{ number_format($totalKunjunganBulanIni ?? $bulanIni ?? 0) }}</div>
-                <p class="text-[9px] sm:text-[10px] text-slate-400 mt-1 leading-tight truncate">Total agenda bulan berjalan</p>
-            </div>
-        </div>
-
     </div>
 
-    <!-- REKAPITULASI TOTAL PENGUNJUNG BERDASARKAN ASAL INSTANSI -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-6 sm:mb-8 animate-fade-in-up delay-100">
-        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl shadow-md text-white flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight text-blue-100">Total Pengunjung</span>
-                <i class="fas fa-users text-xs sm:text-sm text-blue-100"></i>
+    <!-- MINI CARD HORIZONTAL: DISTRIBUSI KUNJUNGAN (SEGMENTED PROGRESS BAR) -->
+    @php
+        $jmlPemerintah = (int) ($rekapPerInstansi['Instansi Pemerintah'] ?? 0);
+        $jmlSwasta = (int) ($rekapPerInstansi['Swasta'] ?? 0);
+        $jmlUmum = (int) ($rekapPerInstansi['Masyarakat Umum'] ?? 0);
+        $totalDistribusi = max($jmlPemerintah + $jmlSwasta + $jmlUmum, 1);
+
+        $pctPemerintah = round(($jmlPemerintah / $totalDistribusi) * 100, 1);
+        $pctSwasta = round(($jmlSwasta / $totalDistribusi) * 100, 1);
+        $pctUmum = max(0, round(100 - $pctPemerintah - $pctSwasta, 1));
+    @endphp
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 sm:px-5 mb-6 animate-fade-in-up delay-100">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-slate-800">Distribusi Kunjungan</span>
+                <span class="text-[11px] text-slate-400">• Berdasarkan Asal Instansi</span>
             </div>
-            <div>
-                <div class="text-xl sm:text-2xl font-black leading-none">{{ number_format($totalKunjungan ?? 0) }}</div>
-                <p class="text-[9px] sm:text-[10px] text-blue-100/80 mt-1 leading-tight">Akumulasi seluruh orang</p>
+            <div class="flex flex-wrap items-center gap-4 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                    <span class="text-slate-600 font-medium">Pemerintah:</span>
+                    <span class="font-bold text-slate-900">{{ number_format($jmlPemerintah) }}</span>
+                    <span class="text-[11px] text-slate-400">({{ $pctPemerintah }}%)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+                    <span class="text-slate-600 font-medium">Swasta:</span>
+                    <span class="font-bold text-slate-900">{{ number_format($jmlSwasta) }}</span>
+                    <span class="text-[11px] text-slate-400">({{ $pctSwasta }}%)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-slate-600 font-medium">Umum:</span>
+                    <span class="font-bold text-slate-900">{{ number_format($jmlUmum) }}</span>
+                    <span class="text-[11px] text-slate-400">({{ $pctUmum }}%)</span>
+                </div>
             </div>
         </div>
-
-        @foreach (($rekapPerInstansi ?? collect()) as $kategoriInstansi => $jumlahPerInstansi)
-            <div class="bg-white p-3 sm:p-4.5 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                    <span class="text-[9px] sm:text-[10px] font-extrabold text-slate-500 uppercase tracking-tight truncate pr-1">{{ $kategoriInstansi }}</span>
-                    <i class="fas fa-sitemap text-xs sm:text-sm text-slate-400"></i>
-                </div>
-                <div>
-                    <div class="text-xl sm:text-2xl font-black text-slate-900 leading-none">{{ number_format($jumlahPerInstansi) }}</div>
-                    <p class="text-[9px] sm:text-[10px] text-slate-400 mt-1 leading-tight">Orang</p>
-                </div>
-            </div>
-        @endforeach
+        <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden flex">
+            @if(($jmlPemerintah + $jmlSwasta + $jmlUmum) > 0)
+                <div style="width: {{ $pctPemerintah }}%" class="bg-blue-600 h-full transition-all duration-500" title="Instansi Pemerintah: {{ $jmlPemerintah }} Orang ({{ $pctPemerintah }}%)"></div>
+                <div style="width: {{ $pctSwasta }}%" class="bg-purple-600 h-full transition-all duration-500" title="Swasta: {{ $jmlSwasta }} Orang ({{ $pctSwasta }}%)"></div>
+                <div style="width: {{ $pctUmum }}%" class="bg-emerald-500 h-full transition-all duration-500" title="Masyarakat Umum: {{ $jmlUmum }} Orang ({{ $pctUmum }}%)"></div>
+            @else
+                <div class="w-full bg-slate-200 h-full"></div>
+            @endif
+        </div>
     </div>
 
     <!-- FILTER & PENCARIAN DATA KUNJUNGAN TAMU -->
@@ -260,22 +242,199 @@
             </span>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+        <!-- MOBILE CARD VIEW (block md:hidden) -->
+        <div class="block md:hidden p-3 bg-slate-50/50">
+            @forelse($visitors as $index => $visitor)
+                @php
+                    $tglCarbon = \Carbon\Carbon::parse($visitor->tanggal_kunjungan);
+                    $formattedDate = $tglCarbon->locale('id')->isoFormat('D MMM YYYY');
+                    $jamClean = \Carbon\Carbon::parse($visitor->jam_kunjungan)->format('H:i');
+
+                    $isAccepted = ($visitor->status == 'Diterima');
+                    $canComplete = $isAccepted;
+
+                    $hariIni = \Carbon\Carbon::today();
+                    $isToday = $tglCarbon->isToday();
+                    $isTomorrow = $tglCarbon->isTomorrow();
+                    $isFuture = $tglCarbon->isAfter($hariIni);
+                    $isPast = $tglCarbon->isBefore($hariIni);
+
+                    $selisihHariLalu = (int) $tglCarbon->diffInDays($hariIni, false);
+                    $nomorUrut = ($visitors->currentPage() - 1) * $visitors->perPage() + $index + 1;
+                    $jmlOrang = (int) ($visitor->jumlah_pengunjung ?? 1);
+
+                    $hpClean = preg_replace('/[^0-9]/', '', $visitor->no_hp);
+                    if (str_starts_with($hpClean, '0')) {
+                        $hpClean = '62' . substr($hpClean, 1);
+                    }
+
+                    $leftBorderClass = match ($visitor->status) {
+                        'Diterima'   => 'border-l-4 border-l-blue-500',
+                        'Selesai'    => 'border-l-4 border-l-emerald-500',
+                        'Dibatalkan' => 'border-l-4 border-l-rose-500',
+                        default      => 'border-l-4 border-l-amber-400',
+                    };
+                @endphp
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200/80 {{ $leftBorderClass }} shadow-sm mb-3 last:mb-0">
+                    <!-- 1. Header Card Dinamis -->
+                    <div class="pb-2.5 mb-2.5 border-b border-slate-100">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <div class="flex items-center gap-1.5">
+                                <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-mono text-[10px] font-bold">#{{ $nomorUrut }}</span>
+                                @if($isToday)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 text-rose-700 border border-rose-200 animate-pulse">
+                                        <i class="fas fa-exclamation-circle text-[8px]"></i> HARI INI
+                                    </span>
+                                @elseif($isTomorrow)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
+                                        <i class="fas fa-clock text-[8px]"></i> BESOK
+                                    </span>
+                                @elseif($isFuture)
+                                    @php $selisihMendatang = (int) $hariIni->diffInDays($tglCarbon, false); @endphp
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                        <i class="fas fa-calendar-alt text-[8px]"></i> {{ $selisihMendatang <= 7 ? $selisihMendatang . ' Hari Lagi' : ceil($selisihMendatang / 7) . ' Mgg Lagi' }}
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+                                        <i class="fas fa-history text-[8px]"></i> {{ $selisihHariLalu <= 7 ? $selisihHariLalu . ' Hari Lalu' : ceil($selisihHariLalu / 7) . ' Mgg Lalu' }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="shrink-0">
+                                @if($visitor->status == 'Selesai')
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 inline-flex items-center gap-1">
+                                        <i class="fas fa-check-circle text-[9px]"></i> Selesai
+                                    </span>
+                                @elseif($visitor->status == 'Diterima')
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200 inline-flex items-center gap-1">
+                                        <i class="fas fa-user-check text-[9px]"></i> Diterima
+                                    </span>
+                                @elseif($visitor->status == 'Dibatalkan')
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200 inline-flex items-center gap-1" title="Alasan: {{ $visitor->alasan_batal ?? 'Tidak tercatat' }}">
+                                        <i class="fas fa-times-circle text-[9px]"></i> Dibatalkan
+                                    </span>
+                                @else
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 inline-flex items-center gap-1">
+                                        <i class="fas fa-spinner text-[9px]"></i> Diproses
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-slate-500 flex items-center gap-1">
+                            <i class="far fa-calendar-alt text-[10px] text-slate-400"></i>
+                            <span>{{ $formattedDate }}</span>
+                            <span class="text-slate-300">•</span>
+                            <i class="far fa-clock text-[10px] text-slate-400"></i>
+                            <span class="font-mono">{{ $jamClean }} WIB</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Identitas & Kategori Tamu -->
+                    <div>
+                        <div class="font-bold text-slate-800 text-base leading-snug">{{ $visitor->nama_lengkap }}</div>
+                        <div class="text-xs text-slate-500 mt-0.5">{{ $visitor->alamat }}</div>
+
+                        <a href="https://wa.me/{{ $hpClean }}" 
+                           target="_blank" 
+                           title="Klik untuk obrolan WhatsApp langsung"
+                           class="inline-flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                            <i class="fab fa-whatsapp text-sm text-emerald-500"></i>
+                            <span class="font-mono hover:underline">{{ $visitor->no_hp }}</span>
+                        </a>
+
+                        <div class="flex flex-wrap items-center gap-2 mt-2">
+                            <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-200/60">
+                                {{ $visitor->asal_instansi ?? '-' }} ({{ $jmlOrang }} Orang)
+                            </span>
+                            <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200/60">
+                                {{ $visitor->divisi_tujuan }}
+                            </span>
+                            <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full border {{ $visitor->temu_janji == 'Ada Janji' ? 'bg-indigo-50 text-indigo-700 border-indigo-200/60' : 'bg-slate-50 text-slate-600 border-slate-200/60' }}">
+                                <i class="fas {{ $visitor->temu_janji == 'Ada Janji' ? 'fa-calendar-check' : 'fa-calendar-minus' }} text-[10px]"></i>
+                                {{ $visitor->temu_janji }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 3. Kotak Keperluan / Agenda -->
+                    <div class="bg-slate-50/80 rounded-xl p-3 border border-slate-100 my-3">
+                        <p class="text-xs text-slate-600 line-clamp-2">
+                            {{ $visitor->keperluan }}
+                        </p>
+                        <button type="button" 
+                                onclick="openDetailModal('{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->alamat) }}', '{{ $visitor->no_hp }}', '{{ addslashes($visitor->email ?? '') }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->temu_janji) }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->status }}', '{{ addslashes($visitor->asal_instansi ?? '') }}', '{{ $jmlOrang }}')"
+                                class="w-full text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center justify-end gap-1 mt-1">
+                            <span>Rincian Lengkap</span>
+                            <i class="fas fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- 4. Tombol Aksi Modern (Action Row) -->
+                    <div class="pt-2 border-t border-slate-100">
+                        @if($visitor->status == 'Diproses')
+                            <div class="flex flex-col gap-1.5 w-full">
+                                <button type="button" 
+                                        onclick="openConfirmModal('{{ route('admin.visitors.approve', $visitor->id) }}', 'Diterima', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                        class="w-full rounded-xl py-2 px-3 text-xs font-semibold shadow-sm transition active:scale-95 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-1.5">
+                                    <i class="fas fa-user-check text-[10px]"></i> Terima
+                                </button>
+                                <button type="button" 
+                                        onclick="openCancelModal('{{ route('admin.visitors.cancel', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                        class="w-full rounded-xl py-2 px-3 text-xs font-semibold shadow-sm transition active:scale-95 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200/80 flex items-center justify-center gap-1.5">
+                                    <i class="fas fa-times text-[10px]"></i> Batal
+                                </button>
+                            </div>
+                        @elseif($visitor->status == 'Diterima')
+                            <div class="flex flex-col gap-1.5 w-full">
+                                <button type="button" 
+                                        onclick="openCompleteModal('{{ route('admin.visitors.complete', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                        class="w-full rounded-xl py-2 px-3 text-xs font-semibold shadow-sm transition active:scale-95 bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5">
+                                    <i class="fas fa-check text-[10px]"></i> Selesaikan Kunjungan
+                                </button>
+                                <button type="button" 
+                                        onclick="openCancelModal('{{ route('admin.visitors.cancel', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                        class="w-full rounded-xl py-2 px-3 text-xs font-semibold shadow-sm transition active:scale-95 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200/80 flex items-center justify-center gap-1.5">
+                                    <i class="fas fa-times text-[10px]"></i> Batal
+                                </button>
+                            </div>
+                        @elseif($visitor->status == 'Selesai')
+                            <div class="w-full py-1.5 px-3 rounded-xl bg-emerald-50/70 border border-emerald-200/70 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5">
+                                <i class="fas fa-check-circle text-[10px]"></i> Kunjungan Selesai
+                            </div>
+                        @else
+                            <div class="w-full py-1.5 px-3 rounded-xl bg-rose-50/70 border border-rose-200/70 text-rose-700 text-xs font-semibold flex items-center justify-center gap-1.5" title="Alasan: {{ $visitor->alasan_batal ?? 'Tidak tercatat' }}">
+                                <i class="fas fa-times-circle text-[10px]"></i> Kunjungan Dibatalkan
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="py-10 text-center text-slate-400 bg-white rounded-xl border border-slate-200/80">
+                    <i class="fas fa-inbox text-3xl mb-2 block"></i>
+                    <p class="text-xs font-bold uppercase tracking-wider">Belum ada data kunjungan tamu</p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- DESKTOP TABLE VIEW (hidden md:block) -->
+        <div class="hidden md:block w-full overflow-hidden">
+            <table class="w-full table-auto text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-100/90 border-b-2 border-slate-200 text-[10px] sm:text-[11px] uppercase font-black text-slate-700 tracking-wider">
-                        <th class="py-3 px-3 text-center w-12 border-r border-slate-200/80">No.</th>
-                        <th class="py-3 px-3 sm:px-4">Jadwal & Waktu</th>
-                        <th class="py-3 px-3 sm:px-4">Identitas &amp; Kontak</th>
-                        <th class="py-3 px-3 sm:px-4">Asal Instansi</th>
-                        <th class="py-3 px-3 sm:px-4 text-center">Jml. Pengunjung</th>
-                        <th class="py-3 px-3 sm:px-4">Tujuan & Janji</th>
-                        <th class="py-3 px-3 sm:px-4">Keperluan / Agenda</th>
-                        <th class="py-3 px-3 sm:px-4 text-center">Status</th>
-                        <th class="py-3 px-3 sm:px-4 text-center">Aksi Status</th>
+                    <tr class="bg-slate-100/90 border-b-2 border-slate-200 text-[10px] uppercase font-black text-slate-700 tracking-wider">
+                        <th class="py-3 px-3 text-center w-10 border-r border-slate-200/80">No.</th>
+                        <th class="py-3 px-3 border-r border-slate-200/80">Jadwal &amp; Waktu</th>
+                        <th class="py-3 px-3 border-r border-slate-200/80">Identitas &amp; Kontak</th>
+                        <th class="py-3 px-3 border-r border-slate-200/80">Instansi &amp; Pengunjung</th>
+                        <th class="py-3 px-3 border-r border-slate-200/80">Tujuan &amp; Janji</th>
+                        <th class="py-3 px-3 border-r border-slate-200/80">Keperluan</th>
+                        <th class="py-3 px-3 text-center border-r border-slate-200/80">Status</th>
+                        <th class="py-3 px-3 text-center">Aksi Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200 text-xs sm:text-sm text-slate-700 font-medium">
+                <tbody class="divide-y divide-slate-200 text-xs text-slate-700 font-medium">
                     @forelse($visitors as $index => $visitor)
                         @php
                             $tglCarbon = \Carbon\Carbon::parse($visitor->tanggal_kunjungan);
@@ -293,61 +452,62 @@
                             
                             $selisihHariLalu = (int) $tglCarbon->diffInDays($hariIni, false);
                             $nomorUrut = ($visitors->currentPage() - 1) * $visitors->perPage() + $index + 1;
+                            $jmlOrang = (int) ($visitor->jumlah_pengunjung ?? 1);
                         @endphp
                         <tr class="{{ $index % 2 == 0 ? 'bg-white' : 'bg-slate-50/70' }} hover:bg-blue-50/40 transition-colors border-b border-slate-200/70">
                             
-                            <td class="py-3.5 px-3 text-center font-mono font-bold text-slate-600 bg-slate-100/50 border-r border-slate-200/80">
+                            <td class="py-3 px-3 text-center font-mono font-bold text-slate-600 bg-slate-100/50 border-r border-slate-200/80">
                                 {{ $nomorUrut }}
                             </td>
 
-                            <td class="py-3.5 px-3 sm:px-4 whitespace-nowrap border-r border-slate-100">
-                                <div class="mb-1">
+                            <td class="py-3 px-3 whitespace-nowrap border-r border-slate-100">
+                                <div class="mb-0.5">
                                     @if($isToday)
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 text-rose-700 border border-rose-200 animate-pulse">
-                                            <i class="fas fa-exclamation-circle text-[8px]"></i> HARI INI
+                                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider bg-rose-100 text-rose-700 border border-rose-200 animate-pulse">
+                                            <i class="fas fa-exclamation-circle text-[7px]"></i> HARI INI
                                         </span>
                                     @elseif($isTomorrow)
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
-                                            <i class="fas fa-clock text-[8px]"></i> BESOK
+                                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
+                                            <i class="fas fa-clock text-[7px]"></i> BESOK
                                         </span>
                                     @elseif($isFuture)
                                         @php $selisihMendatang = (int) $hariIni->diffInDays($tglCarbon, false); @endphp
                                         @if($selisihMendatang <= 7)
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200">
-                                                <i class="fas fa-calendar-alt text-[8px]"></i> {{ $selisihMendatang }} Hari Lagi
+                                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                                <i class="fas fa-calendar-alt text-[7px]"></i> {{ $selisihMendatang }} Hari Lagi
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
-                                                <i class="fas fa-calendar-week text-[8px]"></i> {{ ceil($selisihMendatang / 7) }} Mgg Lagi
+                                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
+                                                <i class="fas fa-calendar-week text-[7px]"></i> {{ ceil($selisihMendatang / 7) }} Mgg Lagi
                                             </span>
                                         @endif
                                     @else
                                         @if($selisihHariLalu == 1)
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-slate-200 text-slate-700 border border-slate-300">
-                                                <i class="fas fa-history text-[8px]"></i> 1 Hari Lalu
+                                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-slate-200 text-slate-700 border border-slate-300">
+                                                <i class="fas fa-history text-[7px]"></i> 1 Hari Lalu
                                             </span>
                                         @elseif($selisihHariLalu > 1 && $selisihHariLalu <= 7)
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-slate-200 text-slate-700 border border-slate-300">
-                                                <i class="fas fa-history text-[8px]"></i> {{ $selisihHariLalu }} Hari Lalu
+                                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-slate-200 text-slate-700 border border-slate-300">
+                                                <i class="fas fa-history text-[7px]"></i> {{ $selisihHariLalu }} Hari Lalu
                                             </span>
                                         @else
                                             @php $mingguLalu = ceil($selisihHariLalu / 7); @endphp
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-slate-200 text-slate-700 border border-slate-300">
-                                                <i class="fas fa-history text-[8px]"></i> {{ $mingguLalu }} Mgg Lalu
+                                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-slate-200 text-slate-700 border border-slate-300">
+                                                <i class="fas fa-history text-[7px]"></i> {{ $mingguLalu }} Mgg Lalu
                                             </span>
                                         @endif
                                     @endif
                                 </div>
 
-                                <div class="font-bold text-slate-900 text-xs">{{ $formattedDate }}</div>
+                                <div class="font-bold text-slate-900 text-[11px] leading-tight">{{ $formattedDate }}</div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    <i class="far fa-clock text-[9px] mr-0.5"></i> {{ $jamClean }} WIB
+                                    <i class="far fa-clock text-[8px] mr-0.5"></i> {{ $jamClean }} WIB
                                 </div>
                             </td>
 
-                            <td class="py-3.5 px-3 sm:px-4 border-r border-slate-100">
-                                <div class="font-extrabold text-slate-900">{{ $visitor->nama_lengkap }}</div>
-                                <div class="text-xs text-slate-500 mb-1">{{ $visitor->alamat }}</div>
+                            <td class="py-3 px-3 max-w-[180px] border-r border-slate-100">
+                                <div class="font-extrabold text-slate-900 text-xs truncate" title="{{ $visitor->nama_lengkap }}">{{ $visitor->nama_lengkap }}</div>
+                                <div class="text-[11px] text-slate-500 mb-1 truncate" title="{{ $visitor->alamat }}">{{ $visitor->alamat }}</div>
                                 
                                 @php
                                     $hpClean = preg_replace('/[^0-9]/', '', $visitor->no_hp);
@@ -359,116 +519,111 @@
                                 <a href="https://wa.me/{{ $hpClean }}" 
                                    target="_blank" 
                                    title="Klik untuk obrolan WhatsApp langsung"
-                                   class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold transition-all hover:scale-105 shadow-2xs">
-                                    <i class="fab fa-whatsapp text-emerald-600 text-xs"></i>
-                                    <span class="font-mono text-[11px]">{{ $visitor->no_hp }}</span>
+                                   class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10px] font-bold transition-all shadow-2xs">
+                                    <i class="fab fa-whatsapp text-emerald-600 text-[10px]"></i>
+                                    <span class="font-mono text-[10px] truncate">{{ $visitor->no_hp }}</span>
                                 </a>
                             </td>
 
-                            <td class="py-3.5 px-3 sm:px-4 border-r border-slate-100 whitespace-nowrap">
+                            <td class="py-3 px-3 whitespace-nowrap border-r border-slate-100">
                                 @php
                                     $kategoriBadge = match ($visitor->asal_instansi) {
-                                        'Instansi Pemerintah' => 'bg-blue-50 text-blue-700 border-blue-200',
-                                        'Swasta'              => 'bg-amber-50 text-amber-700 border-amber-200',
-                                        default               => 'bg-slate-100 text-slate-700 border-slate-200',
+                                        'Instansi Pemerintah' => 'bg-blue-50 text-blue-700 border-blue-200/80',
+                                        'Swasta'              => 'bg-amber-50 text-amber-700 border-amber-200/80',
+                                        default               => 'bg-slate-100 text-slate-700 border-slate-200/80',
                                     };
                                 @endphp
-                                <span class="px-2 py-0.5 rounded-lg border text-xs font-bold inline-block {{ $kategoriBadge }}">
-                                    {{ $visitor->asal_instansi ?? '-' }}
-                                </span>
-                            </td>
-
-                            <td class="py-3.5 px-3 sm:px-4 border-r border-slate-100 text-center">
-                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-black text-slate-800">
-                                    <i class="fas fa-users text-[9px] text-slate-400"></i> {{ $visitor->jumlah_pengunjung ?? 1 }}
-                                </span>
-                            </td>
-
-                            <td class="py-3.5 px-3 sm:px-4 border-r border-slate-100">
-                                <div class="mb-1">
-                                    <span class="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-800 font-bold text-xs border border-slate-200 inline-block">
-                                        {{ $visitor->divisi_tujuan }}
+                                <div class="flex flex-col gap-1.5 items-start">
+                                    <span class="px-2 py-0.5 rounded-md border text-xs font-semibold {{ $kategoriBadge }}">
+                                        {{ $visitor->asal_instansi ?? '-' }}
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium border border-slate-200/60">
+                                        <i class="fas fa-users text-[10px] text-slate-500"></i>
+                                        <span>{{ $jmlOrang }} Orang</span>
                                     </span>
                                 </div>
-                                <div class="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded {{ $visitor->temu_janji == 'Ada Janji' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-slate-100 text-slate-600' }}">
-                                    <i class="fas {{ $visitor->temu_janji == 'Ada Janji' ? 'fa-calendar-check' : 'fa-calendar-minus' }}"></i>
-                                    {{ $visitor->temu_janji }}
+                            </td>
+
+                            <td class="py-3 px-3 border-r border-slate-100">
+                                <div class="flex flex-col gap-1.5 items-start">
+                                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 font-bold text-xs border border-slate-200/80 leading-snug">
+                                        {{ $visitor->divisi_tujuan }}
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-md {{ $visitor->temu_janji == 'Ada Janji' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200/80' : 'bg-slate-100 text-slate-600 border border-slate-200/60' }}">
+                                        <i class="fas {{ $visitor->temu_janji == 'Ada Janji' ? 'fa-calendar-check' : 'fa-calendar-minus' }} text-[9px]"></i>
+                                        {{ $visitor->temu_janji }}
+                                    </span>
                                 </div>
                             </td>
 
-                            <td class="py-3.5 px-3 sm:px-4 min-w-[180px] max-w-[260px] border-r border-slate-100">
-                                <p class="text-xs text-slate-800 font-semibold leading-relaxed break-words break-all whitespace-pre-line mb-2">
+                            <td class="py-3 px-3 max-w-[220px] border-r border-slate-100">
+                                <p class="text-xs text-slate-600 line-clamp-2 italic mb-1.5" title="{{ $visitor->keperluan }}">
                                     {{ $visitor->keperluan }}
                                 </p>
                                 <button type="button" 
-                                        onclick="openDetailModal('{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->alamat) }}', '{{ $visitor->no_hp }}', '{{ addslashes($visitor->email ?? '') }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->temu_janji) }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->status }}', '{{ addslashes($visitor->asal_instansi ?? '') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')"
-                                        class="inline-flex items-center gap-1 text-[11px] font-extrabold text-blue-600 hover:text-blue-800 hover:underline">
-                                    <i class="fas fa-eye text-[10px]"></i> Tampilkan Rincian Lengkap
+                                        onclick="openDetailModal('{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->alamat) }}', '{{ $visitor->no_hp }}', '{{ addslashes($visitor->email ?? '') }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->temu_janji) }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->status }}', '{{ addslashes($visitor->asal_instansi ?? '') }}', '{{ $jmlOrang }}')"
+                                        class="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:underline">
+                                    <i class="fas fa-eye text-[10px]"></i>
+                                    <span>Rincian Lengkap</span>
                                 </button>
                             </td>
 
-                            <td class="py-3.5 px-3 sm:px-4 text-center whitespace-nowrap border-r border-slate-100">
+                            <td class="py-3 px-3 text-center whitespace-nowrap border-r border-slate-100">
                                 @if($visitor->status == 'Selesai')
-                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 inline-flex items-center gap-1">
-                                        <i class="fas fa-check-circle text-[10px]"></i> Selesai
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 inline-flex items-center gap-1">
+                                        <i class="fas fa-check-circle text-[9px]"></i> Selesai
                                     </span>
                                 @elseif($visitor->status == 'Diterima')
-                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200 inline-flex items-center gap-1">
-                                        <i class="fas fa-user-check text-[10px]"></i> Diterima
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200 inline-flex items-center gap-1">
+                                        <i class="fas fa-user-check text-[9px]"></i> Diterima
                                     </span>
                                 @elseif($visitor->status == 'Dibatalkan')
-                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200 inline-flex items-center gap-1" title="Alasan: {{ $visitor->alasan_batal ?? 'Tidak tercatat' }}">
-                                        <i class="fas fa-times-circle text-[10px]"></i> Dibatalkan
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200 inline-flex items-center gap-1" title="Alasan: {{ $visitor->alasan_batal ?? 'Tidak tercatat' }}">
+                                        <i class="fas fa-times-circle text-[9px]"></i> Batal
                                     </span>
                                 @else
-                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200 inline-flex items-center gap-1">
-                                        <i class="fas fa-spinner text-[10px]"></i> Diproses
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 inline-flex items-center gap-1">
+                                        <i class="fas fa-spinner text-[9px]"></i> Diproses
                                     </span>
                                 @endif
                             </td>
 
-                            <td class="py-3.5 px-3 sm:px-4 text-center whitespace-nowrap">
-                                <div class="inline-flex gap-1 items-center justify-center">
-                                    @if($isPast && $visitor->status != 'Selesai' && $visitor->status != 'Dibatalkan')
-                                        <span class="px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-[11px] font-extrabold flex items-center gap-1.5 shadow-2xs" title="Kunjungan telah melewati jadwal dan tidak diselesaikan secara manual">
-                                            <i class="fas fa-exclamation-triangle text-amber-500"></i> Tidak Diselesaikan
+                            <td class="py-3 px-3 text-center whitespace-nowrap">
+                                <div class="flex flex-col gap-1.5 w-full">
+                                    @if($visitor->status == 'Diproses')
+                                        <button type="button" 
+                                                onclick="openConfirmModal('{{ route('admin.visitors.approve', $visitor->id) }}', 'Diterima', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                                title="Terima Kunjungan" 
+                                                class="w-full px-2.5 py-1 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-2xs rounded-lg text-[11px] font-semibold transition-all inline-flex items-center justify-center gap-1">
+                                            <i class="fas fa-user-check text-[9px]"></i> Terima
+                                        </button>
+                                        <button type="button" 
+                                                onclick="openCancelModal('{{ route('admin.visitors.cancel', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                                title="Batalkan Kunjungan" 
+                                                class="w-full px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200/80 active:scale-95 rounded-lg text-[11px] font-semibold transition-all inline-flex items-center justify-center gap-1">
+                                            <i class="fas fa-times text-[9px]"></i> Batal
+                                        </button>
+                                    @elseif($visitor->status == 'Diterima')
+                                        <button type="button" 
+                                                onclick="openCompleteModal('{{ route('admin.visitors.complete', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                                title="Tandai Kunjungan Selesai" 
+                                                class="w-full px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white shadow-2xs rounded-lg text-[11px] font-semibold transition-all inline-flex items-center justify-center gap-1">
+                                            <i class="fas fa-check text-[9px]"></i> Selesaikan Kunjungan
+                                        </button>
+                                        <button type="button" 
+                                                onclick="openCancelModal('{{ route('admin.visitors.cancel', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ $jmlOrang }}')" 
+                                                title="Batalkan Kunjungan" 
+                                                class="w-full px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200/80 active:scale-95 rounded-lg text-[11px] font-semibold transition-all inline-flex items-center justify-center gap-1">
+                                            <i class="fas fa-times text-[9px]"></i> Batal
+                                        </button>
+                                    @elseif($visitor->status == 'Selesai')
+                                        <span class="w-full px-2 py-1 rounded-lg bg-slate-100 text-slate-500 border border-slate-200/80 text-[10px] font-semibold inline-flex items-center justify-center gap-1">
+                                            <i class="fas fa-check-double text-[9px] text-emerald-600"></i> Tuntas
                                         </span>
                                     @else
-                                        @if($visitor->status == 'Diproses')
-                                            <button type="button" 
-                                                    onclick="openConfirmModal('{{ route('admin.visitors.approve', $visitor->id) }}', 'Diterima', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')" 
-                                                    title="Terima Kunjungan" 
-                                                    class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-2xs rounded-lg text-xs font-bold transition-all flex items-center gap-1">
-                                                <i class="fas fa-user-check"></i> Terima
-                                            </button>
-                                        @endif
-
-                                        @if($visitor->status != 'Selesai' && $visitor->status != 'Dibatalkan')
-                                            @if($canComplete)
-                                                <button type="button" 
-                                                        onclick="openCompleteModal('{{ route('admin.visitors.complete', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')" 
-                                                        title="Tandai Kunjungan Selesai" 
-                                                        class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white shadow-2xs rounded-lg text-xs font-bold transition-all flex items-center gap-1">
-                                                    <i class="fas fa-check"></i> Selesai
-                                                </button>
-                                            @else
-                                                <button type="button" 
-                                                        onclick="openSopModalClient('Status Masih [Diproses]', 'Sesuai SOP layanan, Anda wajib mengklik tombol [Terima] terlebih dahulu untuk mengubah status sebelum dapat menandai Selesai.')" 
-                                                        title="Memerlukan status Diterima" 
-                                                        class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-400 border border-slate-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-not-allowed">
-                                                    <i class="fas fa-lock text-[9px]"></i> Selesai
-                                                </button>
-                                            @endif
-                                        @endif
-
-                                        @if($visitor->status != 'Selesai' && $visitor->status != 'Dibatalkan')
-                                            <button type="button" 
-                                                    onclick="openCancelModal('{{ route('admin.visitors.cancel', $visitor->id) }}', '{{ addslashes($visitor->nama_lengkap) }}', '{{ addslashes($visitor->divisi_tujuan) }}', '{{ addslashes($visitor->keperluan) }}', '{{ $visitor->no_hp }}', '{{ $formattedDate }}', '{{ $jamClean }}', '{{ addslashes($visitor->asal_instansi ?? '-') }}', '{{ (int) ($visitor->jumlah_pengunjung ?? 1) }}')" 
-                                                    title="Batalkan Kunjungan" 
-                                                    class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white shadow-2xs rounded-lg text-xs font-bold transition-all flex items-center gap-1">
-                                                <i class="fas fa-times"></i> Batal
-                                            </button>
-                                        @endif
+                                        <span class="w-full px-2 py-1 rounded-lg bg-slate-100 text-slate-500 border border-slate-200/80 text-[10px] font-semibold inline-flex items-center justify-center gap-1" title="Alasan: {{ $visitor->alasan_batal ?? 'Tidak tercatat' }}">
+                                            <i class="fas fa-ban text-[9px] text-rose-500"></i> Dibatalkan
+                                        </span>
                                     @endif
                                 </div>
                             </td>
@@ -476,7 +631,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="py-10 text-center text-slate-400">
+                            <td colspan="8" class="py-10 text-center text-slate-400">
                                 <i class="fas fa-inbox text-3xl mb-2 block"></i>
                                 <p class="text-xs font-bold uppercase tracking-wider">Belum Ada Data Kunjungan Tamu</p>
                             </td>
@@ -988,21 +1143,16 @@
     let currentCancelData = { guestName: '', divisiName: '', keperluan: '', phone: '', tanggal: '', jam: '' };
 
     function updateRealtimeClock() {
-        const hariEl = document.getElementById('clock-hari-tanggal');
-        const jamEl = document.getElementById('clock-jam-menit');
-        const detikEl = document.getElementById('clock-detik');
+        const headerClockEl = document.getElementById('header-realtime-clock');
+        if (!headerClockEl) return;
 
-        if (!jamEl) return;
         const now = new Date();
-        const opsiHari = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
-        if (hariEl) hariEl.textContent = now.toLocaleDateString('id-ID', opsiHari);
-
+        const opsiTanggal = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+        const tanggalFormatted = now.toLocaleDateString('id-ID', opsiTanggal);
         const jam = String(now.getHours()).padStart(2, '0');
         const menit = String(now.getMinutes()).padStart(2, '0');
-        const detik = String(now.getSeconds()).padStart(2, '0');
 
-        jamEl.textContent = `${jam}:${menit}`;
-        if (detikEl) detikEl.textContent = detik;
+        headerClockEl.textContent = `${tanggalFormatted} • ${jam}:${menit} WIB`;
     }
 
     document.addEventListener('DOMContentLoaded', function() {
