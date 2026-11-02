@@ -216,6 +216,16 @@
                 </select>
             </div>
 
+            <div class="md:col-span-2">
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">ASAL INSTANSI</label>
+                <select name="asal_instansi" class="w-full px-3 py-2 bg-slate-50/70 border border-slate-200/90 rounded-xl sm:rounded-2xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                    <option value="">Semua Instansi</option>
+                    <option value="Instansi Pemerintah" {{ request('asal_instansi') == 'Instansi Pemerintah' ? 'selected' : '' }}>Pemerintah</option>
+                    <option value="Swasta" {{ request('asal_instansi') == 'Swasta' ? 'selected' : '' }}>Swasta</option>
+                    <option value="Masyarakat Umum" {{ request('asal_instansi') == 'Masyarakat Umum' ? 'selected' : '' }}>Umum</option>
+                </select>
+            </div>
+
             <div class="md:col-span-1">
                 <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">STATUS</label>
                 <select name="status" class="w-full px-2 py-2 bg-slate-50/70 border border-slate-200/90 rounded-xl sm:rounded-2xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
@@ -921,6 +931,16 @@
                     <option value="Teknologi dan Media Baru (TMB)">Teknologi dan Media Baru (TMB)</option>
                     <option value="Layanan Pengembangan Usaha (LPU)">Layanan Pengembangan Usaha (LPU)</option>
                     <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1.5">Asal Instansi</label>
+                <select name="asal_instansi" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
+                    <option value="">Semua Asal Instansi</option>
+                    <option value="Instansi Pemerintah">Pemerintah</option>
+                    <option value="Swasta">Swasta</option>
+                    <option value="Masyarakat Umum">Umum</option>
                 </select>
             </div>
 

@@ -10,12 +10,12 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->string('asal_instansi', 50)->nullable()->after('alamat');
-            $table->unsignedSmallInteger('jumlah_pengunjung')->default(1)->after('asal_instansi');
-        });
-    }
+{
+    Schema::table('visitors', function (Blueprint $table) { // <-- Pastikan namanya 'visitors'
+        $table->enum('asal_instansi', ['Instansi Pemerintah', 'Swasta', 'Masyarakat Umum'])->default('Masyarakat Umum')->after('alamat');
+        $table->integer('jumlah_pengunjung')->default(1)->after('asal_instansi');
+    });
+}
 
     /**
      * Reverse the migrations.

@@ -208,6 +208,9 @@ class VisitorController extends Controller
         if ($request->filled('divisi') && trim($request->divisi) !== '') {
             $query->where('divisi_tujuan', $request->divisi);
         }
+        if ($request->filled('asal_instansi') && trim($request->asal_instansi) !== '') {
+            $query->where('asal_instansi', $request->asal_instansi);
+        }
         if ($request->filled('tanggal') && trim($request->tanggal) !== '') {
             $query->whereDate('tanggal_kunjungan', $request->tanggal);
         }
@@ -263,6 +266,9 @@ class VisitorController extends Controller
 
         if ($request->filled('divisi') && trim($request->divisi) !== '') {
             $query->where('divisi_tujuan', $request->divisi);
+        }
+        if ($request->filled('asal_instansi') && trim($request->asal_instansi) !== '') {
+            $query->where('asal_instansi', $request->asal_instansi);
         }
         if ($request->filled('tanggal') && trim($request->tanggal) !== '') {
             $query->whereDate('tanggal_kunjungan', $request->tanggal);
@@ -431,80 +437,50 @@ class VisitorController extends Controller
 
         $row += 2;
         $sheet->mergeCells('A' . $row . ':I' . $row);
-        $sheet->setCellValue('A' . $row, 'RINGKASAN REKAPITULASI STATISTIK:');
+        $instansiCounts = [
+            'Instansi Pemerintah' => (int) $visitors->where('asal_instansi', 'Instansi Pemerintah')->sum('jumlah_pengunjung'),
+            'Swasta'              => (int) $visitors->where('asal_instansi', 'Swasta')->sum('jumlah_pengunjung'),
+            'Masyarakat Umum'     => (int) $visitors->where('asal_instansi', 'Masyarakat Umum')->sum('jumlah_pengunjung'),
+        ];
+        $maxInstansi = max($instansiCounts);
+        $instansiTerbanyak = $maxInstansi > 0
+            ? implode(' / ', array_keys(array_filter($instansiCounts, fn ($count) => $count === $maxInstansi))) . ' (' . $maxInstansi . ')'
+            : '-';
+
+        $sheet->mergeCells('A' . $row . ':I' . $row);
+        $sheet->setCellValue('A' . $row, 'RINGKASAN REKAPITULASI STATISTIK & ASAL INSTANSI:');
         $sheet->getStyle('A' . $row)->getFont()->setBold(true)->setSize(9.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E3A8A'));
         $sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
         $row++;
-        $sheet->mergeCells('A' . $row . ':B' . $row);
-        $sheet->setCellValue('A' . $row, 'TOTAL KUNJUNGAN (REGISTRASI)');
-        $sheet->setCellValue('C' . $row, 'DIPROSES (PENDING)');
-        $sheet->setCellValue('D' . $row, 'DITERIMA (BERLANGSUNG)');
-        $sheet->setCellValue('E' . $row, 'SELESAI');
-        $sheet->setCellValue('F' . $row, 'DIBATALKAN');
-        
-        $statColsArr = ['A', 'C', 'D', 'E', 'F'];
-        foreach ($statColsArr as $sc) {
+        $summaryHeaders = ['DIPROSES', 'DITERIMA', 'SELESAI', 'DIBATALKAN', 'TOTAL PENGUNJUNG (ORANG)', 'PEMERINTAH', 'SWASTA', 'UMUM', 'INSTANSI TERBANYAK'];
+        $summaryValues = [
+            $visitors->where('status', 'Diproses')->count(),
+            $visitors->where('status', 'Diterima')->count(),
+            $visitors->where('status', 'Selesai')->count(),
+            $visitors->where('status', 'Dibatalkan')->count(),
+            (int) $visitors->sum('jumlah_pengunjung'),
+            $instansiCounts['Instansi Pemerintah'],
+            $instansiCounts['Swasta'],
+            $instansiCounts['Masyarakat Umum'],
+            $instansiTerbanyak,
+        ];
+        $summaryColors = ['B45309', '1D4ED8', '047857', 'B91C1C', '1E3A8A', '1E293B', '1E293B', '1E293B', '1E3A8A'];
+
+        foreach ($cols as $i => $sc) {
+            $sheet->setCellValue($sc . $row, $summaryHeaders[$i]);
             $sheet->getStyle($sc . $row)->getFont()->setBold(true)->setSize(8)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E293B'));
             $sheet->getStyle($sc . $row)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('E2E8F0');
-            $sheet->getStyle($sc . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
-        }
-        $sheet->getStyle('B' . $row)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('E2E8F0');
-        $sheet->getRowDimension($row)->setRowHeight(22);
+            $sheet->getStyle($sc . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER)->setWrapText(true);
 
+            $sheet->setCellValue($sc . ($row + 1), $summaryValues[$i]);
+            $sheet->getStyle($sc . ($row + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER)->setWrapText(true);
+            $sheet->getStyle($sc . ($row + 1))->getFont()->setBold(true)->setSize($i === 8 ? 9 : 10.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color($summaryColors[$i]));
+        }
+        $sheet->getRowDimension($row)->setRowHeight(30);
+        $sheet->getRowDimension($row + 1)->setRowHeight(30);
+        $sheet->getStyle('A' . $row . ':I' . ($row + 1))->applyFromArray($styleBorderArray);
         $row++;
-        $sheet->mergeCells('A' . $row . ':B' . $row);
-        $sheet->setCellValue('A' . $row, $visitors->count());
-        $sheet->setCellValue('C' . $row, $visitors->where('status', 'Diproses')->count());
-        $sheet->setCellValue('D' . $row, $visitors->where('status', 'Diterima')->count());
-        $sheet->setCellValue('E' . $row, $visitors->where('status', 'Selesai')->count());
-        $sheet->setCellValue('F' . $row, $visitors->where('status', 'Dibatalkan')->count());
-
-        $valColsArr = ['A', 'B', 'C', 'D', 'E', 'F'];
-        foreach ($valColsArr as $vc) {
-            $sheet->getStyle($vc . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
-            $sheet->getStyle($vc . $row)->getFont()->setBold(true)->setSize(10.5);
-        }
-        $sheet->getStyle('C' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('B45309'));
-        $sheet->getStyle('D' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1D4ED8'));
-        $sheet->getStyle('E' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('047857'));
-        $sheet->getStyle('F' . $row)->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('B91C1C'));
-
-        $sheet->getRowDimension($row)->setRowHeight(24);
-        
-        $sheet->getStyle('A' . ($row - 1) . ':F' . $row)->applyFromArray($styleBorderArray);
-
-        $row += 2;
-        $sheet->mergeCells('A' . $row . ':I' . $row);
-        $sheet->setCellValue('A' . $row, 'REKAPITULASI PENGUNJUNG BERDASARKAN ASAL INSTANSI:');
-        $sheet->getStyle('A' . $row)->getFont()->setBold(true)->setSize(9.5)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E3A8A'));
-        $sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-
-        $row++;
-        $sheet->mergeCells('A' . $row . ':B' . $row);
-        $sheet->setCellValue('A' . $row, 'TOTAL PENGUNJUNG (ORANG)');
-        $sheet->setCellValue('C' . $row, 'INSTANSI PEMERINTAH');
-        $sheet->setCellValue('D' . $row, 'SWASTA');
-        $sheet->setCellValue('E' . $row, 'MASYARAKAT UMUM');
-        foreach (['A', 'B', 'C', 'D', 'E'] as $rc) {
-            $sheet->getStyle($rc . $row)->getFont()->setBold(true)->setSize(8)->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('1E293B'));
-            $sheet->getStyle($rc . $row)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('E2E8F0');
-            $sheet->getStyle($rc . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
-        }
-        $sheet->getRowDimension($row)->setRowHeight(22);
-
-        $row++;
-        $sheet->mergeCells('A' . $row . ':B' . $row);
-        $sheet->setCellValue('A' . $row, (int) $visitors->sum('jumlah_pengunjung'));
-        $sheet->setCellValue('C' . $row, (int) $visitors->where('asal_instansi', 'Instansi Pemerintah')->sum('jumlah_pengunjung'));
-        $sheet->setCellValue('D' . $row, (int) $visitors->where('asal_instansi', 'Swasta')->sum('jumlah_pengunjung'));
-        $sheet->setCellValue('E' . $row, (int) $visitors->where('asal_instansi', 'Masyarakat Umum')->sum('jumlah_pengunjung'));
-        foreach (['A', 'B', 'C', 'D', 'E'] as $rc) {
-            $sheet->getStyle($rc . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
-            $sheet->getStyle($rc . $row)->getFont()->setBold(true)->setSize(10.5);
-        }
-        $sheet->getRowDimension($row)->setRowHeight(24);
-        $sheet->getStyle('A' . ($row - 1) . ':E' . $row)->applyFromArray($styleBorderArray);
 
         $row += 2;
         $sheet->mergeCells('H' . $row . ':I' . $row);

@@ -323,37 +323,40 @@
         </tbody>
     </table>
 
-    <div class="summary-title">RINGKASAN REKAPITULASI STATISTIK:</div>
+    @php
+        $instansiCounts = [
+            'Instansi Pemerintah' => (int) $visitors->where('asal_instansi', 'Instansi Pemerintah')->sum('jumlah_pengunjung'),
+            'Swasta'              => (int) $visitors->where('asal_instansi', 'Swasta')->sum('jumlah_pengunjung'),
+            'Masyarakat Umum'     => (int) $visitors->where('asal_instansi', 'Masyarakat Umum')->sum('jumlah_pengunjung'),
+        ];
+        $maxInstansi = max($instansiCounts);
+        $instansiTerbanyak = $maxInstansi > 0
+            ? implode(' / ', array_keys(array_filter($instansiCounts, fn ($c) => $c === $maxInstansi))) . ' (' . $maxInstansi . ')'
+            : '-';
+    @endphp
+    <div class="summary-title">RINGKASAN REKAPITULASI STATISTIK &amp; ASAL INSTANSI:</div>
     <table class="summary-table">
         <tr>
-            <th>TOTAL KUNJUNGAN</th>
-            <th>DIPROSES (PENDING)</th>
-            <th>DITERIMA (BERLANGSUNG)</th>
+            <th>DIPROSES</th>
+            <th>DITERIMA</th>
             <th>SELESAI</th>
             <th>DIBATALKAN</th>
+            <th>TOTAL PENGUNJUNG (ORANG)</th>
+            <th>PEMERINTAH</th>
+            <th>SWASTA</th>
+            <th>UMUM</th>
+            <th>INSTANSI TERBANYAK</th>
         </tr>
         <tr>
-            <td style="color: #1e3a8a;">{{ $summary['total'] ?? $visitors->count() }}</td>
             <td style="color: #b45309;">{{ $summary['diproses'] ?? $visitors->where('status', 'Diproses')->count() }}</td>
             <td style="color: #1d4ed8;">{{ $summary['diterima'] ?? $visitors->where('status', 'Diterima')->count() }}</td>
             <td style="color: #047857;">{{ $summary['selesai'] ?? $visitors->where('status', 'Selesai')->count() }}</td>
             <td style="color: #b91c1c;">{{ $summary['dibatalkan'] ?? $visitors->where('status', 'Dibatalkan')->count() }}</td>
-        </tr>
-    </table>
-
-    <div class="summary-title">REKAPITULASI PENGUNJUNG BERDASARKAN ASAL INSTANSI:</div>
-    <table class="summary-table">
-        <tr>
-            <th>TOTAL PENGUNJUNG (ORANG)</th>
-            <th>INSTANSI PEMERINTAH</th>
-            <th>SWASTA</th>
-            <th>MASYARAKAT UMUM</th>
-        </tr>
-        <tr>
             <td style="color: #1e3a8a;">{{ (int) $visitors->sum('jumlah_pengunjung') }}</td>
-            <td>{{ (int) $visitors->where('asal_instansi', 'Instansi Pemerintah')->sum('jumlah_pengunjung') }}</td>
-            <td>{{ (int) $visitors->where('asal_instansi', 'Swasta')->sum('jumlah_pengunjung') }}</td>
-            <td>{{ (int) $visitors->where('asal_instansi', 'Masyarakat Umum')->sum('jumlah_pengunjung') }}</td>
+            <td>{{ $instansiCounts['Instansi Pemerintah'] }}</td>
+            <td>{{ $instansiCounts['Swasta'] }}</td>
+            <td>{{ $instansiCounts['Masyarakat Umum'] }}</td>
+            <td style="color: #1e3a8a; font-size: 8px;">{{ $instansiTerbanyak }}</td>
         </tr>
     </table>
 

@@ -105,6 +105,10 @@ class AdminController extends Controller
             $query->where('divisi_tujuan', $request->divisi);
         }
 
+        if ($request->filled('asal_instansi') && trim($request->asal_instansi) !== '') {
+            $query->where('asal_instansi', $request->asal_instansi);
+        }
+
         if ($request->filled('status') && trim($request->status) !== '') {
             $query->where('status', $request->status);
         }
