@@ -53,108 +53,32 @@
         .animate-shake { animation: shakeError 0.35s ease-in-out; }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen antialiased overflow-x-hidden selection:bg-blue-600 selection:text-white">
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen antialiased overflow-x-hidden selection:bg-blue-200">
 
-    <!-- HEADER NAVBAR RESPONSIF -->
-    <header class="bg-slate-50/90 backdrop-blur-md border-b border-blue-100/80 sticky top-0 z-50 shadow-sm w-full">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                
-                <!-- Logo RRI & Badge Admin Panel -->
-                <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0 group">
-                    <img src="{{ asset('images/logo_rri.svg') }}" alt="Logo RRI Bukittinggi" class="h-8 sm:h-9 w-auto group-hover:scale-105 transition-transform duration-300">
-                    
-                    @auth
-                        <span class="hidden md:inline-block px-2.5 py-0.5 rounded-full bg-blue-100/80 border border-blue-200 text-[10px] font-extrabold uppercase tracking-wider text-blue-800">
-                            Admin Panel
-                        </span>
-                    @endauth
-                </a>
-
-                <!-- NAVIGASI DESKTOP VIEW -->
-                <nav class="hidden md:flex items-center gap-2">
-                    <div class="p-1 bg-slate-200/60 rounded-full border border-slate-300/60 flex items-center gap-1">
-                        <!-- Menu Beranda -->
-                        <a href="{{ route('home') }}" class="px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-700 hover:text-blue-700 hover:bg-white/50 transition-all flex items-center gap-1.5">
-                            <i class="fas fa-home text-xs text-slate-500"></i>Beranda
-                        </a>
-
-                        <!-- Menu Buku Tamu (Active State) -->
-                        <a href="{{ route('registrasi') }}" class="px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-all flex items-center gap-1.5">
-                            <i class="fas fa-edit text-xs"></i>Buku Tamu
-                        </a>
-
-                        <!-- JIKA USER ADMIN -->
-                        @auth
-                            <div class="h-4 w-[1px] bg-slate-300 mx-0.5"></div>
-                            <a href="{{ route('admin.dashboard') }}" class="px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-slate-900 text-white shadow-sm hover:bg-slate-800 transition-all flex items-center gap-1.5">
-                                <i class="fas fa-chart-pie text-xs text-sky-400"></i>
-                                <span>Dashboard</span>
-                            </a>
-                            <button type="button" onclick="openLogoutModal()" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-all flex items-center gap-1">
-                                <i class="fas fa-sign-out-alt text-xs"></i>
-                                <span>Keluar</span>
-                            </button>
-                        @endauth
-                    </div>
-                </nav>
-
-                <!-- TOMBOL HAMBURGER MOBILE -->
-                <div class="flex items-center md:hidden gap-2">
-                    @auth
-                        <span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold border border-blue-200">
-                            Admin
-                        </span>
-                    @endauth
-                    <button type="button" id="mobileMenuBtn" class="p-2 rounded-xl bg-slate-200/80 text-slate-700 hover:bg-slate-300 focus:outline-none">
-                        <i class="fas fa-bars text-lg" id="mobileMenuIcon"></i>
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- DROPDOWN MENU MOBILE -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4 pt-2 border-t border-slate-200/80 animate-fade-in-up">
-                <div class="flex flex-col gap-2">
-                    <a href="{{ route('home') }}" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-200 flex items-center gap-2">
-                        <i class="fas fa-home text-xs text-slate-500"></i>Beranda Utama
-                    </a>
-                    <a href="{{ route('registrasi') }}" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-blue-600 text-white flex items-center gap-2">
-                        <i class="fas fa-edit text-xs"></i>Buku Tamu
-                    </a>
-
-                    @auth
-                        <div class="my-1 border-t border-slate-200"></div>
-                        <a href="{{ route('admin.dashboard') }}" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-900 text-white flex items-center gap-2">
-                            <i class="fas fa-chart-pie text-xs text-sky-400"></i>
-                            <span>Dashboard Admin</span>
-                        </a>
-                        <button type="button" onclick="openLogoutModal()" class="w-full px-4 py-2.5 rounded-xl text-sm font-bold text-rose-600 bg-rose-50 border border-rose-100 flex items-center gap-2">
-                            <i class="fas fa-sign-out-alt text-xs"></i>
-                            <span>Keluar dari Akun</span>
-                        </button>
-                    @endauth
-                </div>
-            </div>
-
-        </div>
-    </header>
+    <!-- HEADER NAVBAR -->
+    @include('partials.navbar')
 
     <!-- KONTEN UTAMA FORMULIR BUKU TAMU -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         
         <!-- Tombol Kembali Ke Beranda -->
-        <div class="mb-6 animate-fade-in-up">
-            <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-blue-600 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-sm transition-all">
+        <div class="mb-4 animate-fade-in-up">
+            <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-blue-600 bg-white px-3.5 py-2 rounded-xl border border-slate-200/80 shadow-xs transition-all">
                 <i class="fas fa-arrow-left text-[10px]"></i>
                 <span>Kembali ke Beranda</span>
             </a>
         </div>
 
-        <!-- Judul & Subjudul -->
-        <div class="mb-8 animate-fade-in-up">
-            <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Formulir Buku Tamu</h1>
-            <p class="text-xs sm:text-base text-slate-500 mt-1">Silakan lengkapi data kunjungan Anda dengan informasi yang valid.</p>
+        <!-- HEADER CARD IDENTIK DENGAN DASHBOARD ADMIN -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in-up">
+            <div class="space-y-1 text-left">
+                <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-blue-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                    <span>LPP RRI Bukittinggi</span>
+                </div>
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">Formulir Buku Tamu</h1>
+                <p class="text-xs sm:text-sm text-slate-500">Silakan lengkapi data kunjungan Anda dengan informasi yang valid.</p>
+            </div>
         </div>
 
         <!-- ALERT ERROR VALIDASI LARAVEL BACKEND -->
@@ -176,7 +100,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start animate-fade-in-up">
             
             <!-- FORM INPUT TAMU (8 COLUMNS) -->
-            <div class="lg:col-span-8 bg-white p-6 sm:p-8 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80">
+            <div class="lg:col-span-8 bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8">
                 <form id="visitorForm" action="{{ route('visitor.store') }}" method="POST" class="space-y-5" novalidate>
                     @csrf
 
@@ -184,7 +108,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                         <!-- Nama Lengkap -->
                         <div>
-                            <label for="nama_lengkap" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="nama_lengkap" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Nama Lengkap <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
@@ -192,7 +116,7 @@
                                     <i class="fas fa-user text-xs"></i>
                                 </div>
                                 <input type="text" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required placeholder="Contoh: Budi Santoso"
-                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                             </div>
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
@@ -203,7 +127,7 @@
 
                         <!-- No HP / WA -->
                         <div>
-                            <label for="no_hp" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="no_hp" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 No. HP / WhatsApp <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
@@ -211,7 +135,7 @@
                                     <i class="fas fa-phone text-xs"></i>
                                 </div>
                                 <input type="text" id="no_hp" name="no_hp" value="{{ old('no_hp') }}" required placeholder="0812-XXXX-XXXX"
-                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                             </div>
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
@@ -225,21 +149,21 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                         <!-- Email -->
                         <div>
-                            <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                                Email <span class="text-slate-400 font-normal lowercase">(opsional)</span>
+                            <label for="email" class="block text-xs font-semibold text-slate-600 mb-1.5">
+                                Email <span class="text-slate-400 font-normal">(opsional)</span>
                             </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                                     <i class="fas fa-envelope text-xs"></i>
                                 </div>
                                 <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="budi@email.com"
-                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                             </div>
                         </div>
 
                         <!-- Status Kunjungan -->
                         <div>
-                            <label for="temu_janji" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="temu_janji" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Status Kunjungan <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
@@ -247,7 +171,7 @@
                                     <i class="fas fa-calendar-check text-xs"></i>
                                 </div>
                                 <select id="temu_janji" name="temu_janji" required
-                                        class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                        class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                                     <option value="Belum Janji" {{ old('temu_janji') == 'Belum Janji' ? 'selected' : '' }}>Datang Langsung (Belum Janji)</option>
                                     <option value="Sudah Janji" {{ old('temu_janji') == 'Sudah Janji' ? 'selected' : '' }}>Sudah Membuat Janji Temu</option>
                                 </select>
@@ -257,7 +181,7 @@
 
                     <!-- Asal Instansi / Alamat -->
                     <div>
-                        <label for="alamat" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                        <label for="alamat" class="block text-xs font-semibold text-slate-600 mb-1.5">
                             Asal Instansi / Alamat <span class="text-rose-500">*</span>
                         </label>
                         <div class="relative">
@@ -265,7 +189,7 @@
                                 <i class="fas fa-building text-xs"></i>
                             </div>
                             <input type="text" id="alamat" name="alamat" value="{{ old('alamat') }}" required placeholder="Tuliskan nama instansi atau alamat asal Anda..."
-                                   class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                   class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                         </div>
                         <!-- Error Message UI Kustom -->
                         <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
@@ -275,18 +199,18 @@
                     </div>
 
                     <!-- Baris: Kategori Asal Instansi & Jumlah Pengunjung -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 p-4 rounded-2xl bg-blue-50/40 border border-blue-100/80">
                         <!-- Kategori Asal Instansi -->
                         <div>
-                            <label for="asal_instansi" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="asal_instansi" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Kategori Asal Instansi <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-blue-600">
                                     <i class="fas fa-sitemap text-xs"></i>
                                 </div>
                                 <select id="asal_instansi" name="asal_instansi" required
-                                        class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                        class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                                     <option value="">-- Pilih Kategori --</option>
                                     @foreach (['Instansi Pemerintah', 'Swasta', 'Masyarakat Umum'] as $kategori)
                                         <option value="{{ $kategori }}" {{ old('asal_instansi') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
@@ -302,15 +226,15 @@
 
                         <!-- Jumlah Pengunjung -->
                         <div>
-                            <label for="jumlah_pengunjung" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="jumlah_pengunjung" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Jumlah Pengunjung <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-blue-600">
                                     <i class="fas fa-users text-xs"></i>
                                 </div>
                                 <input type="number" id="jumlah_pengunjung" name="jumlah_pengunjung" value="{{ old('jumlah_pengunjung', 1) }}" min="1" max="500" step="1" required
-                                       class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                       class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                             </div>
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
@@ -324,11 +248,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                         <!-- Divisi Tujuan -->
                         <div>
-                            <label for="divisi_tujuan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="divisi_tujuan" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Divisi / Unit Tujuan <span class="text-rose-500">*</span>
                             </label>
                             <select id="divisi_tujuan" name="divisi_tujuan" required
-                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                                 <option value="">-- Pilih Divisi --</option>
                                 <option value="Kepala Stasiun (Kepsta)" {{ old('divisi_tujuan') == 'Kepala Stasiun (Kepsta)' ? 'selected' : '' }}>Kepala Stasiun (Kepsta)</option>
                                 <option value="Tata Usaha (TU)" {{ old('divisi_tujuan') == 'Tata Usaha (TU)' ? 'selected' : '' }}>Tata Usaha (TU)</option>
@@ -347,11 +271,11 @@
 
                         <!-- Tanggal Kunjungan -->
                         <div>
-                            <label for="tanggal_kunjungan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="tanggal_kunjungan" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Tanggal Kunjungan <span class="text-rose-500">*</span>
                             </label>
-                            <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan" value="{{ old('tanggal_kunjungan', date('Y-m-d')) }}" required
-                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                            <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan" value="{{ old('tanggal_kunjungan', \Carbon\Carbon::now('Asia/Jakarta')->format('Y-m-d')) }}" required
+                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
                                 <i class="fas fa-circle-exclamation text-rose-500"></i>
@@ -364,11 +288,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
                         <!-- Jam Datang -->
                         <div class="sm:col-span-1">
-                            <label for="jam_kunjungan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="jam_kunjungan" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Jam Datang <span class="text-rose-500">*</span>
                             </label>
-                            <input type="time" id="jam_kunjungan" name="jam_kunjungan" value="{{ old('jam_kunjungan', date('H:i')) }}" required
-                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                            <input type="time" id="jam_kunjungan" name="jam_kunjungan" value="{{ old('jam_kunjungan', \Carbon\Carbon::now('Asia/Jakarta')->format('H:i')) }}" required
+                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
                                 <i class="fas fa-circle-exclamation text-rose-500"></i>
@@ -378,11 +302,11 @@
 
                         <!-- Keperluan Kunjungan -->
                         <div class="sm:col-span-2">
-                            <label for="keperluan" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="keperluan" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Keperluan Kunjungan <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" id="keperluan" name="keperluan" value="{{ old('keperluan') }}" required placeholder="Jelaskan maksud dan tujuan kunjungan..."
-                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all">
+                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
                                 <i class="fas fa-circle-exclamation text-rose-500"></i>
@@ -393,7 +317,7 @@
 
                     <!-- Tombol Submit Form -->
                     <div class="pt-4">
-                        <button type="button" onclick="openConfirmationModal()" class="w-full py-3.5 px-6 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 active:scale-[0.98] text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-600/25 hover:shadow-blue-600/35 transition-all flex items-center justify-center gap-2 group cursor-pointer">
+                        <button type="button" onclick="openConfirmationModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-sm transition active:scale-[0.99] text-sm flex items-center justify-center gap-2 group cursor-pointer">
                             <i class="fas fa-paper-plane text-xs group-hover:translate-x-0.5 transition-transform"></i>
                             <span>Kirim Data Kunjungan</span>
                         </button>
@@ -403,34 +327,34 @@
             </div>
 
             <!-- KARTU INFORMASI KETENTUAN (4 COLUMNS) -->
-            <div class="lg:col-span-4 bg-gradient-to-br from-blue-700 via-blue-800 to-slate-900 p-6 sm:p-8 rounded-3xl text-white shadow-xl shadow-slate-900/20 relative overflow-hidden flex flex-col justify-between h-full">
+            <div class="lg:col-span-4 bg-gradient-to-br from-blue-700 via-blue-800 to-slate-900 border border-white/10 shadow-xl shadow-blue-950/20 p-6 md:p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between h-full text-white">
                 <!-- Ambient Decorative Light -->
-                <div class="absolute -top-12 -left-12 w-40 h-40 bg-cyan-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -top-12 -left-12 w-40 h-40 bg-sky-400/15 rounded-full blur-2xl pointer-events-none"></div>
 
                 <div class="relative z-10">
-                    <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center mb-5 backdrop-blur-md">
-                        <i class="fas fa-info-circle text-cyan-300 text-lg"></i>
+                    <div class="w-10 h-10 rounded-xl bg-white/10 text-sky-200 border border-white/15 backdrop-blur-sm flex items-center justify-center mb-4">
+                        <i class="fas fa-info-circle text-base"></i>
                     </div>
 
-                    <h3 class="text-xl font-bold tracking-tight mb-4">Ketentuan Kunjungan</h3>
+                    <h3 class="text-lg text-white font-bold tracking-wide mb-3">Ketentuan Kunjungan</h3>
 
-                    <ul class="space-y-3.5 text-xs sm:text-sm text-blue-100/90 font-normal leading-relaxed">
+                    <ul class="space-y-3 text-blue-100/90 text-sm font-normal leading-relaxed">
                         <li class="flex items-start gap-2.5">
-                            <i class="fas fa-check-circle text-cyan-300 text-xs mt-1 shrink-0"></i>
+                            <i class="fas fa-check-circle text-sky-300 text-xs mt-1 shrink-0"></i>
                             <span>Anda dapat mengisi buku tamu secara mandiri di lobi LPP RRI Bukittinggi pada hari-H kedatangan.</span>
                         </li>
                         <li class="flex items-start gap-2.5">
-                            <i class="fas fa-check-circle text-cyan-300 text-xs mt-1 shrink-0"></i>
+                            <i class="fas fa-check-circle text-sky-300 text-xs mt-1 shrink-0"></i>
                             <span>Bila belum memiliki janji temu, mohon bersabar menunggu di area lobi selagi petugas menghubungi divisi terkait.</span>
                         </li>
                         <li class="flex items-start gap-2.5">
-                            <i class="fas fa-check-circle text-cyan-300 text-xs mt-1 shrink-0"></i>
+                            <i class="fas fa-check-circle text-sky-300 text-xs mt-1 shrink-0"></i>
                             <span>Pastikan nomor WhatsApp dan email Anda aktif agar memudahkan koordinasi atau konfirmasi kedatangan.</span>
                         </li>
                     </ul>
                 </div>
 
-                <div class="relative z-10 mt-8 pt-5 border-t border-blue-500/30 text-[11px] text-blue-200/70">
+                <div class="relative z-10 mt-6 pt-4 border-t border-white/15 text-[11px] text-blue-200/80 font-medium">
                     <span>LPP RRI Bukittinggi &copy; {{ date('Y') }}</span>
                 </div>
             </div>
@@ -471,6 +395,28 @@
         </div>
     </div>
 
+    <!-- MODAL PERINGATAN WAKTU KEDATANGAN LAMPAU -->
+    <div id="pastTimeWarningModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative animate-modal-pop text-center">
+            
+            <div class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 text-amber-500 flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <i class="fas fa-clock text-2xl"></i>
+            </div>
+
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Waktu Kedatangan Tidak Sesuai</h3>
+            <p class="text-xs sm:text-sm text-slate-500 mb-6 leading-relaxed">
+                Mohon maaf, Anda tidak dapat memilih jam kedatangan yang sudah terlewat untuk hari ini. Silakan sesuaikan kembali dengan jam kehadiran Anda saat ini atau sesudahnya.
+            </p>
+
+            <div>
+                <button type="button" onclick="closePastTimeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-5 py-2.5 font-semibold text-sm shadow-sm active:scale-95 transition-all cursor-pointer">
+                    Perbaiki Waktu
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- MODAL POP-UP SUKSES REGISTRASI -->
     @if (session('success'))
     <div id="successModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fade-in">
@@ -504,50 +450,8 @@
     </div>
     @endif
 
-    <!-- MODAL KONFIRMASI LOGOUT ADMIN -->
-    @auth
-    <div id="logoutModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-100 relative animate-modal-pop">
-            
-            <div class="w-14 h-14 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <i class="fas fa-sign-out-alt text-2xl"></i>
-            </div>
-
-            <div class="text-center mb-6">
-                <h3 class="text-xl font-extrabold text-slate-900">Konfirmasi Keluar Akun</h3>
-                <p class="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
-                    Apakah Anda yakin ingin keluar dari <span class="font-bold text-slate-800">Sistem Admin Buku Tamu</span>?
-                </p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <button type="button" onclick="closeLogoutModal()" class="w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-100 active:scale-95 transition-all">
-                    Batal
-                </button>
-                
-                <form action="{{ route('logout') }}" method="POST" class="w-full">
-                    @csrf
-                    <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-600/30 active:scale-95 transition-all">
-                        Ya, Keluar
-                    </button>
-                </form>
-            </div>
-
-        </div>
-    </div>
-    @endauth
-
     <!-- SCRIPT VALIDASI CUSTOM UI/UX TOOLTIP -->
     <script>
-        function openLogoutModal() {
-            const modal = document.getElementById('logoutModal');
-            if (modal) modal.classList.remove('hidden');
-        }
-        function closeLogoutModal() {
-            const modal = document.getElementById('logoutModal');
-            if (modal) modal.classList.add('hidden');
-        }
-
         // Fungsi Validasi UI/UX Modern
         function validateFormUI() {
             const form = document.getElementById('visitorForm');
@@ -591,11 +495,59 @@
             return isValid;
         }
 
-        function openConfirmationModal() {
-            if (validateFormUI()) {
-                const modal = document.getElementById('confirmationModal');
-                if (modal) modal.classList.remove('hidden');
+        function isPastTimeSelected() {
+            const tglInput = document.getElementById('tanggal_kunjungan');
+            const jamInput = document.getElementById('jam_kunjungan') || document.querySelector('input[name="jam_datang"]');
+            if (!tglInput || !jamInput || !tglInput.value || !jamInput.value) {
+                return false;
             }
+
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${yyyy}-${mm}-${dd}`;
+
+            if (tglInput.value === todayStr) {
+                const currentHours = String(now.getHours()).padStart(2, '0');
+                const currentMinutes = String(now.getMinutes()).padStart(2, '0');
+                const currentTimeStr = `${currentHours}:${currentMinutes}`;
+                const selectedTimeStr = jamInput.value.substring(0, 5);
+
+                if (selectedTimeStr < currentTimeStr) {
+                    jamInput.classList.add('border-rose-500', 'bg-rose-50/30', 'animate-shake');
+                    jamInput.classList.remove('border-slate-200', 'bg-slate-50');
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function openPastTimeModal() {
+            const modal = document.getElementById('pastTimeWarningModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closePastTimeModal() {
+            const modal = document.getElementById('pastTimeWarningModal');
+            if (modal) modal.classList.add('hidden');
+            const jamInput = document.getElementById('jam_kunjungan') || document.querySelector('input[name="jam_datang"]');
+            if (jamInput) {
+                jamInput.focus();
+            }
+        }
+
+        function openConfirmationModal() {
+            if (!validateFormUI()) {
+                return;
+            }
+            if (isPastTimeSelected()) {
+                openPastTimeModal();
+                return;
+            }
+            const modal = document.getElementById('confirmationModal');
+            if (modal) modal.classList.remove('hidden');
         }
 
         function closeConfirmationModal() {
@@ -604,6 +556,11 @@
         }
 
         function submitVisitorForm() {
+            if (isPastTimeSelected()) {
+                closeConfirmationModal();
+                openPastTimeModal();
+                return;
+            }
             document.getElementById('visitorForm').submit();
         }
 
@@ -611,6 +568,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('visitorForm');
             if (form) {
+                form.addEventListener('submit', function(e) {
+                    if (!validateFormUI()) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    if (isPastTimeSelected()) {
+                        e.preventDefault();
+                        closeConfirmationModal();
+                        openPastTimeModal();
+                        return false;
+                    }
+                });
+
                 const inputs = form.querySelectorAll('input[required], select[required]');
                 
                 inputs.forEach(input => {
@@ -630,23 +600,9 @@
                 });
             }
 
-            // Toggle Hamburger Menu Mobile
-            const btn = document.getElementById('mobileMenuBtn');
-            const menu = document.getElementById('mobileMenu');
-            const icon = document.getElementById('mobileMenuIcon');
-
-            if (btn && menu && icon) {
-                btn.addEventListener('click', function() {
-                    menu.classList.toggle('hidden');
-                    if (menu.classList.contains('hidden')) {
-                        icon.classList.remove('fa-xmark');
-                        icon.classList.add('fa-bars');
-                    } else {
-                        icon.classList.remove('fa-bars');
-                        icon.classList.add('fa-xmark');
-                    }
-                });
-            }
+            @if ($errors->has('jam_datang') || $errors->has('jam_kunjungan'))
+                openPastTimeModal();
+            @endif
         });
     </script>
 </body>

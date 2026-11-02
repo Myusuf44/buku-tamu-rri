@@ -67,6 +67,17 @@ class VisitorController extends Controller
             'keperluan'         => 'required|string',
         ]);
 
+        // Validasi Cadangan Waktu Lampau (Jika tanggal_kunjungan == hari ini dan jam < jam saat ini WIB)
+        $nowWib = Carbon::now('Asia/Jakarta');
+        $tanggalInput = Carbon::parse($validated['tanggal_kunjungan'])->format('Y-m-d');
+        $jamInput = substr((string) $validated['jam_kunjungan'], 0, 5);
+
+        if ($tanggalInput === $nowWib->format('Y-m-d') && $jamInput < $nowWib->format('H:i')) {
+            return redirect()->back()
+                ->withErrors(['jam_datang' => 'Jam kunjungan tidak boleh mendahului waktu saat ini.'])
+                ->withInput();
+        }
+
         $validated['status'] = 'Diproses';
 
         $visitor = Visitor::create($validated);

@@ -51,6 +51,13 @@
         .animate-fade-in-up {
             animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-modal-pop {
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen selection:bg-blue-200 antialiased overflow-x-hidden m-0 p-0">
@@ -103,80 +110,70 @@
                     </a>
                 </div>
 
-                <!-- BAGIAN KANAN: Navigasi Desktop -->
-                <nav class="hidden md:flex items-center gap-2">
-                    <div class="p-1 bg-slate-100 rounded-full border border-slate-200 flex items-center gap-1">
+                <!-- BAGIAN KANAN: Navigasi Desktop (Floating Modern Pill) -->
+                <nav class="hidden md:flex items-center">
+                    <div class="bg-slate-100/90 backdrop-blur-sm p-1.5 rounded-2xl border border-slate-200/70 inline-flex items-center gap-1.5 shadow-sm">
                         <a href="{{ route('home') }}" 
-                           class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5
-                                {{ Request::routeIs('home') ? 'bg-white text-blue-700 shadow-sm font-bold' : 'text-slate-600 hover:text-slate-900' }}">
-                            <i class="fas fa-home text-xs {{ Request::routeIs('home') ? 'text-blue-600' : 'text-slate-400' }}"></i>
+                           class="text-slate-600 hover:text-slate-900 px-3 py-1.5 text-xs font-semibold rounded-xl hover:bg-white/80 transition flex items-center gap-1.5">
+                            <i class="fas fa-home text-xs text-slate-400"></i>
                             <span>Beranda</span>
                         </a>
 
                         <a href="{{ route('registrasi') }}" 
-                           class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5
-                                {{ Request::routeIs('registrasi*') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md font-semibold' : 'text-slate-600 hover:text-slate-900' }}">
-                            <i class="fas fa-edit text-xs {{ Request::routeIs('registrasi*') ? 'text-white' : 'text-slate-400' }}"></i>
+                           class="text-slate-600 hover:text-slate-900 px-3 py-1.5 text-xs font-semibold rounded-xl hover:bg-white/80 transition flex items-center gap-1.5">
+                            <i class="fas fa-edit text-xs text-slate-400"></i>
                             <span>Buku Tamu</span>
                         </a>
-                    </div>
 
-                    @auth
-                    <div class="h-5 w-[1px] bg-slate-200 mx-1"></div>
+                        @auth
+                        <div class="h-4 w-[1px] bg-slate-300/80 mx-1"></div>
 
-                    <!-- BADGE PENANDA ROLE (DESKTOP) -->
-                    <div class="flex items-center gap-2 px-3 py-1 rounded-full border-2 transition-all shadow-2xs 
-                                {{ auth()->user()->isSuperAdmin() 
-                                    ? 'bg-purple-50 border-purple-300 text-purple-800' 
-                                    : 'bg-emerald-50/50 border-emerald-200 text-emerald-800' }}">
-                        <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full {{ auth()->user()->isSuperAdmin() ? 'bg-purple-400 opacity-75' : 'bg-emerald-400 opacity-75' }}"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 {{ auth()->user()->isSuperAdmin() ? 'bg-purple-600' : 'bg-emerald-600' }}"></span>
-                        </span>
-                        <div class="flex flex-col text-left leading-none">
-                            <span class="text-[11px] font-extrabold tracking-wide">
-                                {{ auth()->user()->isSuperAdmin() ? 'Super Admin' : 'Admin' }}
+                        <!-- BADGE PENANDA ROLE (DESKTOP) -->
+                        <div class="{{ auth()->user()->isSuperAdmin() 
+                                        ? 'bg-purple-50 text-purple-700 border border-purple-200' 
+                                        : 'bg-emerald-50 text-emerald-700 border border-emerald-200' }} px-2.5 py-1 rounded-full text-[11px] font-semibold inline-flex items-center gap-1.5 shrink-0">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full {{ auth()->user()->isSuperAdmin() ? 'bg-purple-400 opacity-75' : 'bg-emerald-400 opacity-75' }}"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 {{ auth()->user()->isSuperAdmin() ? 'bg-purple-600' : 'bg-emerald-600' }}"></span>
                             </span>
+                            <span>{{ auth()->user()->isSuperAdmin() ? 'Super Admin' : 'Admin' }}</span>
                         </div>
+
+                        <!-- Dashboard Button -->
+                        <a href="{{ route('admin.dashboard') }}" 
+                           class="bg-[#1e3a8a] hover:bg-blue-950 text-white px-3.5 py-1.5 text-xs font-semibold rounded-xl shadow-xs transition flex items-center gap-1.5 shrink-0">
+                            <i class="fas fa-chart-pie text-xs text-blue-300"></i>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <!-- Tombol Kelola Rating & Ulasan -->
+                        <a href="{{ route('admin.feedbacks') }}" 
+                           class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 text-xs font-semibold rounded-xl shadow-xs transition flex items-center gap-1.5 shrink-0">
+                            <i class="fas fa-star text-xs text-amber-100"></i>
+                            <span>Ulasan &amp; Rating</span>
+                        </a>
+
+                        <!-- Tombol Kelola Admin (EKSKLUSIF SUPER ADMIN) -->
+                        @if(auth()->user()->isSuperAdmin())
+                        <a href="{{ route('admin.users.index') }}" 
+                           class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 text-xs font-semibold rounded-xl shadow-xs transition flex items-center gap-1.5 shrink-0">
+                            <i class="fas fa-user-shield text-xs text-purple-200"></i>
+                            <span>Kelola Admin</span>
+                        </a>
+                        @endif
+
+                        <!-- Logout Button -->
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" 
+                                    title="Keluar dari akun admin"
+                                    class="text-rose-600 hover:bg-rose-50 px-3 py-1.5 text-xs font-semibold rounded-xl transition inline-flex items-center gap-1.5 cursor-pointer">
+                                <i class="fas fa-sign-out-alt text-xs"></i>
+                                <span>Keluar</span>
+                            </button>
+                        </form>
+                        @endauth
                     </div>
-
-                    <!-- Dashboard Button -->
-                    <a href="{{ route('admin.dashboard') }}" 
-                       class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 border border-slate-700 shrink-0
-                            {{ Request::routeIs('admin.dashboard*') ? 'bg-blue-900 text-white shadow-md' : 'bg-slate-800 text-white hover:bg-slate-900' }}">
-                        <i class="fas fa-chart-pie text-xs text-blue-400"></i>
-                        <span>Dashboard</span>
-                    </a>
-
-                    <!-- Tombol Kelola Rating & Ulasan -->
-                    <a href="{{ route('admin.feedbacks') }}" 
-                       class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 border border-amber-300 shrink-0
-                            {{ Request::routeIs('admin.feedbacks*') ? 'bg-amber-600 text-white shadow-md' : 'bg-amber-500 text-white hover:bg-amber-600' }}">
-                        <i class="fas fa-star text-xs text-amber-200"></i>
-                        <span>Ulasan & Rating</span>
-                    </a>
-
-                    <!-- Tombol Kelola Admin (EKSKLUSIF SUPER ADMIN) -->
-                    @if(auth()->user()->isSuperAdmin())
-                    <a href="{{ route('admin.users.index') }}" 
-                       class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 border border-purple-300 shrink-0
-                            {{ Request::routeIs('admin.users*') ? 'bg-purple-800 text-white shadow-md' : 'bg-purple-700 text-white hover:bg-purple-800' }}">
-                        <i class="fas fa-user-shield text-xs text-purple-200"></i>
-                        <span>Kelola Admin</span>
-                    </a>
-                    @endif
-
-                    <!-- Logout Button -->
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" 
-                                title="Keluar dari akun admin"
-                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 hover:bg-rose-600 hover:text-white transition-all duration-200 cursor-pointer">
-                            <i class="fas fa-sign-out-alt text-xs"></i>
-                            <span>Keluar</span>
-                        </button>
-                    </form>
-                    @endauth
                 </nav>
 
                 <!-- TOMBOL HAMBURGER MOBILE & BADGE ROLE -->
