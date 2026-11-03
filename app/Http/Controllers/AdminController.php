@@ -43,6 +43,22 @@ class AdminController extends Controller
                     ->pluck('total', 'asal_instansi')
                     ->map(fn ($total): int => (int) $total)
             );
+
+        $pemerintahCount = (int) ($rekapPerInstansi['Instansi Pemerintah'] ?? 0);
+        $swastaCount = (int) ($rekapPerInstansi['Swasta'] ?? 0);
+        $umumCount = (int) ($rekapPerInstansi['Masyarakat Umum'] ?? 0);
+        $total = $totalKunjungan ?: (int) (Visitor::sum('jumlah_pengunjung') ?: 0);
+
+        if ($total > 0) {
+            $persenPemerintah = round(($pemerintahCount / $total) * 100, 1);
+            $persenSwasta = round(($swastaCount / $total) * 100, 1);
+            $persenUmum = round(($umumCount / $total) * 100, 1);
+        } else {
+            $persenPemerintah = 0;
+            $persenSwasta = 0;
+            $persenUmum = 0;
+        }
+
         $totalDiterima = Visitor::whereIn('status', ['Diterima', 'Selesai'])->count();
         $bulanIni = Visitor::whereMonth('tanggal_kunjungan', $thisMonth)
                             ->whereYear('tanggal_kunjungan', $thisYear)
@@ -61,6 +77,7 @@ class AdminController extends Controller
         $jadwalMendatang = Visitor::where('status', 'Diterima')
                                 ->whereDate('tanggal_kunjungan', '>', $today)
                                 ->count();
+        $mendatangCount = $jadwalMendatang;
 
         $dibatalkanHariIni = Visitor::where('status', 'Dibatalkan')
                                     ->where(function($q) use ($today) {
@@ -113,18 +130,25 @@ class AdminController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->get('filter_tipe') === 'mendatang') {
+            $query->where('status', 'Diterima')
+                  ->whereDate('tanggal_kunjungan', '>', $today);
+        }
+
         $visitors = $query->orderByRaw("CASE WHEN tanggal_kunjungan >= ? THEN 0 ELSE 1 END ASC", [$today])
                           ->orderBy('tanggal_kunjungan', 'asc')
                           ->orderBy('jam_kunjungan', 'asc')
-                          ->paginate(20);
+                          ->paginate(20)
+                          ->withQueryString();
 
         $user = auth()->user();
         $isSuperAdmin = $user ? $user->isSuperAdmin() : false;
 
         return view('admin.dashboard', compact(
             'visitors', 'totalKunjungan', 'rekapPerInstansi', 'totalDiterima', 'bulanIni', 'menunggu',
-            'tamuHariIni', 'selesaiHariIni', 'jadwalMendatang', 'dibatalkanHariIni',
-            'rataRating', 'totalResponden', 'feedbacks', 'isSuperAdmin'
+            'tamuHariIni', 'selesaiHariIni', 'jadwalMendatang', 'mendatangCount', 'dibatalkanHariIni',
+            'rataRating', 'totalResponden', 'feedbacks', 'isSuperAdmin',
+            'persenPemerintah', 'persenSwasta', 'persenUmum', 'pemerintahCount', 'swastaCount', 'umumCount'
         ));
     }
 

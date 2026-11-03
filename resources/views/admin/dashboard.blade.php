@@ -31,10 +31,10 @@
         </div>
     </div>
 
-    <!-- 4 KARTU METRIK UTAMA -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 animate-fade-in-up delay-100">
+    <!-- 5 KARTU METRIK UTAMA -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 animate-fade-in-up delay-100">
         <!-- 1. Total Pengunjung -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+        <a href="{{ route('admin.dashboard') }}#tabelData" class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-md active:scale-95 block">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-medium text-slate-500">Total Pengunjung</span>
                 <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
@@ -45,10 +45,10 @@
                 <div class="text-2xl font-bold text-slate-900 tracking-tight">{{ number_format($totalKunjungan ?? 0) }}</div>
                 <p class="text-[11px] text-slate-400 mt-0.5">Akumulasi seluruh tamu</p>
             </div>
-        </div>
+        </a>
 
         <!-- 2. Perlu Diproses -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between relative overflow-hidden">
+        <a href="{{ route('admin.dashboard', ['status' => 'Diproses']) }}#tabelData" class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between relative overflow-hidden cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-md active:scale-95 block">
             @if(($menunggu ?? 0) > 0)
                 <span class="absolute top-0 left-0 w-1 h-full bg-amber-400"></span>
             @endif
@@ -60,26 +60,26 @@
             </div>
             <div>
                 <div class="text-2xl font-bold text-amber-600 tracking-tight">{{ number_format($menunggu ?? 0) }}</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Permohonan menunggu verifikasi</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Permohonan verifikasi hari ini, besok, bulan depan / seluruh permohonan penting</p>
             </div>
-        </div>
+        </a>
 
-        <!-- 3. Hari Ini -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+        <!-- 3. Aktivitas Hari Ini -->
+        <a href="{{ route('admin.dashboard', ['tanggal' => \Carbon\Carbon::today()->format('Y-m-d')]) }}#tabelData" class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-md active:scale-95 block">
             <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-medium text-slate-500">Hari Ini</span>
+                <span class="text-xs font-medium text-slate-500">Aktivitas Hari Ini</span>
                 <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                     <i class="fas fa-calendar-day text-xs"></i>
                 </div>
             </div>
             <div>
                 <div class="text-2xl font-bold text-slate-900 tracking-tight">{{ number_format($tamuHariIni ?? 0) }}</div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Jadwal kunjungan hari ini</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Pengajuan masuk, diproses, diterima, selesai dan dibatalkan hari ini</p>
             </div>
-        </div>
+        </a>
 
         <!-- 4. Selesai -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+        <a href="{{ route('admin.dashboard', ['status' => 'Selesai', 'tanggal' => \Carbon\Carbon::today()->format('Y-m-d')]) }}#tabelData" class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-md active:scale-95 block">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-medium text-slate-500">Selesai</span>
                 <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
@@ -90,19 +90,33 @@
                 <div class="text-2xl font-bold text-emerald-600 tracking-tight">{{ number_format($selesaiHariIni ?? 0) }}</div>
                 <p class="text-[11px] text-slate-400 mt-0.5">Kunjungan tuntas hari ini</p>
             </div>
-        </div>
+        </a>
+
+        <!-- 5. Mendatang -->
+        <a href="{{ route('admin.dashboard', ['filter_tipe' => 'mendatang']) }}#tabelData" class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between col-span-2 sm:col-span-1 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-md active:scale-95 block">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-slate-500">Mendatang</span>
+                <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                    <i class="fas fa-calendar-alt text-xs"></i>
+                </div>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-indigo-600 tracking-tight">{{ number_format($mendatangCount ?? ($jadwalMendatang ?? 0)) }}</div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Diterima (besok / bulan depan)</p>
+            </div>
+        </a>
     </div>
 
     <!-- MINI CARD HORIZONTAL: DISTRIBUSI KUNJUNGAN (SEGMENTED PROGRESS BAR) -->
     @php
-        $jmlPemerintah = (int) ($rekapPerInstansi['Instansi Pemerintah'] ?? 0);
-        $jmlSwasta = (int) ($rekapPerInstansi['Swasta'] ?? 0);
-        $jmlUmum = (int) ($rekapPerInstansi['Masyarakat Umum'] ?? 0);
-        $totalDistribusi = max($jmlPemerintah + $jmlSwasta + $jmlUmum, 1);
+        $jmlPemerintah = (int) ($pemerintahCount ?? ($rekapPerInstansi['Instansi Pemerintah'] ?? 0));
+        $jmlSwasta = (int) ($swastaCount ?? ($rekapPerInstansi['Swasta'] ?? 0));
+        $jmlUmum = (int) ($umumCount ?? ($rekapPerInstansi['Masyarakat Umum'] ?? 0));
+        $totalDistribusi = $total ?? ($totalKunjungan ?? ($jmlPemerintah + $jmlSwasta + $jmlUmum));
 
-        $pctPemerintah = round(($jmlPemerintah / $totalDistribusi) * 100, 1);
-        $pctSwasta = round(($jmlSwasta / $totalDistribusi) * 100, 1);
-        $pctUmum = max(0, round(100 - $pctPemerintah - $pctSwasta, 1));
+        $pctPemerintah = isset($persenPemerintah) ? $persenPemerintah : ($totalDistribusi > 0 ? round(($jmlPemerintah / $totalDistribusi) * 100, 1) : 0);
+        $pctSwasta = isset($persenSwasta) ? $persenSwasta : ($totalDistribusi > 0 ? round(($jmlSwasta / $totalDistribusi) * 100, 1) : 0);
+        $pctUmum = isset($persenUmum) ? $persenUmum : ($totalDistribusi > 0 ? round(($jmlUmum / $totalDistribusi) * 100, 1) : 0);
     @endphp
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 sm:px-5 mb-6 animate-fade-in-up delay-100">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
@@ -168,7 +182,7 @@
 
             <div class="md:col-span-2">
                 <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">TANGGAL SPESIFIK</label>
-                <input type="date" name="tanggal_exact" value="{{ request('tanggal_exact') }}" 
+                <input type="date" name="tanggal_exact" value="{{ request('tanggal_exact', request('tanggal')) }}" 
                        class="w-full px-3 py-2 bg-slate-50/70 border border-slate-200/90 rounded-xl sm:rounded-2xl text-xs font-medium text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/30 transition-all">
             </div>
 
@@ -233,7 +247,7 @@
     </div>
 
     <!-- DAFTAR REKAPITULASI KUNJUNGAN TAMU -->
-    <div class="bg-white rounded-2xl sm:rounded-[2rem] shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden animate-fade-in-up delay-300">
+    <div id="tabelData" class="scroll-mt-24 bg-white rounded-2xl sm:rounded-[2rem] shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden animate-fade-in-up delay-300">
         
         <div class="px-4 sm:px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
             <h3 class="text-sm sm:text-base font-extrabold text-slate-900">Daftar Rekapitulasi Kunjungan Tamu</h3>

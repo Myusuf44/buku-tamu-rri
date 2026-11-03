@@ -166,15 +166,18 @@
                             <label for="temu_janji" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Status Kunjungan <span class="text-rose-500">*</span>
                             </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <div class="relative w-full">
+                                <div class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600">
                                     <i class="fas fa-calendar-check text-xs"></i>
                                 </div>
                                 <select id="temu_janji" name="temu_janji" required
-                                        class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
+                                        class="w-full appearance-none bg-white rounded-xl border border-slate-200 pl-11 pr-10 py-2.5 text-base md:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer">
                                     <option value="Belum Janji" {{ old('temu_janji') == 'Belum Janji' ? 'selected' : '' }}>Datang Langsung (Belum Janji)</option>
                                     <option value="Sudah Janji" {{ old('temu_janji') == 'Sudah Janji' ? 'selected' : '' }}>Sudah Membuat Janji Temu</option>
                                 </select>
+                                <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -205,17 +208,20 @@
                             <label for="asal_instansi" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Kategori Asal Instansi <span class="text-rose-500">*</span>
                             </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-blue-600">
+                            <div class="relative w-full">
+                                <div class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600">
                                     <i class="fas fa-sitemap text-xs"></i>
                                 </div>
                                 <select id="asal_instansi" name="asal_instansi" required
-                                        class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
+                                        class="w-full appearance-none bg-white rounded-xl border border-slate-200 pl-11 pr-10 py-2.5 text-base md:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer">
                                     <option value="">-- Pilih Kategori --</option>
                                     @foreach (['Instansi Pemerintah', 'Swasta', 'Masyarakat Umum'] as $kategori)
                                         <option value="{{ $kategori }}" {{ old('asal_instansi') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
                                     @endforeach
                                 </select>
+                                <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </div>
                             </div>
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
@@ -251,17 +257,25 @@
                             <label for="divisi_tujuan" class="block text-xs font-semibold text-slate-600 mb-1.5">
                                 Divisi / Unit Tujuan <span class="text-rose-500">*</span>
                             </label>
-                            <select id="divisi_tujuan" name="divisi_tujuan" required
-                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all">
-                                <option value="">-- Pilih Divisi --</option>
-                                <option value="Kepala Stasiun (Kepsta)" {{ old('divisi_tujuan') == 'Kepala Stasiun (Kepsta)' ? 'selected' : '' }}>Kepala Stasiun (Kepsta)</option>
-                                <option value="Tata Usaha (TU)" {{ old('divisi_tujuan') == 'Tata Usaha (TU)' ? 'selected' : '' }}>Tata Usaha (TU)</option>
-                                <option value="Siaran" {{ old('divisi_tujuan') == 'Siaran' ? 'selected' : '' }}>Siaran</option>
-                                <option value="Pemberitaan" {{ old('divisi_tujuan') == 'Pemberitaan' ? 'selected' : '' }}>Pemberitaan</option>
-                                <option value="Teknologi dan Media Baru (TMB)" {{ old('divisi_tujuan') == 'Teknologi dan Media Baru (TMB)' ? 'selected' : '' }}>Teknologi dan Media Baru (TMB)</option>
-                                <option value="Layanan Pengembangan Usaha (LPU)" {{ old('divisi_tujuan') == 'Layanan Pengembangan Usaha (LPU)' ? 'selected' : '' }}>Layanan Pengembangan Usaha (LPU)</option>
-                                <option value="Lainnya" {{ old('divisi_tujuan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-                            </select>
+                            <div class="relative w-full">
+                                <div class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600">
+                                    <i class="fas fa-layer-group text-xs"></i>
+                                </div>
+                                <select id="divisi_tujuan" name="divisi_tujuan" required
+                                        class="w-full appearance-none bg-white rounded-xl border border-slate-200 pl-11 pr-10 py-2.5 text-base md:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer">
+                                    <option value="">-- Pilih Divisi --</option>
+                                    <option value="Kepala Stasiun (Kepsta)" {{ old('divisi_tujuan') == 'Kepala Stasiun (Kepsta)' ? 'selected' : '' }}>Kepala Stasiun (Kepsta)</option>
+                                    <option value="Tata Usaha (TU)" {{ old('divisi_tujuan') == 'Tata Usaha (TU)' ? 'selected' : '' }}>Tata Usaha (TU)</option>
+                                    <option value="Siaran" {{ old('divisi_tujuan') == 'Siaran' ? 'selected' : '' }}>Siaran</option>
+                                    <option value="Pemberitaan" {{ old('divisi_tujuan') == 'Pemberitaan' ? 'selected' : '' }}>Pemberitaan</option>
+                                    <option value="Teknologi dan Media Baru (TMB)" {{ old('divisi_tujuan') == 'Teknologi dan Media Baru (TMB)' ? 'selected' : '' }}>Teknologi dan Media Baru (TMB)</option>
+                                    <option value="Layanan Pengembangan Usaha (LPU)" {{ old('divisi_tujuan') == 'Layanan Pengembangan Usaha (LPU)' ? 'selected' : '' }}>Layanan Pengembangan Usaha (LPU)</option>
+                                    <option value="Lainnya" {{ old('divisi_tujuan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                </select>
+                                <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </div>
+                            </div>
                             <!-- Error Message UI Kustom -->
                             <p class="error-msg hidden text-[11px] font-semibold text-rose-600 mt-1.5 flex items-center gap-1.5 animate-fade-in-up">
                                 <i class="fas fa-circle-exclamation text-rose-500"></i>
@@ -468,7 +482,7 @@
                     
                     // Efek visual border merah & animasi getar (shake)
                     input.classList.add('border-rose-500', 'bg-rose-50/30', 'animate-shake');
-                    input.classList.remove('border-slate-200', 'bg-slate-50');
+                    input.classList.remove('border-slate-200', 'bg-slate-50', 'bg-white');
 
                     if (errorMsg) {
                         errorMsg.classList.remove('hidden');
@@ -480,7 +494,12 @@
                 } else {
                     // Reset ke tampilan normal jika terisi
                     input.classList.remove('border-rose-500', 'bg-rose-50/30', 'animate-shake');
-                    input.classList.add('border-slate-200', 'bg-slate-50');
+                    input.classList.add('border-slate-200');
+                    if (input.tagName.toLowerCase() === 'select') {
+                        input.classList.add('bg-white');
+                    } else {
+                        input.classList.add('bg-slate-50');
+                    }
 
                     if (errorMsg) {
                         errorMsg.classList.add('hidden');
@@ -590,7 +609,12 @@
 
                         if (input.value.trim()) {
                             input.classList.remove('border-rose-500', 'bg-rose-50/30', 'animate-shake');
-                            input.classList.add('border-slate-200', 'bg-slate-50');
+                            input.classList.add('border-slate-200');
+                            if (input.tagName.toLowerCase() === 'select') {
+                                input.classList.add('bg-white');
+                            } else {
+                                input.classList.add('bg-slate-50');
+                            }
                             if (errorMsg) errorMsg.classList.add('hidden');
                         }
                     };
